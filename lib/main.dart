@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hire_pro/screens/categoryScreen.dart';
 import 'package:hire_pro/screens/homeScreen.dart';
+import 'package:hire_pro/screens/ongoingScreen.dart';
 import 'package:hire_pro/screens/otpEnterScreen.dart';
 import 'package:hire_pro/screens/registerSuccess.dart';
 
@@ -30,6 +32,8 @@ class HirePro extends StatelessWidget {
       routes: {
         '/': (context) => RegisterSuccess(),
         '/home': (context) => HomeScreen(),
+        '/category': (context) => CategoryScreen(),
+        '/ongoing': (context) => OngoingScreen(),
       },
     );
   }

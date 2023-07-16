@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 class NavButton extends StatelessWidget {
-  NavButton(this.buttonText, this.navigation);
+  NavButton(this.buttonText, this.navigation, this.color, this.textColor);
   final String buttonText;
+  final Color textColor;
   final VoidCallback navigation;
+  final Color color;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -16,12 +18,10 @@ class NavButton extends StatelessWidget {
         highlightElevation: 0,
         highlightColor: Color.fromARGB(255, 253, 171, 77),
         onPressed: navigation,
-        fillColor: Color(0xFFD4842B),
+        fillColor: color,
         child: Text(buttonText,
-            style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w500)),
+            style: TextStyle(
+                color: textColor, fontSize: 14, fontWeight: FontWeight.w500)),
       ),
     );
   }
