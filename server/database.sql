@@ -1,0 +1,5 @@
+CREATE DATABASE hireprotest;
+
+CREATE DATABASE users(
+    user_id SERIAL PRIMARY KEY
+)
