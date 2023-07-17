@@ -1,0 +1,20 @@
+const router=require("express").Router();
+const pool=require("../db")
+const authorize = require("../middleware/authorize");
+
+
+
+router.get('/',authorize,async(req,res)=>{
+    try {
+        //req.user has the payload
+        res.json(req.user);
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json("server error")
+        
+    }
+})
+
+
+module.exports=router;

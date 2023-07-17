@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const pool = require("../db")
 const validinfo=require("../middleware/validinfo")
-
+const authorize = require("../middleware/authorize");
 const bcrypt = require("bcrypt");
 const jwtGenarator = require("../utils/jwtGenarator")
 
@@ -77,6 +77,16 @@ router.post('/login', validinfo,async (req, res) => {
         res.status(500).send("Server Error")
     }
 })
+
+
+router.get("/verify", authorize, (req, res) => {
+    try {
+      res.json(true);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server error");
+    }
+  });
 
 
 module.exports = router;
