@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
-import 'package:hire_pro/widgets/BottomNavbar.dart';
+import 'package:hire_pro/widgets/MyNavigationWidget.dart';
 import 'package:hire_pro/widgets/MainCard.dart';
 import 'package:hire_pro/widgets/NavButton.dart';
 import 'package:hire_pro/widgets/NavTop.dart';
@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
         child: Scaffold(
       resizeToAvoidBottomInset: false,
-      bottomNavigationBar: BottomNavBar(),
+      // bottomNavigationBar: BottomNavBar(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

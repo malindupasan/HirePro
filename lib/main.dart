@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/screens/categoryScreen.dart';
+import 'package:hire_pro/screens/createJobRequestScreen.dart';
+import 'package:hire_pro/screens/editProfileScreen.dart';
 import 'package:hire_pro/screens/homeScreen.dart';
+import 'package:hire_pro/screens/jobCompletedScreen.dart';
+import 'package:hire_pro/screens/jobRequestScreen.dart';
 import 'package:hire_pro/screens/ongoingScreen.dart';
 import 'package:hire_pro/screens/otpEnterScreen.dart';
 import 'package:hire_pro/screens/registerSuccess.dart';
+import 'package:hire_pro/screens/userProfile.dart';
+import 'package:hire_pro/widgets/MyNavigationWidget.dart';
 
 void main() {
   runApp(const HirePro());
@@ -30,10 +36,13 @@ class HirePro extends StatelessWidget {
               ColorScheme.fromSwatch().copyWith(secondary: Color(0xFFD4842B))),
       initialRoute: '/',
       routes: {
-        '/': (context) => RegisterSuccess(),
+        '/': (context) => MyNavigationWidget(),
         '/home': (context) => HomeScreen(),
         '/category': (context) => CategoryScreen(),
-        '/ongoing': (context) => OngoingScreen(),
+        '/ongoing': (context) => JobCompletedScreen(),
+        '/profile': (context) => UserProfile(),
+        '/edit_profile': (context) => EditProfile(),
+        '/job_request': (context) => JobRequestScreen(),
       },
     );
   }
