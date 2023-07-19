@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/widgets/SmallArrowButton.dart';
 import 'package:hire_pro/widgets/TermsAndPolicy.dart';
+import 'package:hire_pro/widgets/CheckIconLarge.dart';
 
 class RegisterSuccess extends StatefulWidget {
   const RegisterSuccess({super.key});
@@ -25,18 +26,7 @@ class _RegisterSuccessState extends State<RegisterSuccess> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Image.asset('images/hireProWithoutBG.png'),
-                    Container(
-                      child: Icon(
-                        Icons.check_circle,
-                        size: 72,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        color: Colors.grey[200],
-                      ),
-                      height: 72,
-                      width: 72,
-                    ),
+                    CheckIconLarge(),
                     Column(
                       children: [
                         Container(
@@ -69,3 +59,4 @@ class _RegisterSuccessState extends State<RegisterSuccess> {
     ));
   }
 }
+
