@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:hire_pro/services/timePicker.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/smallButton.dart';
 import 'package:slider_button/slider_button.dart';
@@ -29,16 +30,6 @@ class _JobRequestScreenState extends State<JobRequestScreen> {
   }
 
   void openFiles() async {
-    // FilePickerResult? resultFile = await FilePicker.platform.pickFiles();
-    // if (resultFile != null) {
-    //   PlatformFile file = resultFile.files.first;
-    //   print(file.name);
-    //   print(file.bytes);
-    //   print(file.extension);
-    //   print(file.path);
-    // } else {
-    //   //
-    // }
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(allowMultiple: true);
     List<PlatformFile> files =
@@ -67,7 +58,7 @@ class _JobRequestScreenState extends State<JobRequestScreen> {
     ];
     return SafeArea(
         child: Scaffold(
-      resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child:
             Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
@@ -183,6 +174,7 @@ class _JobRequestScreenState extends State<JobRequestScreen> {
             ),
           ),
           if (isSchedule()) Calander(),
+          if (isSchedule()) TimePicker(),
           Container(
               alignment: Alignment.bottomRight,
               margin: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
