@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/screens/job_request/TaskAddScreen.dart';
 import 'package:hire_pro/screens/job_request/confirmationScreen.dart';
+import 'package:hire_pro/screens/job_request/searchingPros.dart';
 
 class JobRequestScreen extends StatefulWidget {
   const JobRequestScreen({super.key});
@@ -47,6 +48,6 @@ class _JobRequestScreenState extends State<JobRequestScreen> {
         Step(
             isActive: currentStep >= 2,
             title: Text('Bidding'),
-            content: Container())
+            content: SearchingPros())
       ];
 }

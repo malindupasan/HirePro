@@ -29,8 +29,8 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ContentSection('Task', 'Plumbing'),
-                    ContentSection('Where',
-                        'Galle road,Katukurunda,Kalutara south,ejghbrejabgjb'),
+                    ContentSection(
+                        'Where', 'Galle road,Katukurunda,Kalutara south'),
                     ContentSection('Schedule Time', '14:00'),
                     Column(
                       children: [
