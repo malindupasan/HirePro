@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/screens/categoryScreen.dart';
+import 'package:hire_pro/screens/confirmationScreen.dart';
 import 'package:hire_pro/screens/createJobRequestScreen.dart';
 import 'package:hire_pro/screens/editProfileScreen.dart';
 import 'package:hire_pro/screens/homeScreen.dart';
 import 'package:hire_pro/screens/jobCompletedScreen.dart';
-import 'package:hire_pro/screens/jobRequestScreen.dart';
+import 'package:hire_pro/screens/job_request/jobRequestScreen.dart';
 import 'package:hire_pro/screens/ongoingScreen.dart';
 import 'package:hire_pro/screens/otpEnterScreen.dart';
 import 'package:hire_pro/screens/registerSuccess.dart';
@@ -25,7 +26,6 @@ class HirePro extends StatelessWidget {
       theme: ThemeData(
           brightness: Brightness.light,
           primarySwatch: Colors.amber,
-          
           primaryColorDark: Color.fromARGB(1, 245, 245, 245),
           fontFamily: 'Roboto',
           textTheme: const TextTheme(
@@ -44,6 +44,7 @@ class HirePro extends StatelessWidget {
         '/profile': (context) => UserProfile(),
         '/edit_profile': (context) => EditProfile(),
         '/job_request': (context) => JobRequestScreen(),
+        '/confirm_job_request': (context) => ConfirmationScreen()
       },
     );
   }
