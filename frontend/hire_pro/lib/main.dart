@@ -24,7 +24,8 @@ class HirePro extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
           brightness: Brightness.light,
-          primaryColor: Colors.white,
+          primarySwatch: Colors.amber,
+          
           primaryColorDark: Color.fromARGB(1, 245, 245, 245),
           fontFamily: 'Roboto',
           textTheme: const TextTheme(

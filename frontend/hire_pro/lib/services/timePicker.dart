@@ -22,24 +22,6 @@ class _TimePickerState extends State<TimePicker> {
                 context: context,
                 initialTime: selectedTime ?? TimeOfDay.now(),
                 initialEntryMode: TimePickerEntryMode.input,
-                builder: (BuildContext context, Widget? child) {
-                  return Theme(
-                    data: ThemeData.light().copyWith(
-                      primaryColor: Colors
-                          .grey, // Change the color of the header and selected time
-                      highlightColor: kMainYellow,
-                      secondaryHeaderColor: kMainYellow,
-                      indicatorColor: kMainYellow,
-                      hoverColor: kSecondaryYellow,
-                      primaryColorDark: Colors.grey[600],
-                      focusColor:
-                          kMainYellow, // Change the color of the dial and hand
-                      buttonTheme:
-                          ButtonThemeData(textTheme: ButtonTextTheme.primary),
-                    ),
-                    child: child!,
-                  );
-                },
               );
               if (time != null) {
                 setState(() {
@@ -50,7 +32,7 @@ class _TimePickerState extends State<TimePicker> {
             child: Text('Set the time'),
           ),
           if (selectedTime != null)
-            Text('Selected time: ${selectedTime!.format(context)}'),
+            Text('Scheduled time: ${selectedTime!.format(context)}'),
         ],
       ),
     );
