@@ -10,6 +10,7 @@ import 'package:hire_pro/screens/jobCompletedScreen.dart';
 import 'package:hire_pro/screens/job_request/stepper.dart';
 import 'package:hire_pro/screens/ongoingScreen.dart';
 import 'package:hire_pro/screens/otpEnterScreen.dart';
+import 'package:hire_pro/screens/proProfileScreen.dart';
 import 'package:hire_pro/screens/registerSuccess.dart';
 import 'package:hire_pro/screens/userProfile.dart';
 import 'package:hire_pro/widgets/MyNavigationWidget.dart';
@@ -48,7 +49,8 @@ class HirePro extends StatelessWidget {
         '/edit_profile': (context) => EditProfile(),
         '/job_request': (context) => JobRequestScreen(),
         '/confirm_job_request': (context) => ConfirmationScreen(),
-        '/biddings': (context) => BiddingPage()
+        '/biddings': (context) => BiddingPage(),
+        '/pro_profile': (context) => proProfileScreen(),
       },
     );
   }
