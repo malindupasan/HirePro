@@ -25,9 +25,13 @@ class _SearchingProsState extends State<SearchingPros> {
             color: kMainYellow,
             size: 100,
           ),
-          Image.asset(
-            'images/handyman.jpg',
-            height: 450,
+          Container(
+            width: double.infinity,
+            color: Colors.white,
+            child: Image.asset(
+              'images/handyman.jpg',
+              height: 450,
+            ),
           )
         ],
       ),

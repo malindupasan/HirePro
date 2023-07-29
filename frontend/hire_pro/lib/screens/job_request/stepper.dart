@@ -24,12 +24,20 @@ class _JobRequestScreenState extends State<JobRequestScreen> {
                 currentStep: currentStep,
                 onStepContinue: () {
                   setState(() {
-                    currentStep += 1;
+                    if (currentStep == 2) {
+                      Navigator.pushNamed(context, '/biddings');
+                    } else {
+                      currentStep += 1;
+                    }
                   });
                 },
                 onStepCancel: () {
                   setState(() {
-                    currentStep -= 1;
+                    if (currentStep == 0) {
+                      Navigator.pop(context);
+                    } else {
+                      currentStep -= 1;
+                    }
                   });
                 },
                 steps: getSteps())));
