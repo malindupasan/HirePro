@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:hire_pro/widgets/MainButton.dart';
+import 'package:hire_pro/widgets/smallButton.dart';
 
 class BiddingPage extends StatefulWidget {
   const BiddingPage({super.key});
@@ -56,7 +58,7 @@ class _BiddingPageState extends State<BiddingPage> {
               Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Text(
-                  'Find the Perfect Pro for Your Task',
+                  'Find the Perfect Pro for Your Task!',
                   style: kHeading1,
                 ),
               ),
@@ -68,6 +70,10 @@ class _BiddingPageState extends State<BiddingPage> {
                     return Card(
                       margin: EdgeInsets.symmetric(horizontal: 6, vertical: 5),
                       shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: kMainYellow,
+                            width: 2.0,
+                          ),
                           borderRadius: BorderRadius.circular(10)),
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 2),
@@ -135,6 +141,43 @@ class _BiddingPageState extends State<BiddingPage> {
                   }).toList(),
                 ),
               ),
+              Container(
+                  alignment: Alignment.bottomRight,
+                  child: SmallButton('Cancel', () {
+                    showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                                title: const Text(
+                                  'Cancel Task',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color.fromARGB(255, 245, 110, 69)),
+                                ),
+                                content: const Text(
+                                  'You\'ll loose all your bidding requests.\nAre you sure you want to cancel the task?',
+                                  textAlign: TextAlign.justify,
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () => Navigator.popUntil(context,
+                                        ModalRoute.withName('/category')),
+                                    child: const Text(
+                                      'Yes',
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 16),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'OK'),
+                                    child: const Text(
+                                      'No',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  )
+                                ]));
+                  }, Colors.grey, Colors.white))
             ],
           ),
         ),
