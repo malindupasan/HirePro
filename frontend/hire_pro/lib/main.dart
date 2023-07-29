@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/screens/categoryScreen.dart';
+import 'package:hire_pro/screens/job_request/confirmationScreen.dart';
 import 'package:hire_pro/screens/createJobRequestScreen.dart';
 import 'package:hire_pro/screens/editProfileScreen.dart';
 import 'package:hire_pro/screens/homeScreen.dart';
 import 'package:hire_pro/screens/jobCompletedScreen.dart';
-import 'package:hire_pro/screens/jobRequestScreen.dart';
+import 'package:hire_pro/screens/job_request/stepper.dart';
 import 'package:hire_pro/screens/ongoingScreen.dart';
 import 'package:hire_pro/screens/otpEnterScreen.dart';
 import 'package:hire_pro/screens/registerSuccess.dart';
@@ -23,17 +25,18 @@ class HirePro extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-          brightness: Brightness.light,
-          primaryColor: Colors.white,
-          primaryColorDark: Color.fromARGB(1, 245, 245, 245),
-          fontFamily: 'Roboto',
-          textTheme: const TextTheme(
-            displayLarge: TextStyle(fontSize: 72),
-            titleLarge: TextStyle(fontSize: 36),
-            bodyMedium: TextStyle(fontSize: 14),
-          ),
-          colorScheme:
-              ColorScheme.fromSwatch().copyWith(secondary: Color(0xFFD4842B))),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: kSecondaryYellow, primary: kMainYellow),
+        // primaryColorDark: Colors.black, // Update this line
+        fontFamily: 'Roboto',
+        textTheme: const TextTheme(
+          displayLarge: TextStyle(fontSize: 72),
+          titleLarge: TextStyle(fontSize: 36),
+          bodyMedium: TextStyle(fontSize: 14),
+        ),
+        // colorScheme:
+        //     ColorScheme.fromSwatch().copyWith(secondary: Color(0xFFD4842B)),
+      ),
       initialRoute: '/',
       routes: {
         '/': (context) => MyNavigationWidget(),
@@ -43,6 +46,7 @@ class HirePro extends StatelessWidget {
         '/profile': (context) => UserProfile(),
         '/edit_profile': (context) => EditProfile(),
         '/job_request': (context) => JobRequestScreen(),
+        '/confirm_job_request': (context) => ConfirmationScreen()
       },
     );
   }
