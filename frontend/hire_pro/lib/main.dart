@@ -3,15 +3,11 @@ import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/screens/biddingScreen.dart';
 import 'package:hire_pro/screens/categoryScreen.dart';
 import 'package:hire_pro/screens/job_request/confirmationScreen.dart';
-import 'package:hire_pro/screens/createJobRequestScreen.dart';
 import 'package:hire_pro/screens/editProfileScreen.dart';
 import 'package:hire_pro/screens/homeScreen.dart';
 import 'package:hire_pro/screens/jobCompletedScreen.dart';
 import 'package:hire_pro/screens/job_request/stepper.dart';
-import 'package:hire_pro/screens/ongoingScreen.dart';
-import 'package:hire_pro/screens/otpEnterScreen.dart';
 import 'package:hire_pro/screens/proProfileScreen.dart';
-import 'package:hire_pro/screens/registerSuccess.dart';
 import 'package:hire_pro/screens/userProfile.dart';
 import 'package:hire_pro/widgets/MyNavigationWidget.dart';
 
