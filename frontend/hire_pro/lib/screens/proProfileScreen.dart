@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:hire_pro/widgets/PercentageBar.dart';
+import 'package:hire_pro/widgets/StarRating.dart';
 
 class proProfileScreen extends StatefulWidget {
   const proProfileScreen({super.key});
@@ -17,7 +18,46 @@ List<String> images = [
   'images/male3.jpg'
 ];
 
+class Review {
+  final String profilePicUrl;
+  final String name;
+  final DateTime date;
+  final double rating;
+  final String content;
+
+  Review({
+    required this.profilePicUrl,
+    required this.name,
+    required this.date,
+    required this.rating,
+    required this.content,
+  });
+}
+
 class _proProfileScreenState extends State<proProfileScreen> {
+  final List<Review> reviews = [
+    Review(
+      profilePicUrl: 'images/male1.jpg',
+      name: 'John Doe',
+      date: DateTime(2023, 7, 15),
+      rating: 4.5,
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    ),
+    Review(
+      profilePicUrl: 'images/male2.jpg',
+      name: 'Jane Smith',
+      date: DateTime(2023, 7, 20),
+      rating: 5.0,
+      content: 'Nulla vel magna et nisi euismod fermentum vel at leo.',
+    ),
+    Review(
+      profilePicUrl: 'images/male3.jpg',
+      name: 'Bob Johnson',
+      date: DateTime(2023, 7, 25),
+      rating: 3.0,
+      content: 'Vivamus et dolor nec felis malesuada varius.',
+    )
+  ];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -97,20 +137,93 @@ class _proProfileScreenState extends State<proProfileScreen> {
               style: kHeading1,
             ),
             Gallery(),
-            Text(
-              'Reviews',
-              style: kHeading1,
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              child: Text(
+                'Reviews',
+                style: kHeading1,
+              ),
             ),
-            Row(
-          children: [
-            Column(children: [],),
-            Column(children: [])
-          ],
-            )
+            Container(
+              height: 100,
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Excellent 4.5',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: kMainYellow),
+                      ),
+                      StarRating(4.5, 30),
+                      Text('28 reviews')
+                    ],
+                  ),
+                  Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        StarRatingSingle('5', 0.7),
+                        StarRatingSingle('4', 0.3),
+                        StarRatingSingle('3', 0.0),
+                        StarRatingSingle('2', 0.0),
+                        StarRatingSingle('1', 0.0),
+                      ])
+                ],
+              ),
+            ),
+            Container(
+              height: 200,
+              child: ListView.separated(
+                padding: const EdgeInsets.all(8),
+                itemCount: reviews.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: kMainGrey,
+                    ),
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    height: 100,
+                    child: Column(
+                      children: [],
+                    ),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) =>
+                    const Divider(),
+              ),
+            ),
           ],
         ),
       ),
     ));
+  }
+}
+
+class StarRatingSingle extends StatelessWidget {
+  String starno;
+  double percentage;
+  StarRatingSingle(this.starno, this.percentage);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(starno),
+        Icon(
+          FontAwesomeIcons.star,
+          size: 13,
+        ),
+        PercentageBar(percentage, 150, 10),
+        Text((percentage * 100).toString() + '%'),
+      ],
+    );
   }
 }
 
@@ -185,17 +298,7 @@ class ProfileMain extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                     color: Colors.grey[800]),
               ),
-              RatingBarIndicator(
-                rating: 4.5,
-                itemBuilder: (context, index) => Icon(
-                  Icons.star,
-                  color: Colors.amber,
-                ),
-                unratedColor: Colors.grey,
-                itemCount: 5,
-                itemSize: 25.0,
-                direction: Axis.horizontal,
-              ),
+              StarRating(4.5, 25)
             ],
           ),
         )

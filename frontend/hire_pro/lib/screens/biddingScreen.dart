@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:hire_pro/widgets/StarRating.dart';
 import 'package:hire_pro/widgets/smallButton.dart';
 
 class BiddingPage extends StatefulWidget {
@@ -112,17 +113,7 @@ class _BiddingPageState extends State<BiddingPage> {
                                     ),
                                   ),
                                 ),
-                                RatingBarIndicator(
-                                  rating: bid.rating,
-                                  itemBuilder: (context, index) => Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                  ),
-                                  unratedColor: Colors.white,
-                                  itemCount: 5,
-                                  itemSize: 20.0,
-                                  direction: Axis.horizontal,
-                                ),
+                                StarRating(bid.rating, 20),
                                 Container(
                                   margin: EdgeInsets.only(bottom: 10),
                                   width: double.infinity,
