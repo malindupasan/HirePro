@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:hire_pro/services/dateTimeFormatted.dart';
 import 'package:hire_pro/widgets/PercentageBar.dart';
 import 'package:hire_pro/widgets/StarRating.dart';
 
@@ -41,7 +42,8 @@ class _proProfileScreenState extends State<proProfileScreen> {
       name: 'John Doe',
       date: DateTime(2023, 7, 15),
       rating: 4.5,
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      content:
+          "Wow! I just had the most amazing experience with my hairstylist from the handyman app! They have truly worked magic with my hair. I couldn't be happier with the result!🌟🌟🌟🌟🌟",
     ),
     Review(
       profilePicUrl: 'images/male2.jpg',
@@ -58,6 +60,7 @@ class _proProfileScreenState extends State<proProfileScreen> {
       content: 'Vivamus et dolor nec felis malesuada varius.',
     )
   ];
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -189,9 +192,71 @@ class _proProfileScreenState extends State<proProfileScreen> {
                       color: kMainGrey,
                     ),
                     margin: EdgeInsets.symmetric(horizontal: 10),
-                    height: 100,
-                    child: Column(
-                      children: [],
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        flex: 3,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            CircleAvatar(
+                                              radius: 30,
+                                              backgroundImage: AssetImage(
+                                                  reviews[index].profilePicUrl),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 10),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    reviews[index].name,
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                  DateTimeFormatted(
+                                                      reviews[index].date),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            StarRating(
+                                                reviews[index].rating, 20),
+                                            Text(reviews[index]
+                                                .rating
+                                                .toString())
+                                          ],
+                                        ),
+                                      ),
+                                    ]),
+                                Text(reviews[index].content)
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },
