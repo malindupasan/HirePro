@@ -4,6 +4,7 @@ import 'package:hire_pro/constants.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:hire_pro/screens/pro_profile_screen/reviews.dart';
 import 'package:hire_pro/services/dateTimeFormatted.dart';
+import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/PercentageBar.dart';
 import 'package:hire_pro/widgets/ReviewCard.dart';
 import 'package:hire_pro/widgets/StarRating.dart';
@@ -85,7 +86,7 @@ class _proProfileScreenState extends State<proProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
-                          alignment: Alignment.topCenter,
+                          alignment: Alignment.topLeft,
                           child: Text(
                             'Overview',
                             style: kHeading1,
@@ -98,27 +99,27 @@ class _proProfileScreenState extends State<proProfileScreen> {
                       ],
                     ),
                   ),
-                  Container(
-                    width: 1,
-                    height: 120,
-                    color: Colors.grey[600],
-                  ),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          alignment: Alignment.topCenter,
-                          child: Text(
-                            'Social Media',
-                            style: kHeading1,
-                          ),
-                        ),
-                        overviewRow(FontAwesomeIcons.instagram, 'Emilyy_2000'),
-                        overviewRow(FontAwesomeIcons.facebook, 'Emily William'),
-                      ],
-                    ),
-                  ),
+                  // Container(
+                  //   width: 1,
+                  //   height: 120,
+                  //   color: Colors.grey[600],
+                  // ),
+                  // Expanded(
+                  //   child: Column(
+                  //     mainAxisAlignment: MainAxisAlignment.start,
+                  //     children: [
+                  //       Container(
+                  //         alignment: Alignment.topCenter,
+                  //         child: Text(
+                  //           'Social Media',
+                  //           style: kHeading1,
+                  //         ),
+                  //       ),
+                  //       overviewRow(FontAwesomeIcons.instagram, 'Emilyy_2000'),
+                  //       overviewRow(FontAwesomeIcons.facebook, 'Emily William'),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -297,7 +298,11 @@ class ProfileMain extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                     color: Colors.grey[800]),
               ),
-              StarRating(4.5, 25)
+              StarRating(4.5, 25),
+              SizedBox(
+                height: 10,
+              ),
+              SmallButton('Accept', () {}, kMainYellow, Colors.white)
             ],
           ),
         )
