@@ -7,7 +7,7 @@ import 'package:hire_pro/screens/editProfileScreen.dart';
 import 'package:hire_pro/screens/homeScreen.dart';
 import 'package:hire_pro/screens/jobCompletedScreen.dart';
 import 'package:hire_pro/screens/job_request/stepper.dart';
-import 'package:hire_pro/screens/proProfileScreen.dart';
+import 'package:hire_pro/screens/pro_profile_screen/proProfileScreen.dart';
 import 'package:hire_pro/screens/userProfile.dart';
 import 'package:hire_pro/widgets/MyNavigationWidget.dart';
 

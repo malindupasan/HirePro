@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:hire_pro/screens/pro_profile_screen/reviews.dart';
 import 'package:hire_pro/services/dateTimeFormatted.dart';
 import 'package:hire_pro/widgets/PercentageBar.dart';
+import 'package:hire_pro/widgets/ReviewCard.dart';
 import 'package:hire_pro/widgets/StarRating.dart';
 
 class proProfileScreen extends StatefulWidget {
@@ -18,22 +20,6 @@ List<String> images = [
   'images/male2.jpg',
   'images/male3.jpg'
 ];
-
-class Review {
-  final String profilePicUrl;
-  final String name;
-  final DateTime date;
-  final double rating;
-  final String content;
-
-  Review({
-    required this.profilePicUrl,
-    required this.name,
-    required this.date,
-    required this.rating,
-    required this.content,
-  });
-}
 
 class _proProfileScreenState extends State<proProfileScreen> {
   final List<Review> reviews = [
@@ -186,79 +172,8 @@ class _proProfileScreenState extends State<proProfileScreen> {
                 padding: const EdgeInsets.all(8),
                 itemCount: reviews.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: kMainGrey,
-                    ),
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        flex: 3,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            CircleAvatar(
-                                              radius: 30,
-                                              backgroundImage: AssetImage(
-                                                  reviews[index].profilePicUrl),
-                                            ),
-                                            Container(
-                                              margin: EdgeInsets.symmetric(
-                                                  horizontal: 10),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    reviews[index].name,
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                  DateTimeFormatted(
-                                                      reviews[index].date),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            StarRating(
-                                                reviews[index].rating, 20),
-                                            Text(reviews[index]
-                                                .rating
-                                                .toString())
-                                          ],
-                                        ),
-                                      ),
-                                    ]),
-                                Text(reviews[index].content)
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                  final review = reviews[index];
+                  return ReviewCard(review: review);
                 },
                 separatorBuilder: (BuildContext context, int index) =>
                     const Divider(),
