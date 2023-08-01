@@ -195,7 +195,9 @@ class _proProfileScreenState extends State<proProfileScreen> {
                 children: [
                   SmallButton('More Reviews', () {},
                       const Color.fromARGB(255, 43, 43, 43), Colors.white),
-                  SmallButton('Back', () {}, kMainYellow, Colors.white),
+                  SmallButton('Back', () {
+                    Navigator.pop(context);
+                  }, kMainYellow, Colors.white),
                 ],
               ),
             )
@@ -268,6 +270,14 @@ class ProfileMain extends StatelessWidget {
           width: 150,
           height: 150,
           decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: Offset(0, 3), // horizontal, vertical offset
+              )
+            ],
             shape: BoxShape.circle,
             border: Border.all(
               color: kMainYellow,
