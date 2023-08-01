@@ -7,6 +7,7 @@ import 'package:hire_pro/services/dateTimeFormatted.dart';
 import 'package:hire_pro/widgets/PercentageBar.dart';
 import 'package:hire_pro/widgets/ReviewCard.dart';
 import 'package:hire_pro/widgets/StarRating.dart';
+import 'package:hire_pro/widgets/smallButton.dart';
 
 class proProfileScreen extends StatefulWidget {
   const proProfileScreen({super.key});
@@ -168,17 +169,35 @@ class _proProfileScreenState extends State<proProfileScreen> {
             ),
             Container(
               height: 200,
-              child: ListView.separated(
-                padding: const EdgeInsets.all(8),
-                itemCount: reviews.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final review = reviews[index];
-                  return ReviewCard(review: review);
-                },
-                separatorBuilder: (BuildContext context, int index) =>
-                    const Divider(),
+              margin: EdgeInsets.symmetric(horizontal: 5),
+              child: RawScrollbar(
+                thumbColor: Color.fromARGB(255, 122, 122, 122),
+                radius: Radius.circular(5),
+                thickness: 10,
+                thumbVisibility: true,
+                child: ListView.separated(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: reviews.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final review = reviews[index];
+                    return ReviewCard(review: review);
+                  },
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const Divider(),
+                ),
               ),
             ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SmallButton('More Reviews', () {},
+                      const Color.fromARGB(255, 43, 43, 43), Colors.white),
+                  SmallButton('Back', () {}, kMainYellow, Colors.white),
+                ],
+              ),
+            )
           ],
         ),
       ),
