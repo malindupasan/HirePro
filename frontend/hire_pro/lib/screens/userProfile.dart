@@ -3,6 +3,7 @@ import 'package:hire_pro/constants.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hire_pro/widgets/LineDivider.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
+import 'package:hire_pro/widgets/smallButton.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -71,7 +72,6 @@ class _UserProfileState extends State<UserProfile> {
                                     "EDIT PROFILE",
                                     style: TextStyle(
                                       fontSize: 16,
-                                      
                                       color: kMainYellow,
                                     ),
                                   ),
@@ -80,10 +80,10 @@ class _UserProfileState extends State<UserProfile> {
                                   Navigator.pushNamed(context, '/edit_profile');
                                 }),
                           ),
-                          Text(
-                            "Stars you've earned",
-                            style: TextStyle(fontSize: 13),
-                          ),
+                          // Text(
+                          //   "Stars you've earned",
+                          //   style: TextStyle(fontSize: 13),
+                          // ),
                           RatingBarIndicator(
                             rating: 3.35,
                             itemBuilder: (context, index) => Icon(
@@ -114,25 +114,56 @@ class _UserProfileState extends State<UserProfile> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text(
-                              'Saved Places',
-                              style: TextStyle(
-                                  fontSize: 17, fontWeight: FontWeight.w500),
-                            ),
                             Container(
-                              height: 130,
-                              child: ListView(
-                                padding: EdgeInsets.all(10),
-                                children: [
-                                  AddAddress('Home', 'Add Address',
-                                      Icons.home_outlined),
-                                  AddAddress('Work', 'Add Address',
-                                      Icons.work_outlined),
-                                  AddAddress('School', 'Add Address',
-                                      Icons.school_outlined),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: Offset(
+                                        0, 3), // horizontal, vertical offset
+                                  ),
                                 ],
                               ),
-                            )
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: 40,
+                                    child: Center(
+                                      child: Text(
+                                        'Saved Places',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  ),
+                                  RawScrollbar(
+                                    thumbColor: Colors.grey,
+                                    radius: Radius.circular(5),
+                                    thumbVisibility: true,
+                                    child: Container(
+                                      height: 130,
+                                      child: ListView(
+                                        padding: EdgeInsets.all(10),
+                                        children: [
+                                          AddAddress('Home', 'Add Address',
+                                              Icons.home_outlined),
+                                          AddAddress('Work', 'Add Address',
+                                              Icons.work_outlined),
+                                          AddAddress('School', 'Add Address',
+                                              Icons.school_outlined),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -158,7 +189,7 @@ class AddAddress extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: kMainGrey,
+          color: Colors.white,
           border: Border.symmetric(
               horizontal: BorderSide(color: Colors.grey, width: 0.5))),
       height: 60,

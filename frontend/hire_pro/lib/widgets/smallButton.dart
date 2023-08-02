@@ -11,7 +11,6 @@ class SmallButton extends StatelessWidget {
     return SizedBox(
       height: 35,
       width: 80,
-      
       child: RawMaterialButton(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(22.5)),
@@ -20,9 +19,18 @@ class SmallButton extends StatelessWidget {
         highlightColor: Color.fromARGB(255, 253, 171, 77),
         onPressed: navigation,
         fillColor: color,
-        child: Text(buttonText,
-            style: TextStyle(
-                color: textColor, fontSize: 14, fontWeight: FontWeight.w500)),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(buttonText,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: textColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500)),
+            ),
+          ],
+        ),
       ),
     );
   }
