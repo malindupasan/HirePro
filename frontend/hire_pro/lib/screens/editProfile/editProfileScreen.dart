@@ -152,8 +152,8 @@ class _EditProfileState extends State<EditProfile> {
                               label: 'Email',
                               value: 'samaliarachchih@gmail.com',
                               edit: () {
-                                
-                                Navigator.pushNamed(context, '/emailcodeverify',
+                                Navigator.pushNamed(
+                                    context, '/emailcoderequest',
                                     arguments: userData['email']);
                               }),
                           EditField(
