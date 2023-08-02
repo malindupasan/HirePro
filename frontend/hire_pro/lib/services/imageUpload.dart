@@ -1,6 +1,6 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:flutter/material.dart';
+
 
 class ImageUpload {
   ImageUpload({
