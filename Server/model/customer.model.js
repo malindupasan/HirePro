@@ -1,5 +1,5 @@
 const db = require('../config/db');
-const bcrypt=require('bcrypt')
+const bcrypt = require('bcrypt')
 
 class Customer {
   constructor({ id, contact, name, email, loyalty_points, password_hash }) {
@@ -13,9 +13,9 @@ class Customer {
 
   static async create(customerData) {
     const { contact, name, email, password_hash } = customerData;
-
-    const salt= await bcrypt.genSalt(10);
-    const  hased_pw=await bcrypt.hash(password_hash,salt);
+    console.log(password_hash);
+    const salt = await bcrypt.genSalt(10);
+    const hased_pw = await bcrypt.hash(password_hash, salt);
 
     const query = 'INSERT INTO customer (contact, name, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING *';
     const values = [contact, name, email, hased_pw];
@@ -34,20 +34,20 @@ class Customer {
 
     try {
       const result = await db.query(query, values);
-    //   console.log(result.rows[0]);
+      //   console.log(result.rows[0]);
       return result.rows[0];
-      
+
     } catch (error) {
       throw error;
     }
   }
 
-  static async checkPassword(hased_password,password) {
+  static async checkPassword(hased_password, password) {
     try {
-        const isMatch=await bcrypt.compare(hased_password,password);
-        return isMatch;
+      const isMatch = await bcrypt.compare(hased_password, password);
+      return isMatch;
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
   }
 
