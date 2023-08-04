@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class FormFieldRegular extends StatelessWidget {
-  FormFieldRegular(this.placeholder);
+  FormFieldRegular(this.placeholder,this.controller);
   final String placeholder;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: TextFormField(
+        controller: controller,
         cursorColor: Colors.grey[400],
         decoration: InputDecoration(
           fillColor: Colors.white,

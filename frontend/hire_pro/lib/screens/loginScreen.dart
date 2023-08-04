@@ -1,3 +1,8 @@
+import 'dart:convert';
+import 'package:hire_pro/routes.dart';
+import 'package:hire_pro/screens/homeScreen.dart';
+import 'package:hire_pro/widgets/MyNavigationWidget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/widgets/FormFieldRegular.dart';
@@ -5,6 +10,7 @@ import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/GoogleLogin.dart';
 import 'package:hire_pro/widgets/LineDivider.dart';
 import 'package:hire_pro/widgets/TermsAndPolicy.dart';
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,6 +20,43 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  late SharedPreferences preferences;
+  @override
+  void initState() {
+    super.initState();
+    initSharedPref();
+  }
+
+  void initSharedPref() async {
+    preferences = await SharedPreferences.getInstance();
+  }
+
+  void loginUser() async {
+    if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+      var reqBody = {
+        'email': emailController.text,
+        'password': passwordController.text,
+      };
+      var response = await http.post(Uri.parse(login),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(reqBody));
+      var jsonResponse = jsonDecode(response.body);
+      if (jsonResponse['status']) {
+        var myToken = jsonResponse['token'];
+        preferences.setString('token', myToken);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MyNavigationWidget(token: myToken)));
+      } else {
+        print('Error!');
+      }
+    }
+  
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -42,8 +85,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      FormFieldRegular('Your Email'),
-                      FormFieldRegular('Password'),
+                      FormFieldRegular('Your Email', emailController),
+                      FormFieldRegular('Password', passwordController),
                     ],
                   ),
                 ),
@@ -60,7 +103,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           textAlign: TextAlign.right,
                         ),
                       ),
-                      MainButton('Login', () {}),
+                      MainButton('Login', () {
+                        loginUser();
+                        // Navigator.pushNamed(context, '/home');
+                      }),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
