@@ -21,14 +21,14 @@ void main() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
 
   runApp(HirePro(
-      // token: preferences.getString('token'),
-      ));
+    token: preferences.getString('token'),
+  ));
 }
 
 class HirePro extends StatelessWidget {
-  // final token;
+  final token;
   // const HirePro({super.key, required this.token});
-  const HirePro({super.key});
+  const HirePro({@required this.token, Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -48,11 +48,12 @@ class HirePro extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        // '/': (context) => (JwtDecoder.isExpired(token) == false)
-        //     ? MyNavigationWidget(
-        //         token: token,
-        //       )
-        //     : LoginScreen(),
+        // '/': (context) =>
+        //     (token == null || JwtDecoder.isExpired(token) == false)
+        //         ? MyNavigationWidget(
+        //             token: token,
+        //           )
+        //         : LoginScreen(),
         '/': (context) => LoginScreen(),
         // '/home': (context) => MyNavigationWidget(
         //       token: token,

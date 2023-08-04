@@ -44,17 +44,18 @@ class _LoginScreenState extends State<LoginScreen> {
           body: jsonEncode(reqBody));
       var jsonResponse = jsonDecode(response.body);
       if (jsonResponse['status']) {
+        print(jsonResponse['status']);
         var myToken = jsonResponse['token'];
         preferences.setString('token', myToken);
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => MyNavigationWidget(token: myToken)));
+        // Navigator.pushNamed(context, '/category');
       } else {
         print('Error!');
       }
     }
-  
   }
 
   @override
