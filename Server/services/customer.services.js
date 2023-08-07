@@ -23,6 +23,13 @@ class CustomerServices{
             throw error;
         }
     }
+    static async updateName(id,name){
+        try {
+            return await CustomerModel.updateName({id,name});
+        } catch (error) {
+            throw error;
+        }
+    }
 
     static async genarateToken(tokenData,secretKey,jwt_expire){
         return jwt.sign(tokenData,secretKey,{expiresIn:jwt_expire})
