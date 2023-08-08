@@ -5,7 +5,7 @@ import 'package:hire_pro/screens/editProfile/editProfileScreen.dart';
 import 'package:hire_pro/widgets/HireProAppBar.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/ToggleEyeField.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:motion_toast/motion_toast.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -59,7 +59,10 @@ class _ChangePasswordState extends State<ChangePassword> {
                   child: Column(
                     children: [
                       MainButton('Change Password', () {
-                       
+                        MotionToast.success(
+                          title: Text("Password changed"),
+                          description: Text("successfully"),
+                        ).show(context);
                       }),
                     ],
                   ),
