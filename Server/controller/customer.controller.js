@@ -39,3 +39,15 @@ exports.login = async (req, res, next) => {
         console.log(error);
     }
 }
+
+exports.changeName=async(req,res,next)=>{
+    try {
+        const {id,name}=req.body;
+        
+        const successRes=await CustomerServices.updateName(id,name);
+        res.json({status:true,success:"Name updated successfully"})
+
+    } catch (error) {
+        console.log(error);
+    }
+}

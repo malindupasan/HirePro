@@ -5,6 +5,7 @@ router.post('/registration',CustomerController.register)
 
 router.post('/login',CustomerController.login)
 
+router.patch('/changename',CustomerController.changeName)
 
 
 module.exports=router;
