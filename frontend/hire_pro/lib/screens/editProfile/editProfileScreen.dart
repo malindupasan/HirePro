@@ -135,7 +135,12 @@ class _EditProfileState extends State<EditProfile> {
                                 print('pressed');
                               }),
                           EditField(
-                              label: 'Password', value: 'hariniU', edit: () {}),
+                              label: 'Password',
+                              value: 'hariniU',
+                              edit: () {
+                                Navigator.pushNamed(
+                                    context, '/change_password');
+                              }),
                         ],
                       ),
                       MainButton("Save", () {}),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/screens/biddingScreen.dart';
 import 'package:hire_pro/screens/categoryScreen.dart';
+import 'package:hire_pro/screens/editProfile/changePassword.dart';
 import 'package:hire_pro/screens/editProfile/emailcodereqScreen.dart';
 import 'package:hire_pro/screens/emailCodeVerifyScreen.dart';
 import 'package:hire_pro/screens/job_request/confirmationScreen.dart';
@@ -12,6 +13,7 @@ import 'package:hire_pro/screens/job_request/stepper.dart';
 import 'package:hire_pro/screens/loginScreen.dart';
 import 'package:hire_pro/screens/pro_profile_screen/proProfileScreen.dart';
 import 'package:hire_pro/screens/userProfile.dart';
+import 'package:hire_pro/screens/userProfilesp.dart';
 import 'package:hire_pro/widgets/MyNavigationWidget.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -68,6 +70,7 @@ class HirePro extends StatelessWidget {
         '/pro_profile': (context) => proProfileScreen(),
         '/emailcoderequest': (context) => EmailcodereqScreen(),
         '/emailcodeverify': (context) => EmailCodeVerifyScreen(),
+        '/change_password': (context) => ChangePassword(),
       },
     );
   }

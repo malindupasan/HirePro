@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:hire_pro/routes.dart';
-import 'package:hire_pro/screens/homeScreen.dart';
 import 'package:hire_pro/widgets/MyNavigationWidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
     initSharedPref();
   }
 
+  String errorMessage = '';
   void initSharedPref() async {
     preferences = await SharedPreferences.getInstance();
   }
@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 builder: (context) => MyNavigationWidget(token: myToken)));
         // Navigator.pushNamed(context, '/category');
       } else {
-        print('Error!');
+        print('ggggg');
       }
     }
   }
@@ -86,8 +86,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      FormFieldRegular('Your Email', emailController),
-                      FormFieldRegular('Password', passwordController),
+                      FormFieldRegular('Your Email', emailController, false),
+                      FormFieldRegular('Password', passwordController, true),
                     ],
                   ),
                 ),
@@ -96,6 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Text(errorMessage),
                       Container(
                         width: 350,
                         child: Text(
@@ -115,9 +116,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             "Don't have an account? ",
                             style: TextStyle(color: Colors.black, fontSize: 14),
                           ),
-                          Text(
-                            'Sign up',
-                            style: TextStyle(color: kMainYellow, fontSize: 14),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '');
+                            },
+                            child: Text(
+                              'Sign up',
+                              style:
+                                  TextStyle(color: kMainYellow, fontSize: 14),
+                            ),
                           )
                         ],
                       )
