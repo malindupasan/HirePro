@@ -15,10 +15,12 @@
           size: 20,
         ),
       ),
+    
       title: Text(
         'Change Password',
         style: TextStyle(fontSize: 20, color: Colors.black),
       ),
+      
       backgroundColor: Colors.white,
     );
   }

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
-import 'package:hire_pro/screens/editProfile/editProfileScreen.dart';
 import 'package:hire_pro/widgets/HireProAppBar.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
+import 'package:hire_pro/widgets/Toast.dart';
 import 'package:hire_pro/widgets/ToggleEyeField.dart';
-import 'package:motion_toast/motion_toast.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -17,6 +16,7 @@ class ChangePassword extends StatefulWidget {
 class _ChangePasswordState extends State<ChangePassword> {
   bool _obscureText = true;
   IconData _icon = FontAwesomeIcons.eyeSlash;
+  
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -59,10 +59,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                   child: Column(
                     children: [
                       MainButton('Change Password', () {
-                        MotionToast.success(
-                          title: Text("Password changed"),
-                          description: Text("successfully"),
-                        ).show(context);
+                        Toast()
+                            .SuccessToast('Password changed', 'successfully!')
+                            .show(context);
                       }),
                     ],
                   ),
