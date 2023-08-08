@@ -1,37 +1,39 @@
-const CustomerServices=require("../services/customer.services")
+const CustomerServices = require("../services/customer.services")
 
-exports.register=async(req,res,next)=>{
+exports.register = async (req, res, next) => {
     try {
-        const {name,email,contact,password}=req.body;
-        const password_hash=password;
-        const successRes=await CustomerServices.registerCustomer(name,email,contact,password_hash);
-        res.json({status:true,success:"User registered successfully"})
+        const { name, email, contact, password } = req.body;
+        console.log(name);
 
+        const password_hash = password;
+        const successRes = await CustomerServices.registerCustomer(name, email, contact, password_hash);
+        res.json({ status: true, success: "User registered successfully" })
+ 
     } catch (error) {
-        
+
     }
 }
 
-exports.login=async(req,res,next)=>{
+exports.login = async (req, res, next) => {
     try {
-        const {email,password}=req.body;
-       
-        const customer =await CustomerServices.checkCustomer(email);
+        const { email, password } = req.body;
+
+        const customer = await CustomerServices.checkCustomer(email);
         //  console.log(customer)
 
-        if(!customer){
+        if (!customer) {
             throw new Error("User does not exist!");
         }
-        const isMatch= await CustomerServices.checkCustomer(customer.password_hash,password);
-        if (isMatch===false){
+        const isMatch = await CustomerServices.checkCustomer(customer.password_hash, password);
+        if (isMatch === false) {
             throw new Error("Wrong credentials");
 
         }
-        let tokenData={id:customer.id,email:customer.email}
+        let tokenData = { id: customer.id, email: customer.email }
 
-        const token=await CustomerServices.genarateToken(tokenData,"mal123",'1h')
-        res.status(200).json({status:true,token:token})
-       
+        const token = await CustomerServices.genarateToken(tokenData, "mal123", '1h')
+        res.status(200).json({ status: true, token: token })
+
 
     } catch (error) {
         console.log(error);

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
@@ -57,18 +56,15 @@ class _EditProfileState extends State<EditProfile> {
                       Stack(
                         children: [
                           Container(
-                            width:
-                                150, // Set the desired width of the container
-                            height:
-                                150, // Set the desired height of the container
+                            width: 150,
+                            height: 150,
                             decoration: BoxDecoration(
-                              shape: BoxShape.circle, // Create a circular shape
+                              shape: BoxShape.circle,
                               border: Border.all(
-                                color: kMainYellow, // Set the border color
-                                width: 2, // Set the border width
+                                color: kMainYellow,
+                                width: 2,
                               ),
                             ),
-
                             child: Hero(
                               tag: 'image',
                               child: Center(
@@ -102,31 +98,7 @@ class _EditProfileState extends State<EditProfile> {
                                 onPressed: () => showDialog<String>(
                                       context: context,
                                       builder: (BuildContext context) =>
-                                          AlertDialog(
-                                        title: const Text(
-                                          'Change profile picture using,',
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        content: const Text(''),
-                                        actions: <Widget>[
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              SmallButton('Camera', () async {
-                                                changeProfilePicture(
-                                                    ImageSource.camera);
-                                              }, kMainYellow, Colors.white),
-                                              SmallButton('Gallery', () async {
-                                                changeProfilePicture(
-                                                    ImageSource.gallery);
-                                              }, kMainYellow, Colors.white)
-                                            ],
-                                          )
-                                        ],
-                                      ),
+                                          Popup(),
                                     )),
                           ),
                         ],
@@ -152,8 +124,8 @@ class _EditProfileState extends State<EditProfile> {
                               label: 'Email',
                               value: 'samaliarachchih@gmail.com',
                               edit: () {
-                                
-                                Navigator.pushNamed(context, '/emailcodeverify',
+                                Navigator.pushNamed(
+                                    context, '/emailcoderequest',
                                     arguments: userData['email']);
                               }),
                           EditField(
@@ -162,7 +134,13 @@ class _EditProfileState extends State<EditProfile> {
                               edit: () {
                                 print('pressed');
                               }),
-                          EditField(label: 'Password', value: '', edit: () {}),
+                          EditField(
+                              label: 'Password',
+                              value: 'hariniU',
+                              edit: () {
+                                Navigator.pushNamed(
+                                    context, '/change_password');
+                              }),
                         ],
                       ),
                       MainButton("Save", () {}),
@@ -171,6 +149,29 @@ class _EditProfileState extends State<EditProfile> {
                 ),
               ),
             )));
+  }
+
+  AlertDialog Popup() {
+    return AlertDialog(
+      title: const Text(
+        'Change profile picture using,',
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+      ),
+      content: const Text(''),
+      actions: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            SmallButton('Camera', () async {
+              changeProfilePicture(ImageSource.camera);
+            }, kMainYellow, Colors.white),
+            SmallButton('Gallery', () async {
+              changeProfilePicture(ImageSource.gallery);
+            }, kMainYellow, Colors.white)
+          ],
+        )
+      ],
+    );
   }
 }
 
@@ -192,15 +193,18 @@ class EditField extends StatefulWidget {
 class _EditFieldState extends State<EditField> {
   bool editField = true;
   bool password = false;
+
   void isPassword() {
     if (widget.label == 'Password') {
-      password = true;
+      setState(() {
+        password = true;
+      });
     }
-    password = false;
   }
 
   @override
   Widget build(BuildContext context) {
+    isPassword();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

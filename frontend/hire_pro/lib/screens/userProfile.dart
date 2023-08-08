@@ -4,6 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hire_pro/widgets/LineDivider.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/smallButton.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -13,6 +14,11 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+//   Future<void> signout()async{
+// final prefs = await SharedPreferences.getInstance();
+//   await prefs.remove('token');
+//   Navigator.pop(context);
+//   }
   @override
   TextEditingController _emailController = TextEditingController();
   Widget build(BuildContext context) {
@@ -168,7 +174,9 @@ class _UserProfileState extends State<UserProfile> {
                         ),
                       ),
                     ),
-                    MainButton('Sign out', () {}),
+                    MainButton('Sign out', () {
+                      //  signout();
+                    }),
                     SizedBox(
                       height: 10,
                     )
