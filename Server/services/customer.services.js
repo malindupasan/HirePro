@@ -31,6 +31,11 @@ class CustomerServices{
         }
     }
 
+    static async changePassword(id,password){
+        
+    }
+
+
     static async genarateToken(tokenData,secretKey,jwt_expire){
         return jwt.sign(tokenData,secretKey,{expiresIn:jwt_expire})
     }
