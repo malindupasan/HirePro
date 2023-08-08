@@ -15,10 +15,10 @@ class Customer {
     const { contact, name, email, password_hash } = customerData;
 
     const salt = await bcrypt.genSalt(10);
-    const hased_pw = await bcrypt.hash(password_hash, salt);
+    const hashed_pw = await bcrypt.hash(password_hash, salt);
 
     const query = 'INSERT INTO customer (contact, name, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING *';
-    const values = [contact, name, email, hased_pw];
+    const values = [contact, name, email, hashed_pw];
 
     try {
       const result = await db.query(query, values);
@@ -44,6 +44,25 @@ class Customer {
     }
   }
 
+
+  static async updatePassword(customerData) {
+    const { id, password } = customerData;
+
+    const salt = await bcrypt.genSalt(10);
+    const hashed_pw = await bcrypt.hash(password, salt);
+
+    const query = 'UPDATE customer set password_hash=$1 where id=$2 RETURNING  *';
+    const values = [hashed_pw,id];
+
+    try {
+      const result = await db.query(query, values);
+      return new Customer(result.rows[0]);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
   static async findByEmail(email) {
     const query = 'SELECT * FROM customer WHERE email = $1';
     const values = [email];
@@ -57,10 +76,24 @@ class Customer {
       throw error;
     }
   }
+  static async findById(id) {
+    const query = 'SELECT * FROM customer WHERE id = $1';
+    const values = [id];
 
-  static async checkPassword(hased_password, password) {
     try {
-      const isMatch = await bcrypt.compare(hased_password, password);
+      const result = await db.query(query, values);
+      //   console.log(result.rows[0]);
+      return result.rows[0];
+
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+  static async checkPassword(hashed_password, password) {
+    try {
+      const isMatch = await bcrypt.compare(password, hashed_password);
       return isMatch;
     } catch (error) {
       console.log(error);
