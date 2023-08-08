@@ -13,12 +13,29 @@ class Customer {
 
   static async create(customerData) {
     const { contact, name, email, password_hash } = customerData;
-    console.log(password_hash);
+
+
     const salt = await bcrypt.genSalt(10);
     const hased_pw = await bcrypt.hash(password_hash, salt);
 
     const query = 'INSERT INTO customer (contact, name, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING *';
     const values = [contact, name, email, hased_pw];
+
+    try {
+      const result = await db.query(query, values);
+      return new Customer(result.rows[0]);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async updateName(customerData) {
+    const { id, name } = customerData;
+
+
+
+    const query = 'UPDATE customer set name=$1 where id=$2 RETURNING  *';
+    const values = [name, id];
 
     try {
       const result = await db.query(query, values);
