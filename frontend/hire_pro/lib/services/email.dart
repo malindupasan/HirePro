@@ -1,7 +1,6 @@
 import 'dart:async';
-
+import 'dart:math';
 import 'package:http/http.dart' as http;
-
 import 'dart:convert';
 
 class Email {
@@ -34,5 +33,10 @@ class Email {
           }
         }));
     print(response.body);
+
   }
+  int generateRandomNumber() {
+  Random random = Random();
+  return random.nextInt(90000) + 10000;
+}
 }
