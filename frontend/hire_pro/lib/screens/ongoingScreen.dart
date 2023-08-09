@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/widgets/HireProAppBar.dart';
 import 'package:hire_pro/widgets/TaskCardOngoing.dart';
-import 'package:hire_pro/widgets/smallButton.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
 class OngoingScreen extends StatefulWidget {
   const OngoingScreen({super.key});

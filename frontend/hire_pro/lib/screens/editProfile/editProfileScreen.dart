@@ -5,6 +5,7 @@ import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/models/customer.dart';
 import 'package:hire_pro/services/api.dart';
 import 'package:hire_pro/services/imageUpload.dart';
+import 'package:hire_pro/services/routes.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/smallButton.dart';
 import 'dart:io';
@@ -52,6 +53,7 @@ class _EditProfileState extends State<EditProfile> {
                 future: api.getUser(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (!snapshot.hasData) {
+                    print('np');
                     Center(
                       child: CircularProgressIndicator(color: kMainYellow),
                     );

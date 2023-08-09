@@ -7,22 +7,24 @@ import 'package:http/http.dart' as http;
 class Api {
   late Customer customer;
   static const baseUrl = 'http://192.168.164.1:3000/';
-  getUser() async {
+  dynamic getUser() async {
     var url = Uri.parse('${baseUrl}getdata');
-    var reqBody = {"id": "1"};
+
     try {
       final res = await http.get(
         url,
-        headers: {'Content-Type': 'application/json','authorization':'$sesstionToken'},
-       
+        headers: {
+          'Content-Type': 'application/json',
+          'authorization': '$sesstionToken'
+        },
       );
 
       if (res.statusCode == 200) {
         var data = jsonDecode(res.body);
-        data['name'] = customer.name;
-        data['email'] = customer.email;
-        data['contact'] = customer.contact;
-        data['loyalty_points'] = customer.loyaltyPoints;
+        customer.name = data['name'];
+         customer.email=data['email'];
+        customer.contact=data['contact'] ;
+        customer.loyaltyPoints=data['loyalty_points'] ;
         print('success');
         return customer;
       } else {}

@@ -48,6 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
         var myToken = jsonResponse['token'];
         sesstionToken = myToken;
         preferences.setString('token', myToken);
+
         Navigator.push(
             context,
             MaterialPageRoute(
