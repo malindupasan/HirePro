@@ -9,7 +9,7 @@ router.patch('/changename',CustomerController.changeName)
 
 router.patch('/changepassword',CustomerController.changePwd)
 
-router.post('/getdata',CustomerController.getData)
+router.get('/getdata',CustomerController.getData)
 
 router.post('/decodetoken',CustomerController.getIdFromToken)
 
