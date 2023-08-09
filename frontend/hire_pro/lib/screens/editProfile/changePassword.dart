@@ -16,13 +16,13 @@ class ChangePassword extends StatefulWidget {
 class _ChangePasswordState extends State<ChangePassword> {
   bool _obscureText = true;
   IconData _icon = FontAwesomeIcons.eyeSlash;
-  
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
             resizeToAvoidBottomInset: true,
-            appBar: HireProAppBar(context),
+            appBar: HireProAppBar(context, 'Change Password'),
             body: Container(
               margin: EdgeInsets.symmetric(horizontal: 15),
               child: Column(children: [

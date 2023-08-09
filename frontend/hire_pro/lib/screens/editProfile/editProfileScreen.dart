@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
+import 'package:hire_pro/models/customer.dart';
+import 'package:hire_pro/services/api.dart';
 import 'package:hire_pro/services/imageUpload.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/smallButton.dart';
@@ -41,114 +43,127 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
+    Api api = Api();
     return SafeArea(
         child: Scaffold(
             // bottomNavigationBar: BottomNavBar(),
             resizeToAvoidBottomInset: false,
-            body: SingleChildScrollView(
-              child: Center(
-                child: Container(
-                  height: 700,
-                  margin: EdgeInsets.symmetric(horizontal: 40),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            width: 150,
-                            height: 150,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: kMainYellow,
-                                width: 2,
-                              ),
-                            ),
-                            child: Hero(
-                              tag: 'image',
-                              child: Center(
-                                child: FittedBox(
-                                  fit: BoxFit.contain,
-                                  child: CircleAvatar(
-                                    radius: 72,
-                                    backgroundColor: kMainGrey,
-                                    foregroundImage: _image != null
-                                        ? FileImage(_image!)
-                                        : null,
-                                    child: Text(
-                                      'HS',
-                                      style: TextStyle(
-                                          fontSize: 48, color: kMainYellow),
+            body: FutureBuilder(
+                future: api.getUser(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (!snapshot.hasData) {
+                    Center(
+                      child: CircularProgressIndicator(color: kMainYellow),
+                    );
+                  }
+                  // Customer customer = snapshot.data;
+
+                  return SingleChildScrollView(
+                    child: Center(
+                      child: Container(
+                        height: 700,
+                        margin: EdgeInsets.symmetric(horizontal: 40),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Stack(
+                              children: [
+                                Container(
+                                  width: 150,
+                                  height: 150,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: kMainYellow,
+                                      width: 2,
+                                    ),
+                                  ),
+                                  child: Hero(
+                                    tag: 'image',
+                                    child: Center(
+                                      child: FittedBox(
+                                        fit: BoxFit.contain,
+                                        child: CircleAvatar(
+                                          radius: 72,
+                                          backgroundColor: kMainGrey,
+                                          foregroundImage: _image != null
+                                              ? FileImage(_image!)
+                                              : null,
+                                          child: Text(
+                                            'HS',
+                                            style: TextStyle(
+                                                fontSize: 48,
+                                                color: kMainYellow),
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            top: 100,
-                            left: 105,
-                            child: FloatingActionButton.small(
-                                backgroundColor: kMainYellow,
-                                child: Icon(
-                                  FontAwesomeIcons.camera,
-                                  size: 15,
+                                Positioned(
+                                  top: 100,
+                                  left: 105,
+                                  child: FloatingActionButton.small(
+                                      backgroundColor: kMainYellow,
+                                      child: Icon(
+                                        FontAwesomeIcons.camera,
+                                        size: 15,
+                                      ),
+                                      onPressed: () => showDialog<String>(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                Popup(),
+                                          )),
                                 ),
-                                onPressed: () => showDialog<String>(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          Popup(),
-                                    )),
-                          ),
-                        ],
+                              ],
+                            ),
+                            Text(
+                              'Edit Account',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 18),
+                            ),
+                            Column(
+                              children: [
+                                EditField(
+                                    key: keyCounter,
+                                    label: 'Full Name',
+                                    value: "Harini",
+                                    edit: () {
+                                      setState(() {
+                                        keyCounter.currentState!.editField =
+                                            !keyCounter.currentState!.editField;
+                                      });
+                                    }),
+                                EditField(
+                                    label: 'Email',
+                                    value: 'samaliarachchih@gmail.com',
+                                    edit: () {
+                                      Navigator.pushNamed(
+                                          context, '/emailcoderequest',
+                                          arguments: userData['email']);
+                                    }),
+                                EditField(
+                                    label: 'Mobile Number',
+                                    value: '0761232323',
+                                    edit: () {
+                                      print('pressed');
+                                    }),
+                                EditField(
+                                    label: 'Password',
+                                    value: 'hariniU',
+                                    edit: () {
+                                      Navigator.pushNamed(
+                                          context, '/change_password');
+                                    }),
+                              ],
+                            ),
+                            MainButton("Save", () {}),
+                          ],
+                        ),
                       ),
-                      Text(
-                        'Edit Account',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 18),
-                      ),
-                      Column(
-                        children: [
-                          EditField(
-                              key: keyCounter,
-                              label: 'Full Name',
-                              value: 'Harini Samaliarachchi',
-                              edit: () {
-                                setState(() {
-                                  keyCounter.currentState!.editField =
-                                      !keyCounter.currentState!.editField;
-                                });
-                              }),
-                          EditField(
-                              label: 'Email',
-                              value: 'samaliarachchih@gmail.com',
-                              edit: () {
-                                Navigator.pushNamed(
-                                    context, '/emailcoderequest',
-                                    arguments: userData['email']);
-                              }),
-                          EditField(
-                              label: 'Mobile Number',
-                              value: '0761232323',
-                              edit: () {
-                                print('pressed');
-                              }),
-                          EditField(
-                              label: 'Password',
-                              value: 'hariniU',
-                              edit: () {
-                                Navigator.pushNamed(
-                                    context, '/change_password');
-                              }),
-                        ],
-                      ),
-                      MainButton("Save", () {}),
-                    ],
-                  ),
-                ),
-              ),
-            )));
+                    ),
+                  );
+                })));
   }
 
   AlertDialog Popup() {
