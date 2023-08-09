@@ -15,16 +15,31 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-  List _categories = [
-    'Gardening',
-    'Plumbing',
-    'Cleaning',
-    'Furniture',
-    'Hair Cutting',
-    'Lawn Moving',
-    'Painting'
+  List<Map<String, String>> _categories = [
+    {
+      'Gardening': 'images/gardener.png',
+    },
+    {
+      'Plumbing': 'images/plumber.png',
+    },
+    {
+      'Cleaning': 'images/cleaning.png',
+    },
+    {
+      'Furniture': 'images/workspace.png',
+    },
+    {
+      'Hair Cutting': 'images/hair-cut.png',
+    },
+    {
+      'Lawn Moving': 'images/lawn-mower.png',
+    },
+    {
+      'Painting': 'images/painting.png',
+    },
   ];
-  List _filteredItems = [];
+
+  List<Map<String, String>> _filteredItems = [];
 
   @override
   void initState() {
@@ -34,13 +49,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   void _filterItems(String searchText) {
-    List results = [];
+    List<Map<String, String>> results = [];
     if (searchText.isEmpty) {
       results = _categories;
     } else {
       results = _categories
-          .where(
-              (item) => item.toLowerCase().contains(searchText.toLowerCase()))
+          .where((item) =>
+              item.keys.first.toLowerCase().contains(searchText.toLowerCase()))
           .toList();
     }
     setState(() {
@@ -111,11 +126,37 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   return Card(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30)),
-                    child: ListTile(
-                      title: Text(category),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/job_request');
-                      },
+                    child: Padding(
+                      padding: const EdgeInsets.all(25.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image:
+                                    AssetImage(category.values.elementAt(0)))),
+                        child: ListTile(
+                          title: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Color.fromARGB(209, 0, 0, 0),
+                                ),
+                                width: double.infinity,
+                                height: 25,
+                                child: Text(category.keys.first,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600)),
+                              ),
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, '/job_request');
+                          },
+                        ),
+                      ),
                     ),
                   );
                 }).toList(),

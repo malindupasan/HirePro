@@ -1,3 +1,4 @@
+
 const CustomerServices = require("../services/customer.services")
 const CustomerModel = require('../model/customer.model')
 
@@ -8,6 +9,11 @@ exports.register = async (req, res, next) => {
         const successRes = await CustomerServices.registerCustomer(name, email, contact, password_hash);
         res.json({ status: true, success: "User registered successfully" })
 
+
+        const password_hash = password;
+        const successRes = await CustomerServices.registerCustomer(name, email, contact, password_hash);
+        res.json({ status: true, success: "User registered successfully" })
+ 
     } catch (error) {
 
     }
@@ -23,9 +29,12 @@ exports.login = async (req, res, next) => {
         if (!customer) {
             throw new Error("User does not exist!");
         }
+
         const isMatch = await CustomerModel.checkPassword(customer.password_hash, password);
         if (isMatch === false) {
+
             res.send("wrong Credentials");
+
             throw new Error("Wrong credentials");
 
 

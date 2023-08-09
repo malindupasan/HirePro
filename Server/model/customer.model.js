@@ -14,6 +14,7 @@ class Customer {
   static async create(customerData) {
     const { contact, name, email, password_hash } = customerData;
 
+
     const salt = await bcrypt.genSalt(10);
     const hashed_pw = await bcrypt.hash(password_hash, salt);
 
