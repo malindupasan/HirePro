@@ -1,6 +1,6 @@
 
-const CustomerServices = require("../services/customer.services")
-const CustomerModel = require('../model/customer.model')
+const CustomerServices=require("../services/customer.services")
+const CustomerModel=require('../model/customer.model')
 
 
 exports.register = async (req, res, next) => {
@@ -11,7 +11,7 @@ exports.register = async (req, res, next) => {
         const password_hash = password;
         const successRes = await CustomerServices.registerCustomer(name, email, contact, password_hash);
         res.json({ status: true, success: "User registered successfully" })
-
+ 
     } catch (error) {
 
     }
@@ -28,13 +28,13 @@ exports.login = async (req, res, next) => {
             throw new Error("User does not exist!");
         }
 
-        const isMatch = await CustomerModel.checkPassword(customer.password_hash, password);
-        if (isMatch === false) {
+        const isMatch= await CustomerModel.checkPassword(customer.password_hash,password);
+        if (isMatch===false){
             res.send("wrong Credentials");
 
             throw new Error("Wrong credentials");
 
-
+            
 
         }
         let tokenData = { id: customer.id, email: customer.email }
@@ -48,12 +48,12 @@ exports.login = async (req, res, next) => {
     }
 }
 
-exports.changeName = async (req, res, next) => {
+exports.changeName=async(req,res,next)=>{
     try {
-        const { id, name } = req.body;
-
-        const successRes = await CustomerServices.updateName(id, name);
-        res.json({ status: true, success: "Name updated successfully" })
+        const {id,name}=req.body;
+        
+        const successRes=await CustomerServices.updateName(id,name);
+        res.json({status:true,success:"Name updated successfully"})
 
     } catch (error) {
         console.log(error);
@@ -62,8 +62,8 @@ exports.changeName = async (req, res, next) => {
 
 exports.getData=async(req,res,next)=>{
     try {
-        const {id}=req.body;
-
+        const {id}=req.body
+        
 
         const successRes=await CustomerModel.findById(id);
         res.send(successRes);
@@ -86,7 +86,7 @@ exports.changePwd=async(req,res,next)=>{
             throw new Error("passwords do not match !");
 
         }
-
+        
         const successRes=await CustomerModel.updatePassword({id,password});
         res.json({status:true,success:"password updated successfully"})
 
