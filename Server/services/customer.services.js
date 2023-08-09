@@ -40,6 +40,11 @@ class CustomerServices{
         return jwt.sign(tokenData,secretKey,{expiresIn:jwt_expire})
     }
 
+    static async decodeToken(token,secretKey){
+       return   jwt.verify(token,secretKey)
+      
+    }
+
 
 }
 module.exports = CustomerServices
