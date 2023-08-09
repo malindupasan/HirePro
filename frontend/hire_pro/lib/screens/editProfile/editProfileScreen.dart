@@ -23,6 +23,14 @@ String jsondata =
 var userData = jsonDecode(jsondata);
 
 class _EditProfileState extends State<EditProfile> {
+  Api api = Api();
+
+  late Future<Customer> customer;
+  void initState() {
+    super.initState();
+    customer = api.getData();
+  }
+
   final keyCounter = GlobalKey<_EditFieldState>();
   String defaultImage = 'images/profile_pic.png';
   final imageUpload = ImageUpload();
@@ -49,121 +57,121 @@ class _EditProfileState extends State<EditProfile> {
         child: Scaffold(
             // bottomNavigationBar: BottomNavBar(),
             resizeToAvoidBottomInset: false,
-            body: FutureBuilder(
-                future: api.getUser(),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (!snapshot.hasData) {
-                    print('np');
-                    Center(
-                      child: CircularProgressIndicator(color: kMainYellow),
-                    );
-                  }
-                  // Customer customer = snapshot.data;
-
-                  return SingleChildScrollView(
-                    child: Center(
-                      child: Container(
-                        height: 700,
-                        margin: EdgeInsets.symmetric(horizontal: 40),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Stack(
-                              children: [
-                                Container(
-                                  width: 150,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: kMainYellow,
-                                      width: 2,
+            body: FutureBuilder<Customer>(
+                future: customer,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return SingleChildScrollView(
+                      child: Center(
+                        child: Container(
+                          height: 700,
+                          margin: EdgeInsets.symmetric(horizontal: 40),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Stack(
+                                children: [
+                                  Container(
+                                    width: 150,
+                                    height: 150,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: kMainYellow,
+                                        width: 2,
+                                      ),
                                     ),
-                                  ),
-                                  child: Hero(
-                                    tag: 'image',
-                                    child: Center(
-                                      child: FittedBox(
-                                        fit: BoxFit.contain,
-                                        child: CircleAvatar(
-                                          radius: 72,
-                                          backgroundColor: kMainGrey,
-                                          foregroundImage: _image != null
-                                              ? FileImage(_image!)
-                                              : null,
-                                          child: Text(
-                                            'HS',
-                                            style: TextStyle(
-                                                fontSize: 48,
-                                                color: kMainYellow),
+                                    child: Hero(
+                                      tag: 'image',
+                                      child: Center(
+                                        child: FittedBox(
+                                          fit: BoxFit.contain,
+                                          child: CircleAvatar(
+                                            radius: 72,
+                                            backgroundColor: kMainGrey,
+                                            foregroundImage: _image != null
+                                                ? FileImage(_image!)
+                                                : null,
+                                            child: Text(
+                                              'HS',
+                                              style: TextStyle(
+                                                  fontSize: 48,
+                                                  color: kMainYellow),
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Positioned(
-                                  top: 100,
-                                  left: 105,
-                                  child: FloatingActionButton.small(
-                                      backgroundColor: kMainYellow,
-                                      child: Icon(
-                                        FontAwesomeIcons.camera,
-                                        size: 15,
-                                      ),
-                                      onPressed: () => showDialog<String>(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                Popup(),
-                                          )),
-                                ),
-                              ],
-                            ),
-                            Text(
-                              'Edit Account',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 18),
-                            ),
-                            Column(
-                              children: [
-                                EditField(
-                                    key: keyCounter,
-                                    label: 'Full Name',
-                                    value: "Harini",
-                                    edit: () {
-                                      setState(() {
-                                        keyCounter.currentState!.editField =
-                                            !keyCounter.currentState!.editField;
-                                      });
-                                    }),
-                                EditField(
-                                    label: 'Email',
-                                    value: 'samaliarachchih@gmail.com',
-                                    edit: () {
-                                      Navigator.pushNamed(
-                                          context, '/emailcoderequest',
-                                          arguments: userData['email']);
-                                    }),
-                                EditField(
-                                    label: 'Mobile Number',
-                                    value: '0761232323',
-                                    edit: () {
-                                      print('pressed');
-                                    }),
-                                EditField(
-                                    label: 'Password',
-                                    value: 'hariniU',
-                                    edit: () {
-                                      Navigator.pushNamed(
-                                          context, '/change_password');
-                                    }),
-                              ],
-                            ),
-                            MainButton("Save", () {}),
-                          ],
+                                  Positioned(
+                                    top: 100,
+                                    left: 105,
+                                    child: FloatingActionButton.small(
+                                        backgroundColor: kMainYellow,
+                                        child: Icon(
+                                          FontAwesomeIcons.camera,
+                                          size: 15,
+                                        ),
+                                        onPressed: () => showDialog<String>(
+                                              context: context,
+                                              builder: (BuildContext context) =>
+                                                  Popup(),
+                                            )),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                'Edit Account',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 18),
+                              ),
+                              Column(
+                                children: [
+                                  EditField(
+                                      key: keyCounter,
+                                      label: 'Full Name',
+                                      value: "Harini",
+                                      edit: () {
+                                        setState(() {
+                                          keyCounter.currentState!.editField =
+                                              !keyCounter
+                                                  .currentState!.editField;
+                                        });
+                                      }),
+                                  EditField(
+                                      label: 'Email',
+                                      value: 'samaliarachchih@gmail.com',
+                                      edit: () {
+                                        Navigator.pushNamed(
+                                            context, '/emailcoderequest',
+                                            arguments: userData['email']);
+                                      }),
+                                  EditField(
+                                      label: 'Mobile Number',
+                                      value: '0761232323',
+                                      edit: () {
+                                        print('pressed');
+                                      }),
+                                  EditField(
+                                      label: 'Password',
+                                      value: 'hariniU',
+                                      edit: () {
+                                        Navigator.pushNamed(
+                                            context, '/change_password');
+                                      }),
+                                ],
+                              ),
+                              MainButton("Save", () {}),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(color: kMainYellow),
                   );
                 })));
   }
