@@ -7,10 +7,8 @@ exports.register = async (req, res, next) => {
         const { name, email, contact, password } = req.body;
       
 
-        const password_hash = password;
-        const successRes = await CustomerServices.registerCustomer(name, email, contact, password_hash);
-        res.json({ status: true, success: "User registered successfully" })
- 
+
+
     } catch (error) {
 
     }
@@ -72,9 +70,9 @@ exports.getData = async (req, res, next) => {
 
         const token = authHeader.split(' ')[1]; // Extract the token part
 
-        const data =  await CustomerServices.decodeToken(token, "mal123")
+        const data = await CustomerServices.decodeToken(token, "mal123")
 
-        const id=data.id;
+        const id = data.id;
 
 
         const successRes = await CustomerModel.findById(id);
@@ -96,17 +94,17 @@ exports.getIdFromToken = async (req, res, next) => {
 
         const token = authHeader.split(' ')[1]; // Extract the token part
 
-        if(!token) {
+        if (!token) {
             // res.send(404);
             console.log("no  token")
         }
 
 
-        const data =  await CustomerServices.decodeToken(token, "mal123")
+        const data = await CustomerServices.decodeToken(token, "mal123")
         // console.log(data);
         res.json(data.id);
     } catch (error) {
-        console.log(error+"vye")
+        console.log(error + "vye")
     }
 }
 

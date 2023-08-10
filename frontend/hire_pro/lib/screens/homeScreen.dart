@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement initState
     super.initState();
     Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
-    email=jwtDecodedToken['email'];
+    email = jwtDecodedToken['email'];
   }
 
   @override

@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:hire_pro/routes.dart';
+import 'package:hire_pro/services/routes.dart';
 import 'package:hire_pro/widgets/MyNavigationWidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +46,9 @@ class _LoginScreenState extends State<LoginScreen> {
       if (jsonResponse['status']) {
         print(jsonResponse['status']);
         var myToken = jsonResponse['token'];
+        sesstionToken = myToken;
         preferences.setString('token', myToken);
+
         Navigator.push(
             context,
             MaterialPageRoute(
