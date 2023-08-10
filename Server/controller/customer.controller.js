@@ -78,7 +78,7 @@ exports.getData = async (req, res, next) => {
 
 
         const successRes = await CustomerModel.findById(id);
-        res.send(successRes);
+        res.status(200).json(successRes);
         // res.json({status:true,success:"Data fetched  successfully",data:successRes.data});
 
     } catch (error) {
