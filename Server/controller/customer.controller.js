@@ -88,7 +88,9 @@ exports.getData = async (req, res, next) => {
     }
 }
 
-exports.getIdFromToken = async (req, res, next) => {
+
+
+exports.getAddresses = async (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
 
@@ -106,7 +108,10 @@ exports.getIdFromToken = async (req, res, next) => {
 
         const data = await CustomerServices.decodeToken(token, "mal123")
         // console.log(data);
-        res.json(data.id);
+        const successRes = await CustomerModel.getAddress(data.id);
+
+
+        res.json(successRes);
     } catch (error) {
         console.log(error + "vye")
     }

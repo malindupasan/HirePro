@@ -63,6 +63,18 @@ class Customer {
     }
   }
 
+  static async getAddress(id){
+    try {
+      const query='select * from "CustomerAddress" where id=$1';
+      const values = [id];
+
+      const result = await db.query(query, values);
+      console.log(result.rows[0]);
+      return result.rows
+    } catch (error) {
+      
+    }
+  }
 
   static async findByEmail(email) {
     const query = 'SELECT * FROM customer WHERE email = $1';
