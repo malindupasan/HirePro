@@ -14,6 +14,7 @@ class _OtpScreenState extends State<OtpScreen> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -25,6 +26,7 @@ class _OtpScreenState extends State<OtpScreen> {
           children: [
             Column(children: [
               Image.asset('images/hireProWithoutBG.png'),
+              FormFieldRegular('Full Name', nameController, false),
               FormFieldRegular('Phone Number', phoneController, false),
               FormFieldRegular('Your Email', emailController, false),
               FormFieldRegular('Password', passwordController, false),

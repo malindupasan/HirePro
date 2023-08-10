@@ -2,25 +2,56 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
+import 'package:hire_pro/models/customer.dart';
+import 'package:hire_pro/services/api.dart';
 import 'package:hire_pro/services/imageUpload.dart';
+import 'package:hire_pro/services/routes.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/smallButton.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 
-class EditProfile extends StatefulWidget {
+class EditProfileScreen extends StatefulWidget {
   @override
-  State<EditProfile> createState() => _EditProfileState();
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
-String jsondata =
-    '{"full_name": "John Doe", "email": "samaliarachchih@gmail.com", "phone_number": "123-456-7890"}';
-var userData = jsonDecode(jsondata);
+class _EditProfileScreenState extends State<EditProfileScreen> {
+  TextEditingController nameController = TextEditingController();
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    nameController.dispose();
+    super.dispose();
+  }
 
-class _EditProfileState extends State<EditProfile> {
-  final keyCounter = GlobalKey<_EditFieldState>();
+  // Future<Customer>? _name;
+  Api api = Api();
+
+  late Future<Customer> customer;
+  void initState() {
+    super.initState();
+    customer = api.getData();
+  }
+
+  String getInitials(String name) {
+    List<String> names = name.split(' ');
+    int size = names.length;
+    late String initials;
+    if (size > 1) {
+      initials = names[0][0] + names[size - 1][0];
+    } else {
+      initials = names[0][0];
+    }
+    return initials;
+  }
+
+  bool editField = false;
+
   String defaultImage = 'images/profile_pic.png';
   final imageUpload = ImageUpload();
   File? _image;
@@ -43,112 +74,177 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-            // bottomNavigationBar: BottomNavBar(),
             resizeToAvoidBottomInset: false,
-            body: SingleChildScrollView(
-              child: Center(
-                child: Container(
-                  height: 700,
-                  margin: EdgeInsets.symmetric(horizontal: 40),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            width: 150,
-                            height: 150,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: kMainYellow,
-                                width: 2,
-                              ),
-                            ),
-                            child: Hero(
-                              tag: 'image',
-                              child: Center(
-                                child: FittedBox(
-                                  fit: BoxFit.contain,
-                                  child: CircleAvatar(
-                                    radius: 72,
-                                    backgroundColor: kMainGrey,
-                                    foregroundImage: _image != null
-                                        ? FileImage(_image!)
-                                        : null,
-                                    child: Text(
-                                      'HS',
-                                      style: TextStyle(
-                                          fontSize: 48, color: kMainYellow),
+            body: FutureBuilder<Customer>(
+                future: customer,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    nameController.text = snapshot.data!.name;
+                    return SingleChildScrollView(
+                      child: Center(
+                        child: Container(
+                          height: 700,
+                          margin: EdgeInsets.symmetric(horizontal: 40),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Stack(
+                                children: [
+                                  Container(
+                                    width: 150,
+                                    height: 150,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: kMainYellow,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    child: Hero(
+                                      tag: 'image',
+                                      child: Center(
+                                        child: FittedBox(
+                                          fit: BoxFit.contain,
+                                          child: CircleAvatar(
+                                            radius: 72,
+                                            backgroundColor: kMainGrey,
+                                            foregroundImage: _image != null
+                                                ? FileImage(_image!)
+                                                : null,
+                                            child: Text(
+                                              getInitials(snapshot.data!.name),
+                                              style: TextStyle(
+                                                  fontSize: 48,
+                                                  color: kMainYellow),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
+                                  Positioned(
+                                    top: 100,
+                                    left: 105,
+                                    child: FloatingActionButton.small(
+                                        backgroundColor: kMainYellow,
+                                        child: Icon(
+                                          FontAwesomeIcons.camera,
+                                          size: 15,
+                                        ),
+                                        onPressed: () => showDialog<String>(
+                                              context: context,
+                                              builder: (BuildContext context) =>
+                                                  Popup(),
+                                            )),
+                                  ),
+                                ],
                               ),
-                            ),
+                              Text(
+                                'Edit Account',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 18),
+                              ),
+                              Column(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Full Name',
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                      SizedBox(height: 6),
+                                      Stack(
+                                        children: [
+                                          TextFormField(
+                                            controller: nameController,
+                                            readOnly: editField,
+                                            // initialValue: snapshot.data!.name,
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Colors.grey,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            left: 280,
+                                            top: 10,
+                                            child: SizedBox(
+                                              height: 30,
+                                              child: FloatingActionButton.small(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    editField = !editField;
+                                                  });
+                                                },
+                                                backgroundColor:
+                                                    kSecondaryYellow,
+                                                child: Icon(
+                                                  FontAwesomeIcons.pen,
+                                                  color: Colors.grey[800],
+                                                  size: 12,
+                                                ),
+                                                elevation: 1,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 6),
+                                    ],
+                                  ),
+                                  EditField(
+                                      label: 'Email',
+                                      value: snapshot.data!.email,
+                                      edit: () {
+                                        Navigator.pushNamed(
+                                            context, '/emailcoderequest',
+                                            arguments: snapshot.data!.email);
+                                      }),
+                                  EditField(
+                                      label: 'Mobile Number',
+                                      value: snapshot.data!.contact,
+                                      edit: () {
+                                        print('pressed');
+                                      }),
+                                  EditField(
+                                      label: 'Password',
+                                      value: 'hariniU',
+                                      edit: () {
+                                        Navigator.pushNamed(
+                                            context, '/change_password');
+                                      }),
+                                ],
+                              ),
+                              MainButton("Save", () async {
+                                if (nameController.text !=
+                                    snapshot.data!.name) {
+                                  await api.changeName(nameController.text);
+                                  Navigator.pop(context, true);
+                                } else {
+                                  Navigator.pop(context);
+                                }
+                              })
+                            ],
                           ),
-                          Positioned(
-                            top: 100,
-                            left: 105,
-                            child: FloatingActionButton.small(
-                                backgroundColor: kMainYellow,
-                                child: Icon(
-                                  FontAwesomeIcons.camera,
-                                  size: 15,
-                                ),
-                                onPressed: () => showDialog<String>(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          Popup(),
-                                    )),
-                          ),
-                        ],
+                        ),
                       ),
-                      Text(
-                        'Edit Account',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 18),
-                      ),
-                      Column(
-                        children: [
-                          EditField(
-                              key: keyCounter,
-                              label: 'Full Name',
-                              value: 'Harini Samaliarachchi',
-                              edit: () {
-                                setState(() {
-                                  keyCounter.currentState!.editField =
-                                      !keyCounter.currentState!.editField;
-                                });
-                              }),
-                          EditField(
-                              label: 'Email',
-                              value: 'samaliarachchih@gmail.com',
-                              edit: () {
-                                Navigator.pushNamed(
-                                    context, '/emailcoderequest',
-                                    arguments: userData['email']);
-                              }),
-                          EditField(
-                              label: 'Mobile Number',
-                              value: '0761232323',
-                              edit: () {
-                                print('pressed');
-                              }),
-                          EditField(
-                              label: 'Password',
-                              value: 'hariniU',
-                              edit: () {
-                                Navigator.pushNamed(
-                                    context, '/change_password');
-                              }),
-                        ],
-                      ),
-                      MainButton("Save", () {}),
-                    ],
-                  ),
-                ),
-              ),
-            )));
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(color: kMainYellow),
+                  );
+                })));
   }
 
   AlertDialog Popup() {

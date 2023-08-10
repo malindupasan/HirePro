@@ -9,7 +9,7 @@ class Customer {
     this.email = email;
     this.loyalty_points = loyalty_points;
     this.password_hash = password_hash;
-  }
+  } 
 
   static async create(customerData) {
     const { contact, name, email, password_hash } = customerData;

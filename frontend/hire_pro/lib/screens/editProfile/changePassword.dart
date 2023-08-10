@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
-import 'package:hire_pro/screens/editProfile/editProfileScreen.dart';
 import 'package:hire_pro/widgets/HireProAppBar.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
+import 'package:hire_pro/widgets/Toast.dart';
 import 'package:hire_pro/widgets/ToggleEyeField.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -17,12 +16,13 @@ class ChangePassword extends StatefulWidget {
 class _ChangePasswordState extends State<ChangePassword> {
   bool _obscureText = true;
   IconData _icon = FontAwesomeIcons.eyeSlash;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
             resizeToAvoidBottomInset: true,
-            appBar: HireProAppBar(context),
+            appBar: HireProAppBar(context, 'Change Password'),
             body: Container(
               margin: EdgeInsets.symmetric(horizontal: 15),
               child: Column(children: [
@@ -59,7 +59,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                   child: Column(
                     children: [
                       MainButton('Change Password', () {
-                       
+                        Toast()
+                            .SuccessToast('Password changed', 'successfully!')
+                            .show(context);
                       }),
                     ],
                   ),
