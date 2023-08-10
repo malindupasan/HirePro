@@ -7,17 +7,21 @@ import 'package:http/http.dart' as http;
 class Api {
   Future<Customer> getData() async {
     final response = await http.get(
-      Uri.parse('$url.getdata'),
-      headers: {
+      Uri.parse(url+'getdata'),
+      headers: <String, String>{
         'Content-Type': 'application/json',
-         'Authorization': 'Bearer $sesstionToken',
+        HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
       },
     );
-
-    if (response.statusCode == 200) {
-      return Customer.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to load customer');
+    try {
+      if (response.statusCode == 200) {
+        return await Customer.fromJson(jsonDecode(response.body));
+      } else {
+        throw Exception('Failed to load customer');
+      }
+    } catch (e) {
+      print(e);
+      throw (e);
     }
   }
 }

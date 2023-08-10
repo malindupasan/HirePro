@@ -10,6 +10,7 @@ import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/smallButton.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 
@@ -29,6 +30,13 @@ class _EditProfileState extends State<EditProfile> {
   void initState() {
     super.initState();
     customer = api.getData();
+  }
+
+  String getInitials(String name) {
+    List<String> names = name.split(' ');
+    int size = names.length;
+    String initials = names[0][0] + names[size - 1][0];
+    return initials;
   }
 
   final keyCounter = GlobalKey<_EditFieldState>();
@@ -52,7 +60,7 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-    Api api = Api();
+  
     return SafeArea(
         child: Scaffold(
             // bottomNavigationBar: BottomNavBar(),
@@ -93,7 +101,7 @@ class _EditProfileState extends State<EditProfile> {
                                                 ? FileImage(_image!)
                                                 : null,
                                             child: Text(
-                                              'HS',
+                                              getInitials(snapshot.data!.name),
                                               style: TextStyle(
                                                   fontSize: 48,
                                                   color: kMainYellow),
@@ -130,7 +138,7 @@ class _EditProfileState extends State<EditProfile> {
                                   EditField(
                                       key: keyCounter,
                                       label: 'Full Name',
-                                      value: "Harini",
+                                      value: snapshot.data!.name,
                                       edit: () {
                                         setState(() {
                                           keyCounter.currentState!.editField =
@@ -140,7 +148,7 @@ class _EditProfileState extends State<EditProfile> {
                                       }),
                                   EditField(
                                       label: 'Email',
-                                      value: 'samaliarachchih@gmail.com',
+                                      value: snapshot.data!.email,
                                       edit: () {
                                         Navigator.pushNamed(
                                             context, '/emailcoderequest',
@@ -148,7 +156,7 @@ class _EditProfileState extends State<EditProfile> {
                                       }),
                                   EditField(
                                       label: 'Mobile Number',
-                                      value: '0761232323',
+                                      value: snapshot.data!.contact,
                                       edit: () {
                                         print('pressed');
                                       }),

@@ -2,7 +2,7 @@ class Customer {
   final String name;
   final String email;
   final String contact;
-  final int loyalityPoints;
+  final String loyalityPoints;
 
   const Customer({
     required this.name,
