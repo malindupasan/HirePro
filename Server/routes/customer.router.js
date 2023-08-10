@@ -9,10 +9,15 @@ router.post('/changename', CustomerController.changeName)
 
 router.patch('/changepassword', CustomerController.changePwd)
 
-router.get('/getdata', CustomerController.getData)
+
+router.get('/getdata',CustomerController.getData)
+
+
 
 router.post('/decodetoken', CustomerController.getIdFromToken)
 
+
+router.get('/getaddress',CustomerController.getAddresses)
 
 
 module.exports = router;
