@@ -38,6 +38,7 @@ exports.login = async (req, res, next) => {
         let tokenData = { id: customer.id, email: customer.email }
 
         const token = await CustomerServices.genarateToken(tokenData, "mal123", '1h')
+
         res.status(200).json({ status: true, token: token })
 
 
@@ -51,7 +52,9 @@ exports.changeName = async (req, res, next) => {
         const { id, name } = req.body;
 
         const successRes = await CustomerServices.updateName(id, name);
-        res.json({ status: true, success: "Name updated successfully" })
+        console.log(successRes);
+        res.status(201).json(successRes);
+        // res.json({ status: true, success: "Name updated successfully" })
 
     } catch (error) {
         console.log(error);
@@ -76,6 +79,7 @@ exports.getData = async (req, res, next) => {
 
 
         const successRes = await CustomerModel.findById(id);
+        console.log(successRes);
         res.status(200).json(successRes);
         // res.json({status:true,success:"Data fetched  successfully",data:successRes.data});
 

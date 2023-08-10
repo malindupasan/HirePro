@@ -1,4 +1,5 @@
 class EditProfile {
+  
   String getInitials(String name) {
     List<String> names = name.split(' ');
     int size = names.length;

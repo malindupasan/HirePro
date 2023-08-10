@@ -14,16 +14,22 @@ import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 
-class EditProfile extends StatefulWidget {
+class EditProfileScreen extends StatefulWidget {
   @override
-  State<EditProfile> createState() => _EditProfileState();
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
-String jsondata =
-    '{"full_name": "John Doe", "email": "samaliarachchih@gmail.com", "phone_number": "123-456-7890"}';
-var userData = jsonDecode(jsondata);
+class _EditProfileScreenState extends State<EditProfileScreen> {
+  TextEditingController nameController = TextEditingController();
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    nameController.dispose();
+    super.dispose();
+  }
 
-class _EditProfileState extends State<EditProfile> {
+  // Future<Customer>? _name;
   Api api = Api();
 
   late Future<Customer> customer;
@@ -35,11 +41,17 @@ class _EditProfileState extends State<EditProfile> {
   String getInitials(String name) {
     List<String> names = name.split(' ');
     int size = names.length;
-    String initials = names[0][0] + names[size - 1][0];
+    late String initials;
+    if (size > 1) {
+      initials = names[0][0] + names[size - 1][0];
+    } else {
+      initials = names[0][0];
+    }
     return initials;
   }
 
-  final keyCounter = GlobalKey<_EditFieldState>();
+  bool editField = false;
+
   String defaultImage = 'images/profile_pic.png';
   final imageUpload = ImageUpload();
   File? _image;
@@ -60,15 +72,14 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-  
     return SafeArea(
         child: Scaffold(
-            // bottomNavigationBar: BottomNavBar(),
             resizeToAvoidBottomInset: false,
             body: FutureBuilder<Customer>(
                 future: customer,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
+                    nameController.text = snapshot.data!.name;
                     return SingleChildScrollView(
                       child: Center(
                         child: Container(
@@ -135,24 +146,68 @@ class _EditProfileState extends State<EditProfile> {
                               ),
                               Column(
                                 children: [
-                                  EditField(
-                                      key: keyCounter,
-                                      label: 'Full Name',
-                                      value: snapshot.data!.name,
-                                      edit: () {
-                                        setState(() {
-                                          keyCounter.currentState!.editField =
-                                              !keyCounter
-                                                  .currentState!.editField;
-                                        });
-                                      }),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Full Name',
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                      SizedBox(height: 6),
+                                      Stack(
+                                        children: [
+                                          TextFormField(
+                                            controller: nameController,
+                                            readOnly: editField,
+                                            // initialValue: snapshot.data!.name,
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Colors.grey,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            left: 280,
+                                            top: 10,
+                                            child: SizedBox(
+                                              height: 30,
+                                              child: FloatingActionButton.small(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    editField = !editField;
+                                                  });
+                                                },
+                                                backgroundColor:
+                                                    kSecondaryYellow,
+                                                child: Icon(
+                                                  FontAwesomeIcons.pen,
+                                                  color: Colors.grey[800],
+                                                  size: 12,
+                                                ),
+                                                elevation: 1,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 6),
+                                    ],
+                                  ),
                                   EditField(
                                       label: 'Email',
                                       value: snapshot.data!.email,
                                       edit: () {
                                         Navigator.pushNamed(
                                             context, '/emailcoderequest',
-                                            arguments: userData['email']);
+                                            arguments: snapshot.data!.email);
                                       }),
                                   EditField(
                                       label: 'Mobile Number',
@@ -169,7 +224,15 @@ class _EditProfileState extends State<EditProfile> {
                                       }),
                                 ],
                               ),
-                              MainButton("Save", () {}),
+                              MainButton("Save", () async {
+                                if (nameController.text !=
+                                    snapshot.data!.name) {
+                                  await api.changeName(nameController.text);
+                                  Navigator.pop(context, true);
+                                } else {
+                                  Navigator.pop(context);
+                                }
+                              })
                             ],
                           ),
                         ),

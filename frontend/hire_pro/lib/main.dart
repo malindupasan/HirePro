@@ -64,7 +64,7 @@ class HirePro extends StatelessWidget {
         '/category': (context) => CategoryScreen(),
         '/ongoing': (context) => OngoingScreen(),
         '/profile': (context) => UserProfile(),
-        '/edit_profile': (context) => EditProfile(),
+        '/edit_profile': (context) => EditProfileScreen(),
         '/job_request': (context) => JobRequestScreen(),
         '/confirm_job_request': (context) => ConfirmationScreen(),
         '/biddings': (context) => BiddingPage(),
