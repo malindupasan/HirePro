@@ -78,7 +78,7 @@ class Customer {
     }
   }
   static async findById(id) {
-    const query = 'SELECT * FROM customer WHERE id = $1';
+    const query = 'SELECT id,contact,name,email,loyalty_points FROM customer WHERE id = $1';
     const values = [id];
 
     try {

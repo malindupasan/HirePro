@@ -5,10 +5,7 @@ const CustomerModel = require('../model/customer.model')
 exports.register = async (req, res, next) => {
     try {
         const { name, email, contact, password } = req.body;
-        const password_hash = password;
-        const successRes = await CustomerServices.registerCustomer(name, email, contact, password_hash);
-        res.json({ status: true, success: "User registered successfully" })
-
+      
 
 
 
