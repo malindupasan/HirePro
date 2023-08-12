@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:toastification/toastification.dart';
+
 class PasswordChecker {
   String validatePassword(String input) {
     if (input != '') {}
@@ -29,5 +33,29 @@ class PasswordChecker {
     }
 
     return "Password is valid";
+  }
+
+  matchPasswords(String newPassword, String newPasswordDup, context) {
+    if (newPassword != newPasswordDup) {
+      {
+        toastification.showError(
+            context: context,
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            icon: Icon(FontAwesomeIcons.circleExclamation),
+            title: 'Passwords do not match!',
+            autoCloseDuration: const Duration(seconds: 3),
+            borderRadius: BorderRadius.circular(20),
+            backgroundColor: Color.fromARGB(255, 253, 110, 81));
+      }
+    } else {
+      toastification.showSuccess(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          context: context,
+          icon: Icon(FontAwesomeIcons.circleCheck),
+          title: 'Password changed successfully!',
+          autoCloseDuration: const Duration(seconds: 3),
+          borderRadius: BorderRadius.circular(20),
+          backgroundColor: Color.fromARGB(255, 62, 163, 47));
+    }
   }
 }
