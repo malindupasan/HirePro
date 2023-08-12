@@ -4,7 +4,7 @@ import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/screens/editProfile/passwordChecker.dart';
 import 'package:hire_pro/widgets/HireProAppBar.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
-import 'package:hire_pro/widgets/Toast.dart';
+import 'package:toastification/toastification.dart';
 import 'package:hire_pro/widgets/ToggleEyeField.dart';
 import 'package:hire_pro/widgets/passwordValidateField.dart';
 
@@ -22,6 +22,14 @@ class _ChangePasswordState extends State<ChangePassword> {
   TextEditingController currentPassword = TextEditingController();
   TextEditingController newPassword = TextEditingController();
   TextEditingController newPasswordDup = TextEditingController();
+
+  bool matchPasswords() {
+    if (newPassword.text == newPasswordDup.text) {
+      return true;
+    }
+    return false;
+  }
+
   @override
   void dispose() {
     currentPassword.dispose();
@@ -75,9 +83,29 @@ class _ChangePasswordState extends State<ChangePassword> {
                   child: Column(
                     children: [
                       MainButton('Change Password', () {
-                        Toast()
-                            .SuccessToast('Password changed', 'successfully!')
-                            .show(context);
+                        if (!matchPasswords()) {
+                          toastification.showError(
+                              context: context,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              icon: Icon(FontAwesomeIcons.circleExclamation),
+                              title: 'Passwords do not match!',
+                              autoCloseDuration: const Duration(seconds: 3),
+                              borderRadius: BorderRadius.circular(20),
+                              backgroundColor:
+                                  Color.fromARGB(255, 253, 110, 81));
+                        } else {
+                          toastification.showSuccess(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              context: context,
+                              icon: Icon(FontAwesomeIcons.circleCheck),
+                              title: 'Password changed successfully!',
+                              autoCloseDuration: const Duration(seconds: 3),
+                              borderRadius: BorderRadius.circular(20),
+                              backgroundColor:
+                                  Color.fromARGB(255, 62, 163, 47));
+                        }
                       }),
                     ],
                   ),
