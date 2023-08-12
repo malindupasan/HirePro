@@ -217,7 +217,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       }),
                                   EditField(
                                       label: 'Password',
-                                      value: 'hariniU',
+                                      value: 'DummyPassword',
                                       edit: () {
                                         Navigator.pushNamed(
                                             context, '/change_password');

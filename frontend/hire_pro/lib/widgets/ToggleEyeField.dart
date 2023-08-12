@@ -4,17 +4,19 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class ToggleEyeField extends StatefulWidget {
   ToggleEyeField({
     super.key,
+    required TextEditingController controller,
     required bool obscureText,
     required IconData icon,
     required String placeholder,
+    
   })  : _obscureText = obscureText,
         _icon = icon,
-        _placeholder = placeholder;
+        _placeholder = placeholder,_controller = controller;
 
   bool _obscureText;
   IconData _icon;
   String _placeholder;
-
+TextEditingController _controller;
   @override
   State<ToggleEyeField> createState() => _ToggleEyeFieldState();
 }
@@ -33,6 +35,7 @@ class _ToggleEyeFieldState extends State<ToggleEyeField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: widget._controller,
       obscureText: widget._obscureText,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 20),
