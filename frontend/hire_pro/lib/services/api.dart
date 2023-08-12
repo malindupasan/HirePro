@@ -40,4 +40,19 @@ class Api {
       throw Exception('Failed to change name');
     }
   }
+  Future<Customer> changePassword(String password,String newPassword,String newPasswordDup) async {
+    final response = await http.post(
+      Uri.parse(url + 'changepassword'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{'id':id,'oldPw': password, 'password': newPassword,'confirmPw': newPasswordDup}),
+    );
+
+    if (response) {
+      return Customer.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to change password');
+    }
+  }
 }

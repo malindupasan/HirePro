@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/screens/editProfile/passwordChecker.dart';
+import 'package:hire_pro/services/api.dart';
 import 'package:hire_pro/widgets/HireProAppBar.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
-
 import 'package:hire_pro/widgets/ToggleEyeField.dart';
 import 'package:hire_pro/widgets/passwordValidateField.dart';
 
@@ -31,6 +31,7 @@ class _ChangePasswordState extends State<ChangePassword> {
     super.dispose();
   }
 
+  Api api = Api();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -76,7 +77,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   child: Column(
                     children: [
                       MainButton('Change Password', () {
-                        checker.matchPasswords(
+                        checker.matchPasswords(currentPassword.text,
                             newPassword.text, newPasswordDup.text, context);
                       }),
                     ],

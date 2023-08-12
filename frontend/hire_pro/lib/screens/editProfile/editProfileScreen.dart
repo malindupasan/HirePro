@@ -23,13 +23,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController nameController = TextEditingController();
   @override
   void dispose() {
-    // Clean up the controller when the widget is removed from the
-    // widget tree.
     nameController.dispose();
     super.dispose();
   }
 
-  // Future<Customer>? _name;
   Api api = Api();
 
   late Future<Customer> customer;

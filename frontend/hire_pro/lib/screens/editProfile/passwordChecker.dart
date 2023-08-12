@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hire_pro/services/api.dart';
 import 'package:toastification/toastification.dart';
 
 class PasswordChecker {
+  Api api = Api();
   String validatePassword(String input) {
     if (input != '') {}
     if (input.length < 8) {
@@ -35,7 +37,8 @@ class PasswordChecker {
     return "Password is valid";
   }
 
-  matchPasswords(String newPassword, String newPasswordDup, context) {
+  matchPasswords(String currentPassword, String newPassword,
+      String newPasswordDup, context) async {
     if (newPassword != newPasswordDup) {
       {
         toastification.showError(
@@ -48,6 +51,7 @@ class PasswordChecker {
             backgroundColor: Color.fromARGB(255, 253, 110, 81));
       }
     } else {
+      await api.changePassword(currentPassword, newPassword, newPasswordDup);
       toastification.showSuccess(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           context: context,
