@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:hire_pro/models/address.dart';
 import 'package:hire_pro/models/customer.dart';
 import 'package:hire_pro/screens/editProfile/editProfile.dart';
 import 'package:hire_pro/screens/editProfile/editProfileScreen.dart';
@@ -9,6 +11,7 @@ import 'package:hire_pro/widgets/LineDivider.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/smallButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -21,215 +24,234 @@ class _UserProfileState extends State<UserProfile> {
   Api api = Api();
 
   late Future<Customer> customer;
+  late Future<List<Address>> addresses;
   void initState() {
     super.initState();
     customer = api.getData();
+    addresses = api.fetchAddresses(http.Client());
   }
 
-//   Future<void> signout()async{
-// final prefs = await SharedPreferences.getInstance();
-//   await prefs.remove('token');
-//   Navigator.pop(context);
-//   }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-            // bottomNavigationBar: BottomNavBar(),
             resizeToAvoidBottomInset: false,
-            body: FutureBuilder<Customer>(
-                future: customer,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Center(
-                      child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 40),
-                        child: Column(
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Container(
-                                    width:
-                                        150, // Set the desired width of the container
-                                    height:
-                                        150, // Set the desired height of the container
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape
-                                          .circle, // Create a circular shape
-                                      border: Border.all(
-                                        color:
-                                            kMainYellow, // Set the border color
-                                        width: 2, // Set the border width
-                                      ),
-                                    ),
-                                    child: Hero(
-                                      tag: "image",
-                                      child: ClipOval(
-                                        child: Image.asset(
-                                          'images/user.png', // Replace with your image URL
-                                          fit: BoxFit
-                                              .cover, // Adjust the image's fit within the circular border
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    snapshot.data!.name,
-                                    style: TextStyle(
-                                      fontSize: 30,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: kSecondaryYellow,
-                                    ),
-                                    child: GestureDetector(
-                                        child: Padding(
-                                          padding: EdgeInsets.all(8),
-                                          child: Text(
-                                            "EDIT PROFILE",
-                                            style: TextStyle(
-                                              fontSize: 16,
+            body: SingleChildScrollView(
+              child: Container(
+                height: 750,
+                child: FutureBuilder<Customer>(
+                    future: customer,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Center(
+                            child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 40),
+                                child: Column(children: [
+                                  Expanded(
+                                    flex: 3,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Container(
+                                          width: 150,
+                                          height: 150,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
                                               color: kMainYellow,
+                                              width: 2,
                                             ),
                                           ),
-                                        ),
-                                        onTap: () async{
-                                          final result = await Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      EditProfileScreen()));
-
-                                          if (result == true) {
-                                            setState(() {
-                                              customer = api.getData();
-                                            });
-                                          }
-                                        }),
-                                  ),
-                                  // Text(
-                                  //   "Stars you've earned",
-                                  //   style: TextStyle(fontSize: 13),
-                                  // ),
-                                  RatingBarIndicator(
-                                    rating: 3.35,
-                                    itemBuilder: (context, index) => Icon(
-                                      Icons.star,
-                                      color: Colors.amber,
-                                    ),
-                                    itemCount: 5,
-                                    itemSize: 30.0,
-                                    direction: Axis.horizontal,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      ProfileSummary('10', 'Total no of jobs'),
-                                      ProfileSummary(
-                                          snapshot.data!.loyalityPoints,
-                                          'Loyality points')
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                width: double.infinity,
-                                margin: EdgeInsetsDirectional.symmetric(
-                                    horizontal: 10, vertical: 30),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            spreadRadius: 1,
-                                            blurRadius: 5,
-                                            offset: Offset(0,
-                                                3), // horizontal, vertical offset
-                                          ),
-                                        ],
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            height: 40,
-                                            child: Center(
-                                              child: Text(
-                                                'Saved Places',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.w500),
+                                          child: Hero(
+                                            tag: "image",
+                                            child: ClipOval(
+                                              child: Image.asset(
+                                                'images/user.png',
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
                                           ),
-                                          RawScrollbar(
-                                            thumbColor: Colors.grey,
-                                            radius: Radius.circular(5),
-                                            thumbVisibility: true,
-                                            child: Container(
-                                              height: 130,
-                                              child: ListView(
-                                                padding: EdgeInsets.all(10),
+                                        ),
+                                        Text(
+                                          snapshot.data!.name,
+                                          style: TextStyle(
+                                            fontSize: 30,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: kSecondaryYellow,
+                                          ),
+                                          child: GestureDetector(
+                                              child: Padding(
+                                                padding: EdgeInsets.all(8),
+                                                child: Text(
+                                                  "EDIT PROFILE",
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: kMainYellow,
+                                                  ),
+                                                ),
+                                              ),
+                                              onTap: () async {
+                                                final result = await Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            EditProfileScreen()));
+
+                                                if (result == true) {
+                                                  setState(() {
+                                                    customer = api.getData();
+                                                  });
+                                                }
+                                              }),
+                                        ),
+                                        RatingBarIndicator(
+                                          rating: 3.35,
+                                          itemBuilder: (context, index) => Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
+                                          itemCount: 5,
+                                          itemSize: 30.0,
+                                          direction: Axis.horizontal,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            ProfileSummary(
+                                                '10', 'Total no of jobs'),
+                                            ProfileSummary(
+                                                snapshot.data!.loyalityPoints,
+                                                'Loyality points')
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                      flex: 2,
+                                      child: Container(
+                                        width: double.infinity,
+                                        margin: EdgeInsetsDirectional.symmetric(
+                                            horizontal: 10, vertical: 30),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.5),
+                                                    spreadRadius: 1,
+                                                    blurRadius: 5,
+                                                    offset: Offset(0,
+                                                        3), // horizontal, vertical offset
+                                                  ),
+                                                ],
+                                              ),
+                                              child: Column(
                                                 children: [
-                                                  AddAddress(
-                                                      'Home',
-                                                      'Add Address',
-                                                      Icons.home_outlined),
-                                                  AddAddress(
-                                                      'Work',
-                                                      'Add Address',
-                                                      Icons.work_outlined),
-                                                  AddAddress(
-                                                      'School',
-                                                      'Add Address',
-                                                      Icons.school_outlined),
+                                                  Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 20),
+                                                    height: 40,
+                                                    child: Center(
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            'Saved Places',
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                                fontSize: 17,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                          Container(
+                                                            height: 25,
+                                                            child: FloatingActionButton
+                                                                .small(
+                                                                    child: Icon(
+                                                                      size: 15,
+                                                                      FontAwesomeIcons
+                                                                          .plus,
+                                                                    ),
+                                                                    elevation:
+                                                                        3,
+                                                                    backgroundColor:
+                                                                        kMainYellow,
+                                                                    onPressed:
+                                                                        () {}),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  FutureBuilder<List<Address>>(
+                                                    future: api.fetchAddresses(
+                                                        http.Client()),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      if (snapshot.hasError) {
+                                                        print(snapshot.error);
+                                                        return const Center(
+                                                          child: Text(
+                                                              'An error has occurred!'),
+                                                        );
+                                                      } else if (snapshot
+                                                          .hasData) {
+                                                        return AddressList(
+                                                            addresses:
+                                                                snapshot.data!);
+                                                      } else {
+                                                        return const Center(
+                                                          child:
+                                                              CircularProgressIndicator(),
+                                                        );
+                                                      }
+                                                    },
+                                                  ),
                                                 ],
                                               ),
                                             ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            MainButton('Sign out', () {
-                              //  signout();
-                            }),
-                            SizedBox(
-                              height: 10,
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
-                  }
-                  return Center(
-                    child: CircularProgressIndicator(color: kMainYellow),
-                  );
-                })));
+                                            MainButton('Sign out', () {
+                                              //  signout();
+                                            }),
+                                            SizedBox(
+                                              height: 10,
+                                            )
+                                          ],
+                                        ),
+                                      ))
+                                ])));
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(color: kMainYellow),
+                      );
+                    }),
+              ),
+            )));
   }
 }
 
@@ -248,12 +270,14 @@ class AddAddress extends StatelessWidget {
               horizontal: BorderSide(color: Colors.grey, width: 0.5))),
       height: 60,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Icon(icon, size: 30),
           SizedBox(
             width: 30,
           ),
           Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(main),
               SizedBox(height: 5),
@@ -295,6 +319,33 @@ class ProfileSummary extends StatelessWidget {
               fontSize: 15,
             ))
       ],
+    );
+  }
+}
+
+class AddressList extends StatelessWidget {
+  const AddressList({super.key, required this.addresses});
+
+  final List<Address> addresses;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: RawScrollbar(
+        child: Container(
+          height: 100,
+          child: ListView.builder(
+            itemCount: addresses.length,
+            itemBuilder: (context, index) {
+              return AddAddress(
+                addresses[index].title,
+                addresses[index].address,
+                Icons.location_on,
+              );
+            },
+          ),
+        ),
+      ),
     );
   }
 }

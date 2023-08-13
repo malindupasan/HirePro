@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:hire_pro/models/address.dart';
 import 'package:hire_pro/models/customer.dart';
-import 'package:hire_pro/services/routes.dart';
+import 'package:hire_pro/env.dart';
 import 'package:http/http.dart' as http;
 
 class Api {
@@ -40,19 +42,46 @@ class Api {
       throw Exception('Failed to change name');
     }
   }
-  Future<Customer> changePassword(String password,String newPassword,String newPasswordDup) async {
+
+  Future<Customer> changePassword(
+      String password, String newPassword, String newPasswordDup) async {
     final response = await http.post(
       Uri.parse(url + 'changepassword'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{'id':id,'oldPw': password, 'password': newPassword,'confirmPw': newPasswordDup}),
+      body: jsonEncode(<String, String>{
+        'id': id,
+        'oldPw': password,
+        'password': newPassword,
+        'confirmPw': newPasswordDup
+      }),
     );
 
-    if (response) {
+    if (response.statusCode == 201) {
       return Customer.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to change password');
     }
   }
+
+  Future<List<Address>> fetchAddresses(http.Client client) async {
+  final response = await client.get(
+    Uri.parse(url + 'getaddress'),
+    headers: <String, String>{
+      'Content-Type': 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
+    },
+  );
+
+  // Use the compute function to run parseAddresses in a separate isolate.
+  return compute(parseAddresses, response.body);
+}
+
+// A function that converts a response body into a List<Photo>.
+List<Address> parseAddresses(String responseBody) {
+  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+
+  return parsed.map<Address>((json) => Address.fromJson(json)).toList();
+}
 }

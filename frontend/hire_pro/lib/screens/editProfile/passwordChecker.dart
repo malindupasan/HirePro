@@ -50,6 +50,17 @@ class PasswordChecker {
             borderRadius: BorderRadius.circular(20),
             backgroundColor: Color.fromARGB(255, 253, 110, 81));
       }
+    } else if (validatePassword(newPassword) != 'Password is valid') {
+      {
+        toastification.showError(
+            context: context,
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            icon: Icon(FontAwesomeIcons.circleExclamation),
+            title: 'Password doesn\'t match requiremnts!',
+            autoCloseDuration: const Duration(seconds: 3),
+            borderRadius: BorderRadius.circular(20),
+            backgroundColor: Color.fromARGB(255, 253, 110, 81));
+      }
     } else {
       await api.changePassword(currentPassword, newPassword, newPasswordDup);
       toastification.showSuccess(
