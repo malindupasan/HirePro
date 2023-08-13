@@ -150,6 +150,13 @@ exports.changePwd = async (req, res, next) => {
     try {
         const { id, oldPw, password, confirmPw } = req.body;
 
+        const isMatch = await CustomerModel.checkPassword(customer.password_hash, oldPw);
+
+        if(isMatch==false){
+            
+        }
+
+
 
 
         if (password !== confirmPw) {
