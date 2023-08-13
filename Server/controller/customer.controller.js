@@ -5,7 +5,7 @@ const CustomerModel = require('../model/customer.model')
 exports.register = async (req, res, next) => {
     try {
         const { name, email, contact, password } = req.body;
-      
+
 
 
 
@@ -64,7 +64,7 @@ exports.changeName = async (req, res, next) => {
 exports.addAddress = async (req, res, next) => {
     try {
 
-        const { address, title ,latitude,longitude} = req.body;
+        const { address, title, latitude, longitude } = req.body;
 
 
         const authHeader = req.headers.authorization;
@@ -79,8 +79,8 @@ exports.addAddress = async (req, res, next) => {
 
         const id = data.id;
 
-        const successRes = await CustomerModel.addAddress(id, address, title ,latitude,longitude);
-        console.log(successRes);
+        const successRes = await CustomerModel.addAddress(id, address, title, latitude, longitude);
+        // console.log(successRes);
         res.status(201).send("successRes");
         // res.json({ status: true, success: "Name updated successfully" })
 
@@ -122,24 +122,15 @@ exports.getAddresses = async (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
 
-        if (!authHeader) {
-            return res.status(401).json({ message: 'No authorization header found' });
-        }
 
-        const token = authHeader.split(' ')[1]; // Extract the token part
+        const id = await CustomerServices.getIdFromToken(authHeader);
+        // const id=data.id
 
-        if (!token) {
-            // res.send(404);
-            console.log("no  token")
-        }
+        // console.log("s"+id);
+        const successRes = await CustomerModel.getAddress(id);
 
 
-        const data = await CustomerServices.decodeToken(token, "mal123")
-        // console.log(data);
-        const successRes = await CustomerModel.getAddress(data.id);
-
-
-        res.json(successRes);
+        res.status(200).json(successRes);
     } catch (error) {
         console.log(error + "vye")
     }
@@ -148,12 +139,23 @@ exports.getAddresses = async (req, res, next) => {
 
 exports.changePwd = async (req, res, next) => {
     try {
-        const { id, oldPw, password, confirmPw } = req.body;
+
+        const authHeader = req.headers.authorization;
+
+
+        const id = await CustomerServices.getIdFromToken(authHeader);
+
+        const customer = await CustomerModel.findById(id);
+
+        const { oldPw, password, confirmPw } = req.body;
 
         const isMatch = await CustomerModel.checkPassword(customer.password_hash, oldPw);
 
-        if(isMatch==false){
+        if (isMatch == false) {
+            res.send("old password is wrong")
             
+
+            throw new Error("Wrong credentials");
         }
 
 
