@@ -69,7 +69,7 @@ class Customer {
       const values = [id];
 
       const result = await db.query(query, values);
-      console.log(result.rows[0]);
+      // console.log(result.rows[0]);
       return result.rows
     } catch (error) {
       
@@ -90,7 +90,7 @@ class Customer {
     }
   }
   static async findById(id) {
-    const query = 'SELECT id,contact,name,email,loyalty_points FROM customer WHERE id = $1';
+    const query = 'SELECT id,contact,name,email,loyalty_points,password_hash FROM customer WHERE id = $1';
     const values = [id];
 
     try {

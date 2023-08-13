@@ -44,6 +44,22 @@ class CustomerServices{
        return   jwt.verify(token,secretKey)
       
     }
+    static async getIdFromToken(authHeader){
+        if (!authHeader) {
+            return res.status(401).json({ message: 'No authorization header found' });
+        }
+
+        const token = authHeader.split(' ')[1]; // Extract the token part
+
+        if (!token) {
+            // res.send(404);
+            console.log("no  token")
+        }
+
+
+        const data = await CustomerServices.decodeToken(token, "mal123")
+        return data.id;
+    }
 
 
 }
