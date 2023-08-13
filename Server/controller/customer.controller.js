@@ -61,6 +61,34 @@ exports.changeName = async (req, res, next) => {
     }
 }
 
+exports.addAddress = async (req, res, next) => {
+    try {
+
+        const { address, title ,latitude,longitude} = req.body;
+
+
+        const authHeader = req.headers.authorization;
+
+        if (!authHeader) {
+            return res.status(401).json({ message: 'No authorization header found' });
+        }
+
+        const token = authHeader.split(' ')[1]; // Extract the token part
+
+        const data = await CustomerServices.decodeToken(token, "mal123")
+
+        const id = data.id;
+
+        const successRes = await CustomerModel.addAddress(id, address, title ,latitude,longitude);
+        console.log(successRes);
+        res.status(201).send("successRes");
+        // res.json({ status: true, success: "Name updated successfully" })
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 exports.getData = async (req, res, next) => {
     try {
 
@@ -121,6 +149,13 @@ exports.getAddresses = async (req, res, next) => {
 exports.changePwd = async (req, res, next) => {
     try {
         const { id, oldPw, password, confirmPw } = req.body;
+
+        const isMatch = await CustomerModel.checkPassword(customer.password_hash, oldPw);
+
+        if(isMatch==false){
+            
+        }
+
 
 
 
