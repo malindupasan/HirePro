@@ -19,5 +19,8 @@ router.get('/getdata',CustomerController.getData)
 
 router.get('/getaddress',CustomerController.getAddresses)
 
+router.post('/addaddress',CustomerController.addAddress)
+
+
 
 module.exports = router;

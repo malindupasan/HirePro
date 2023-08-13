@@ -103,6 +103,32 @@ class Customer {
     }
   }
 
+  static async addAddress(id, address, title ,latitude,longitude){
+    try {
+
+        const query = 'SELECT * FROM "CustomerAddress" WHERE id = $1 and address =$2';
+        const values = [id,address];
+        const result = await db.query(query, values);
+        if(result.rows.length>0){
+          console.log(result.rows);
+          return false;
+        }
+        const query1 = 'insert into "CustomerAddress" values($1, $2, $3, $4, $5) RETURNING *';
+        const values1 = [id, address, title ,latitude,longitude];
+        const result1 = await db.query(query1, values1);
+        
+        if(result1.rows.length>0){
+        return true;}
+
+
+        
+
+        
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   static async checkPassword(hashed_password, password) {
     try {
