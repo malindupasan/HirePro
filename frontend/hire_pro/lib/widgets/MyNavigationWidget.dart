@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:hire_pro/screens/homeScreen.dart';
 import 'package:hire_pro/screens/jobCompletedScreen.dart';
 import 'package:hire_pro/screens/userProfile.dart';
 
 class MyNavigationWidget extends StatefulWidget {
-   final token;
-     const MyNavigationWidget({required this.token, super.key});
+  final token;
+  const MyNavigationWidget({required this.token, super.key});
   @override
   _MyNavigationWidgetState createState() => _MyNavigationWidgetState();
 }
@@ -18,7 +19,13 @@ class _MyNavigationWidgetState extends State<MyNavigationWidget> {
     return Scaffold(
       body: IndexedStack(
         index: _selectedIndex,
-        children: <Widget>[HomeScreen(token: widget.token,), JobCompletedScreen(), UserProfile()],
+        children: <Widget>[
+          HomeScreen(
+            token: widget.token,
+          ),
+          JobCompletedScreen(),
+          UserProfile()
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

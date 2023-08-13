@@ -126,8 +126,13 @@ exports.getAddresses = async (req, res, next) => {
         const id = await CustomerServices.getIdFromToken(authHeader);
         // const id=data.id
 
-        // console.log("s"+id);
-        const successRes = await CustomerModel.getAddress(id);
+
+
+        const data = await CustomerServices.decodeToken(token, "mal123")
+        // console.log(data);
+      
+        const successRes = await CustomerModel.getAddress(data.id);
+        console.log(successRes);
 
 
         res.status(200).json(successRes);
@@ -168,7 +173,9 @@ exports.changePwd = async (req, res, next) => {
         }
 
         const successRes = await CustomerModel.updatePassword({ id, password });
-        res.json({ status: true, success: "password updated successfully" })
+        res.status(201).json(successRes);
+        console.log(successRes);
+        // res.json({ status: true, success: "password updated successfully" })
 
     } catch (error) {
         console.log(error);

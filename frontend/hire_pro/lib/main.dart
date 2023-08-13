@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/screens/biddingScreen.dart';
 import 'package:hire_pro/screens/categoryScreen.dart';
+
 import 'package:hire_pro/screens/editProfile/changePassword.dart';
 import 'package:hire_pro/screens/editProfile/emailcodereqScreen.dart';
 import 'package:hire_pro/screens/emailCodeVerifyScreen.dart';
@@ -63,7 +64,7 @@ class HirePro extends StatelessWidget {
         //     ),
         '/category': (context) => CategoryScreen(),
         '/ongoing': (context) => OngoingScreen(),
-        '/profile': (context) => UserProfile(),
+        // '/profile': (context) => MyHomePage(),
         '/edit_profile': (context) => EditProfileScreen(),
         '/job_request': (context) => JobRequestScreen(),
         '/confirm_job_request': (context) => ConfirmationScreen(),
