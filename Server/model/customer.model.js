@@ -9,7 +9,7 @@ class Customer {
     this.email = email;
     this.loyalty_points = loyalty_points;
     this.password_hash = password_hash;
-  } 
+  }
 
   static async create(customerData) {
     const { contact, name, email, password_hash } = customerData;
@@ -53,7 +53,7 @@ class Customer {
     const hashed_pw = await bcrypt.hash(password, salt);
 
     const query = 'UPDATE customer set password_hash=$1 where id=$2 RETURNING  *';
-    const values = [hashed_pw,id];
+    const values = [hashed_pw, id];
 
     try {
       const result = await db.query(query, values);
@@ -63,16 +63,16 @@ class Customer {
     }
   }
 
-  static async getAddress(id){
+  static async getAddress(id) {
     try {
-      const query='select * from "CustomerAddress" where id=$1';
+      const query = 'select * from "CustomerAddress" where id=$1';
       const values = [id];
 
       const result = await db.query(query, values);
-      console.log(result.rows[0]);
+      // console.log(result.rows[0]);
       return result.rows
     } catch (error) {
-      
+
     }
   }
 

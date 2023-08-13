@@ -5,7 +5,7 @@ const CustomerModel = require('../model/customer.model')
 exports.register = async (req, res, next) => {
     try {
         const { name, email, contact, password } = req.body;
-      
+
 
 
 
@@ -108,10 +108,11 @@ exports.getAddresses = async (req, res, next) => {
 
         const data = await CustomerServices.decodeToken(token, "mal123")
         // console.log(data);
+      
         const successRes = await CustomerModel.getAddress(data.id);
+        console.log(successRes);
 
-
-        res.json(successRes);
+        res.status(200).json(successRes);
     } catch (error) {
         console.log(error + "vye")
     }
@@ -131,7 +132,9 @@ exports.changePwd = async (req, res, next) => {
         }
 
         const successRes = await CustomerModel.updatePassword({ id, password });
-        res.json({ status: true, success: "password updated successfully" })
+        res.status(201).json(successRes);
+        console.log(successRes);
+        // res.json({ status: true, success: "password updated successfully" })
 
     } catch (error) {
         console.log(error);
