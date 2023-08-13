@@ -49,9 +49,10 @@ class Api {
       Uri.parse(url + 'changepassword'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+         HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
       },
       body: jsonEncode(<String, String>{
-        'id': id,
+        // 'id': id,
         'oldPw': password,
         'password': newPassword,
         'confirmPw': newPasswordDup

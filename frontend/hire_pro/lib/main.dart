@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
+import 'package:hire_pro/screens/addAddressScreen.dart';
 import 'package:hire_pro/screens/biddingScreen.dart';
 import 'package:hire_pro/screens/categoryScreen.dart';
 
@@ -73,6 +74,7 @@ class HirePro extends StatelessWidget {
         '/emailcoderequest': (context) => EmailcodereqScreen(),
         '/emailcodeverify': (context) => EmailCodeVerifyScreen(),
         '/change_password': (context) => ChangePassword(),
+        '/add_address': (context) => AddAddressScreen(),
       },
     );
   }

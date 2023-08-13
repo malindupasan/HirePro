@@ -200,7 +200,11 @@ class _UserProfileState extends State<UserProfile> {
                                                                     backgroundColor:
                                                                         kMainYellow,
                                                                     onPressed:
-                                                                        () {}),
+                                                                        () {
+                                                                      Navigator.pushNamed(
+                                                                          context,
+                                                                          '/add_address');
+                                                                    }),
                                                           )
                                                         ],
                                                       ),
