@@ -55,6 +55,7 @@ dependencies:
   jwt_decoder: ^2.0.1
   fluttertoast: ^8.2.2
   motion_toast: ^2.7.8
+  toastification: ^0.0.3
  
   
 

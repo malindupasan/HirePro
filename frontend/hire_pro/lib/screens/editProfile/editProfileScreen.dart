@@ -23,13 +23,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController nameController = TextEditingController();
   @override
   void dispose() {
-    // Clean up the controller when the widget is removed from the
-    // widget tree.
     nameController.dispose();
     super.dispose();
   }
 
-  // Future<Customer>? _name;
   Api api = Api();
 
   late Future<Customer> customer;
@@ -217,7 +214,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       }),
                                   EditField(
                                       label: 'Password',
-                                      value: 'hariniU',
+                                      value: 'DummyPassword',
                                       edit: () {
                                         Navigator.pushNamed(
                                             context, '/change_password');
