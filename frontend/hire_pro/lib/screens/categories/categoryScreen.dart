@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
+import 'package:hire_pro/screens/categories/categories.dart';
 import 'package:hire_pro/widgets/HireProAppBar.dart';
 import 'package:hire_pro/widgets/MyNavigationWidget.dart';
 import 'package:hire_pro/widgets/MainCard.dart';
@@ -16,45 +17,24 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-  List<Map<String, String>> _categories = [
-    {
-      'Gardening': 'images/gardener.png',
-    },
-    {
-      'Plumbing': 'images/plumber.png',
-    },
-    {
-      'Cleaning': 'images/cleaning.png',
-    },
-    {
-      'Furniture': 'images/workspace.png',
-    },
-    {
-      'Hair Cutting': 'images/hair-cut.png',
-    },
-    {
-      'Lawn Moving': 'images/lawn-mower.png',
-    },
-    {
-      'Painting': 'images/painting.png',
-    },
-  ];
+  Categories category = Categories();
 
   List<Map<String, String>> _filteredItems = [];
+  late List<Map<String, String>> categories = category.getCategories();
 
   @override
   void initState() {
     // TODO: implement initState
-    _filteredItems = _categories;
+    _filteredItems = categories;
     super.initState();
   }
 
   void _filterItems(String searchText) {
     List<Map<String, String>> results = [];
     if (searchText.isEmpty) {
-      results = _categories;
+      results = categories;
     } else {
-      results = _categories
+      results = categories
           .where((item) =>
               item.keys.first.toLowerCase().contains(searchText.toLowerCase()))
           .toList();
