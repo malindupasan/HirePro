@@ -28,6 +28,7 @@ class _TimePickerState extends State<TimePicker> {
                   selectedTime = time;
                 });
               }
+            
             },
             child: Text('Set the time'),
           ),

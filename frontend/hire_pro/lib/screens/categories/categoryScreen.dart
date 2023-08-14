@@ -24,7 +24,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _filteredItems = categories;
     super.initState();
   }
@@ -124,7 +123,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                           ],
                         ),
                         onTap: () {
-                          Navigator.pushNamed(context, '/job_request');
+                          String selectedCategory = category.keys.first;
+                          Navigator.pushNamed(context, '/job_request',arguments:selectedCategory);
                         },
                       ),
                     ),
