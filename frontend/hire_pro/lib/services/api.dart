@@ -79,7 +79,7 @@ class Api {
   return compute(parseAddresses, response.body);
 }
 
-// A function that converts a response body into a List<Photo>.
+// A function that converts a response body into a List<Address>.
 List<Address> parseAddresses(String responseBody) {
   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
 

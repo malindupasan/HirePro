@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:hire_pro/widgets/radioButton.dart';
 import 'package:hire_pro/screens/job_request/jobRequest.dart';
 import 'package:hire_pro/services/timePicker.dart';
 import 'package:hire_pro/services/calander.dart';
+
+enum SingingCharacter { lafayette, jefferson }
 
 class TaskAddScreen extends StatefulWidget {
   const TaskAddScreen({super.key});
@@ -19,6 +22,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
     'Yes',
     'No',
   ];
+
   void openFiles() async {
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(allowMultiple: true);
@@ -43,15 +47,6 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-        // Container(
-        //     margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        //     alignment: Alignment.centerLeft,
-        //     child: GestureDetector(
-        //       child: Icon(Icons.arrow_back),
-        //       onTap: () {
-        //         Navigator.pop(context);
-        //       },
-        //     )),
         Text(
           'Enter Task Details',
           style: kHeading1,
@@ -73,7 +68,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
           'Ex: I have to repair my ...',
         ),
         FormLabel('Goods Provided'),
-        RadioButton(_options, _selectedOption),
+        RadioExample(),
         FormLabel('Enter Price Estimate'),
         Row(
           children: [
@@ -103,28 +98,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
     );
   }
 
-  Row RadioButton(List<String> _options, String _selectedOption) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: _options.map((option) {
-        return Row(
-          children: [
-            Radio<String>(
-              value: option,
-              groupValue: _selectedOption,
-              onChanged: (selectedOption) {
-                setState(() {
-                  if (selectedOption != null) _selectedOption = selectedOption;
-                });
-              },
-              activeColor: kMainYellow,
-            ),
-            Text(option),
-          ],
-        );
-      }).toList(),
-    );
-  }
+  
 
   Container FileUpload() {
     return Container(
