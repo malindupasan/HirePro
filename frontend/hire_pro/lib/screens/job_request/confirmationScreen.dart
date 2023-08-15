@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
+import 'package:hire_pro/screens/job_request/TaskAddScreen.dart';
 import 'package:hire_pro/widgets/MainCard.dart';
 
 class ConfirmationScreen extends StatefulWidget {
@@ -10,7 +11,7 @@ class ConfirmationScreen extends StatefulWidget {
 }
 
 class _ConfirmationScreenState extends State<ConfirmationScreen> {
-  List<String> images = ['', ''];
+  List<String> images = ['images/lawn1.jpg', 'images/lawn2.jpg'];
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -28,14 +29,36 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ContentSection('Task', 'Plumbing'),
-                    ContentSection(
-                        'Where', 'Galle road,Katukurunda,Kalutara south'),
-                    ContentSection('Schedule Time', '14:00'),
+                    ContentSection('Task', globalCategory),
+                    if (globalCategory == "Lawn Mowing")
+                      Column(
+                        children: [
+                          ContentSection('Land Area', formArea.toString()),
+                        ],
+                      ),
+                    ContentSection('Where', formLocation!),
+                    if (formselectedTime != null && calanderDate != null)
+                      Column(
+                        children: [
+                          ContentSection(
+                              'Scheduled Time',
+                              formselectedTime
+                                  .toString()
+                                  .split('(')[1]
+                                  .split(')')[0]),
+                          ContentSection(
+                              'Scheduled Date',
+                              formselectedTime
+                                  .toString()
+                                  .split('(')[1]
+                                  .split(')')[0]),
+                        ],
+                      ),
                     Column(
                       children: [
                         ContentSection('Description', ''),
                         Container(
+                          width: double.infinity,
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             shape: BoxShape.rectangle,
@@ -49,24 +72,30 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                               EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                           child: Text(
                               textAlign: TextAlign.justify,
-                              "Hi there! I'm in need of a skilled plumber to help me with an urgent issue at my home. My kitchen faucet has been leaking persistently, and it's causing water wastage and an annoying dripping sound. I've tried tightening the faucet handle, but the leak hasn't stopped.Hi there! I'm in need of a skilled plumber to help me with an urgent issue at my home. My kitchen faucet has been leaking persistently, and it's causing water wastage and an annoying dripping sound. I've tried tightening the faucet handle, but the leak hasn't stopped.",
+                              formDescription!,
                               maxLines: 3,
                               overflow: TextOverflow.ellipsis),
                         ),
                       ],
                     ),
-                    ContentSection('Goods Provided', 'Yes'),
-                    ContentSection('Estimate (Rs.)', '2500-3500'),
+                    ContentSection(
+                        'Goods Provided', formbool.toString().split('.')[1]),
+                    ContentSection('Estimate (Rs.)', formMin! + '-' + formMax!),
                     ContentSection('Photos', ''),
                     Expanded(
                       child: GridView.count(
-                        crossAxisCount: 3,
+                        crossAxisCount: 2,
                         children: images.map((image) {
                           return Card(
+                            color: kMainGrey,
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30)),
-                            child: ListTile(
-                              title: Text(image),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: AssetImage(image))),
                             ),
                           );
                         }).toList(),

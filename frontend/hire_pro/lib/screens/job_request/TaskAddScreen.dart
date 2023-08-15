@@ -1,17 +1,26 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:hire_pro/env.dart';
-import 'package:hire_pro/models/address.dart';
-import 'package:hire_pro/widgets/radioButton.dart';
 import 'package:hire_pro/screens/job_request/jobRequest.dart';
 import 'package:hire_pro/services/timePicker.dart';
 import 'package:hire_pro/services/calander.dart';
+import 'package:hire_pro/widgets/smallButton.dart';
 
-enum SingingCharacter { lafayette, jefferson }
+enum SingingCharacter { Yes, No }
+
+String? formLocation;
+String? formDescription;
+String? formMin;
+String? formMax;
+String? formGoods;
+DateTime? calanderDate;
+TimeOfDay? formselectedTime;
+late String globalCategory;
+String? formArea;
+SingingCharacter? formbool;
 
 class TaskAddScreen extends StatefulWidget {
   const TaskAddScreen({super.key});
@@ -21,6 +30,23 @@ class TaskAddScreen extends StatefulWidget {
 }
 
 class _TaskAddScreenState extends State<TaskAddScreen> {
+  final location = TextEditingController();
+  final description = TextEditingController();
+  final min = TextEditingController();
+  final max = TextEditingController();
+  final area = TextEditingController();
+  bool isChecked = false;
+  SingingCharacter? _character = SingingCharacter.No;
+
+  @override
+  void dispose() {
+    location.dispose();
+    description.dispose();
+    min.dispose();
+    max.dispose();
+    super.dispose();
+  }
+
   JobRequest job = JobRequest();
   String _selectedOption = '';
   List<String> _options = [
@@ -54,41 +80,55 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
     }
   }
 
+  void updateValues() {
+    formLocation = location.text;
+    formDescription = description.text;
+    formMax = max.text;
+    formMin = min.text;
+    formArea = area.text;
+  }
+
   @override
   Widget build(BuildContext context) {
     category = ModalRoute.of(context)!.settings.arguments;
-    print(category);
+
+    globalCategory = category;
+
     return SingleChildScrollView(
       child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
         Text(
           'Enter Task Details',
           style: kHeading1,
         ),
+        SizedBox(
+          height: 5,
+        ),
+        Text(
+          category,
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+        ),
         FormLabel('Location'),
-        FormFieldNew(
-          10,
-          Icons.location_on,
-          1,
-          '',
-          'Enter the location',
-        ),
+        FormFieldNew(10, Icons.location_on, 1, '', location),
+        if (category == 'Lawn Mowing')
+          Column(
+            children: [
+              FormLabel('Land Area (sq. meters)'),
+              FormFieldNew(10, Icons.grass_sharp, 1, '', area),
+            ],
+          ),
         FormLabel('Description'),
-        FormFieldNew(
-          10,
-          Icons.description,
-          5,
-          '',
-          'Ex: I have to repair my ...',
-        ),
+        FormFieldNew(10, Icons.description, 5, '', description),
         FormLabel('Goods Provided'),
-        RadioExample(),
+        RadioExample(
+          character: _character,
+        ),
         FormLabel('Enter Price Estimate'),
         Row(
           children: [
             Expanded(
-                child: FormFieldNew(20, Icons.monetization_on, 1, '', 'min')),
+                child: FormFieldNew(20, Icons.monetization_on, 1, 'min', min)),
             Expanded(
-                child: FormFieldNew(20, Icons.monetization_on, 1, '', 'max')),
+                child: FormFieldNew(20, Icons.monetization_on, 1, 'max', max)),
           ],
         ),
         FormLabel('Upload Photos'),
@@ -148,6 +188,23 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
         Toggle(),
         if (job.isSchedule()) Calander(),
         if (job.isSchedule()) TimePicker(),
+        Row(
+          children: [
+            Checkbox(
+                value: isChecked,
+                activeColor: kMainYellow,
+                onChanged: (value) {
+                  setState(() {
+                    isChecked = !isChecked;
+                    updateValues();
+                  });
+                }),
+            Text(
+              "I agree that the information provided above is accurate.",
+              style: TextStyle(fontSize: 12),
+            )
+          ],
+        ),
       ]),
     );
   }
@@ -224,13 +281,14 @@ class FormLabel extends StatelessWidget {
 }
 
 class FormFieldNew extends StatelessWidget {
-  FormFieldNew(this.borderRadius, this.icon, this.lines, this.initialValue,
-      this.placeholder);
+  FormFieldNew(this.borderRadius, this.icon, this.lines, this.placeholder,
+      this.controller);
   final double borderRadius;
   final int lines;
   final IconData icon;
-  final String initialValue;
+
   final String placeholder;
+  TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -239,10 +297,10 @@ class FormFieldNew extends StatelessWidget {
         Container(
           margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: TextFormField(
-            initialValue: initialValue,
             style: TextStyle(fontSize: 14),
             maxLines: lines,
             cursorColor: Colors.blueGrey[700],
+            controller: controller,
             decoration: InputDecoration(
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey),
@@ -257,6 +315,59 @@ class FormFieldNew extends StatelessWidget {
                 icon,
                 color: Colors.grey,
               ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class RadioExample extends StatefulWidget {
+  SingingCharacter? character;
+  RadioExample({
+    super.key,
+    this.character,
+  });
+
+  @override
+  State<RadioExample> createState() => _RadioExampleState();
+}
+
+class _RadioExampleState extends State<RadioExample> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: ListTile(
+            title: const Text('No'),
+            leading: Radio<SingingCharacter>(
+              activeColor: kMainYellow,
+              value: SingingCharacter.No,
+              groupValue: widget.character,
+              onChanged: (SingingCharacter? value) {
+                setState(() {
+                  widget.character = value;
+                  formbool = value;
+                });
+              },
+            ),
+          ),
+        ),
+        Expanded(
+          child: ListTile(
+            title: const Text('Yes'),
+            leading: Radio<SingingCharacter>(
+              activeColor: kMainYellow,
+              value: SingingCharacter.Yes,
+              groupValue: widget.character,
+              onChanged: (SingingCharacter? value) {
+                setState(() {
+                  widget.character = value;
+                  formbool = value;
+                });
+              },
             ),
           ),
         ),

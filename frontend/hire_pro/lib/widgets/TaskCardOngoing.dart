@@ -4,12 +4,19 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../constants.dart';
 
-class TaskCardOngoing extends StatelessWidget {
+class TaskCardOngoing extends StatefulWidget {
   late String serviceProvider;
   late String jobType;
   late double price;
   late String image;
   TaskCardOngoing(this.serviceProvider, this.jobType, this.price, this.image);
+
+  @override
+  State<TaskCardOngoing> createState() => _TaskCardOngoingState();
+}
+
+class _TaskCardOngoingState extends State<TaskCardOngoing> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +31,7 @@ class TaskCardOngoing extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  jobType,
+                  widget.jobType,
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 Row(
@@ -37,7 +44,7 @@ class TaskCardOngoing extends StatelessWidget {
                       width: 10,
                     ),
                     Text(
-                      serviceProvider,
+                      widget.serviceProvider,
                       style: TextStyle(
                         overflow: TextOverflow.ellipsis,
                         fontSize: 18,
@@ -51,7 +58,7 @@ class TaskCardOngoing extends StatelessWidget {
                   style: TextStyle(color: Colors.grey),
                 ),
                 Text(
-                  'Rs.' + price.toString().split('.')[0],
+                  'Rs.' + widget.price.toString().split('.')[0],
                   style: TextStyle(
                       fontSize: 25,
                       color: kMainYellow,
@@ -77,7 +84,7 @@ class TaskCardOngoing extends StatelessWidget {
                 )
               ]),
         )),
-        Expanded(child: Image.asset(image))
+        Expanded(child: Image.asset(widget.image))
       ]),
       height: 150,
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),

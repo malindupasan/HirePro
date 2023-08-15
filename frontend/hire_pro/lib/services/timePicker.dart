@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
+import 'package:hire_pro/screens/job_request/TaskAddScreen.dart';
 
 class TimePicker extends StatefulWidget {
   @override
@@ -26,9 +27,9 @@ class _TimePickerState extends State<TimePicker> {
               if (time != null) {
                 setState(() {
                   selectedTime = time;
+                  formselectedTime = time;  
                 });
               }
-            
             },
             child: Text('Set the time'),
           ),
