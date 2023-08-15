@@ -128,16 +128,16 @@ exports.getAddresses = async (req, res, next) => {
 
 
 
-        const data = await CustomerServices.decodeToken(token, "mal123")
+        // const data = await CustomerServices.decodeToken(token, "mal123")
         // console.log(data);
-      
-        const successRes = await CustomerModel.getAddress(data.id);
+
+        const successRes = await CustomerModel.getAddress(id);
         console.log(successRes);
 
 
         res.status(200).json(successRes);
     } catch (error) {
-        console.log(error + "vye")
+        console.log(error + " bye")
     }
 }
 
@@ -158,7 +158,7 @@ exports.changePwd = async (req, res, next) => {
 
         if (isMatch == false) {
             res.send("old password is wrong")
-            
+
 
             throw new Error("Wrong credentials");
         }
