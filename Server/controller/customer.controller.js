@@ -1,6 +1,8 @@
 
 const CustomerServices = require("../services/customer.services")
 const CustomerModel = require('../model/customer.model')
+const LawnmovingModel = require('../model/lawnmoving.model')
+
 
 exports.register = async (req, res, next) => {
     try {
@@ -49,8 +51,11 @@ exports.login = async (req, res, next) => {
 
 exports.changeName = async (req, res, next) => {
     try {
-        const { id, name } = req.body;
+        const { name } = req.body;
+        const authHeader = req.headers.authorization;
 
+
+        const id = await CustomerServices.getIdFromToken(authHeader);
         const successRes = await CustomerServices.updateName(id, name);
         console.log(successRes);
         res.status(201).json(successRes);
@@ -61,6 +66,31 @@ exports.changeName = async (req, res, next) => {
     }
 }
 
+exports.addCustomerLawningTask = async (req, res, next) => {
+    try {
+
+        const authHeader = req.headers.authorization;
+
+
+        const id = await CustomerServices.getIdFromToken(authHeader);
+        const customer = id;
+        console.log("hi");
+        const { area, description, postedtime, estmin,estmax, location, latitude, longitude, date } = req.body;
+        // console.log(" "+location+" "+latitude+" "+longitude+" "+date);
+        // console.log(description);
+        const result =await LawnmovingModel.addtask({area, description, postedtime, estmin,estmax, location, latitude, longitude, date, customer});
+        if(!result){
+            throw new Error("cannot add task");
+        }
+        res.json(result);
+
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
 exports.addAddress = async (req, res, next) => {
     try {
 
@@ -69,15 +99,8 @@ exports.addAddress = async (req, res, next) => {
 
         const authHeader = req.headers.authorization;
 
-        if (!authHeader) {
-            return res.status(401).json({ message: 'No authorization header found' });
-        }
 
-        const token = authHeader.split(' ')[1]; // Extract the token part
-
-        const data = await CustomerServices.decodeToken(token, "mal123")
-
-        const id = data.id;
+        const id = await CustomerServices.getIdFromToken(authHeader);
 
         const successRes = await CustomerModel.addAddress(id, address, title, latitude, longitude);
         // console.log(successRes);
@@ -95,15 +118,8 @@ exports.getData = async (req, res, next) => {
 
         const authHeader = req.headers.authorization;
 
-        if (!authHeader) {
-            return res.status(401).json({ message: 'No authorization header found' });
-        }
 
-        const token = authHeader.split(' ')[1]; // Extract the token part
-
-        const data = await CustomerServices.decodeToken(token, "mal123")
-
-        const id = data.id;
+        const id = await CustomerServices.getIdFromToken(authHeader);
 
 
         const successRes = await CustomerModel.findById(id);
@@ -125,12 +141,9 @@ exports.getAddresses = async (req, res, next) => {
 
         const id = await CustomerServices.getIdFromToken(authHeader);
         // const id=data.id
-
-
-
-        const data = await CustomerServices.decodeToken(token, "mal123")
+        // const data = await CustomerServices.decodeToken(token, "mal123")
         // console.log(data);
-      
+
         const successRes = await CustomerModel.getAddress(data.id);
         console.log(successRes);
 
@@ -158,7 +171,7 @@ exports.changePwd = async (req, res, next) => {
 
         if (isMatch == false) {
             res.send("old password is wrong")
-            
+
 
             throw new Error("Wrong credentials");
         }
