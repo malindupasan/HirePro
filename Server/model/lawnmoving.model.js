@@ -31,7 +31,7 @@ class Lawnmoving extends Service {
        const tmp={
 
         ...result1.rows[0],
-        ...result2.rows[0],
+        ...result2.rows[0], 
        }
        console.log(tmp);
       return new Lawnmoving({tmp});

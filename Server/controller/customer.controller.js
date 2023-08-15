@@ -75,11 +75,11 @@ exports.addCustomerLawningTask = async (req, res, next) => {
         const id = await CustomerServices.getIdFromToken(authHeader);
         const customer = id;
         console.log("hi");
-        const { area, description, postedtime, estmin,estmax, location, latitude, longitude, date } = req.body;
+        const { area, description, postedtime, estmin, estmax, location, latitude, longitude, date } = req.body;
         // console.log(" "+location+" "+latitude+" "+longitude+" "+date);
         // console.log(description);
-        const result =await LawnmovingModel.addtask({area, description, postedtime, estmin,estmax, location, latitude, longitude, date, customer});
-        if(!result){
+        const result = await LawnmovingModel.addtask({ area, description, postedtime, estmin, estmax, location, latitude, longitude, date, customer });
+        if (!result) {
             throw new Error("cannot add task");
         }
         res.json(result);
@@ -143,8 +143,8 @@ exports.getAddresses = async (req, res, next) => {
         // const id=data.id
         // const data = await CustomerServices.decodeToken(token, "mal123")
         // console.log(data);
-      
-        const successRes = await CustomerModel.getAddress(data.id);
+
+        const successRes = await CustomerModel.getAddress(id);
         console.log(successRes);
 
 
