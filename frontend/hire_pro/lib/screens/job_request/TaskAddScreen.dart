@@ -28,8 +28,10 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
   List<PlatformFile> files = [];
   late dynamic category;
   void openFiles() async {
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(allowMultiple: true);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        allowMultiple: true,
+        type: FileType.custom,
+        allowedExtensions: ['jpg', 'png']);
 
     if (result != null) {
       setState(() {
@@ -40,7 +42,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                       '_' +
                       category +
                       '_' +
-                      DateTime.now().toString(), // Provide a default filename
+                      DateTime.now().toString(), 
                   size: 0, // Provide a default size (e.g., 0 bytes)
                 ))
             .toList();
@@ -99,8 +101,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
           Container(
             margin: EdgeInsets.all(10),
             padding: EdgeInsets.all(5),
-            height: (files.length *
-                81), // Adjust the height based on card height and padding
+            height: (files.length * 80 + 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -134,7 +135,10 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                           FontAwesomeIcons.image,
                           color: Colors.black,
                         ),
-                        title: Text(filename),
+                        title: Text(
+                          filename,
+                          style: TextStyle(overflow: TextOverflow.ellipsis),
+                        ),
                       ),
                     );
                   },
