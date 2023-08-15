@@ -45,7 +45,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   }, () {
                     Navigator.pushNamed(context, '/category');
                   })),
-              SearchBarWidget(),
+              GestureDetector(
+                child: SearchBarWidget(),
+                onTap: () {
+                  Navigator.pushNamed(context, '/category');
+                },
+              ),
               MainCard(110, 325, Color(0XFFF5F5F5),
                   Image.asset('images/townPNG.png')),
               Row(

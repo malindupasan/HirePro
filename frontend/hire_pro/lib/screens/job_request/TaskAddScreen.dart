@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
@@ -38,17 +40,14 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
         files = result.paths
             .map((path) => PlatformFile(
                   path: path,
-                  name: id +
-                      '_' +
-                      category +
-                      '_' +
-                      DateTime.now().toString(), 
+                  name: id + '_' + category + '_' + DateTime.now().toString(),
                   size: 0, // Provide a default size (e.g., 0 bytes)
                 ))
             .toList();
       });
 
       print(files);
+      final file = File(files[0].path.toString());
     } else {
       // User canceled the picker
       // Handle the cancelation or provide appropriate code here
