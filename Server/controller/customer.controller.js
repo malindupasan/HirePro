@@ -8,11 +8,20 @@ exports.register = async (req, res, next) => {
     try {
         const { name, email, contact, password } = req.body;
 
+        const result = CustomerServices.registerCustomer(name, email, contact, password);
+        if(!result) {
+            throw new Error("Couldn't register");
+        }
 
+        let tokenData = { id: customer.id, email: customer.email }
+
+        const token = await CustomerServices.genarateToken(tokenData, "mal123", '1h')
+
+        res.status(200).json({ status: true, token: token })
 
 
     } catch (error) {
-
+        console.log(error);
     }
 }
 
@@ -75,11 +84,11 @@ exports.addCustomerLawningTask = async (req, res, next) => {
         const id = await CustomerServices.getIdFromToken(authHeader);
         const customer = id;
         console.log("hi");
-        const { area, description, postedtime, estmin,estmax, location, latitude, longitude, date } = req.body;
+        const { area, description, postedtime, estmin, estmax, location, latitude, longitude, date } = req.body;
         // console.log(" "+location+" "+latitude+" "+longitude+" "+date);
         // console.log(description);
-        const result =await LawnmovingModel.addtask({area, description, postedtime, estmin,estmax, location, latitude, longitude, date, customer});
-        if(!result){
+        const result = await LawnmovingModel.addtask({ area, description, postedtime, estmin, estmax, location, latitude, longitude, date, customer });
+        if (!result) {
             throw new Error("cannot add task");
         }
         res.json(result);

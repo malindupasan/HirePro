@@ -8,6 +8,7 @@ class CustomerServices{
             
             const newCustomer = await CustomerModel.create({name,email,contact,password_hash});
             console.log('New customer created:', newCustomer);
+            return true;
 
         } catch (error) {
             console.error('Error creating customer:', error);
@@ -31,9 +32,7 @@ class CustomerServices{
         }
     }
 
-    static async changePassword(id,password){
-        
-    }
+  
 
 
     static async genarateToken(tokenData,secretKey,jwt_expire){
