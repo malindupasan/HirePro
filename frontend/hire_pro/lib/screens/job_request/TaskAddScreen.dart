@@ -20,7 +20,7 @@ DateTime? calanderDate;
 TimeOfDay? formselectedTime;
 late String globalCategory;
 String? formArea;
-SingingCharacter? formbool;
+SingingCharacter? formbool = SingingCharacter.No;
 
 class TaskAddScreen extends StatefulWidget {
   const TaskAddScreen({super.key});
