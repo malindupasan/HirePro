@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
+import 'package:hire_pro/screens/job_request/TaskAddScreen.dart';
+import 'package:hire_pro/screens/job_request/date.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Calander extends StatefulWidget {
@@ -37,7 +39,6 @@ class _CalanderState extends State<Calander> {
         focusedDay: _focusedDay,
         calendarFormat: _calendarFormat,
         selectedDayPredicate: (day) {
-       
           return isSameDay(_selectedDay, day);
         },
         onDaySelected: (selectedDay, focusedDay) {
@@ -46,6 +47,7 @@ class _CalanderState extends State<Calander> {
             setState(() {
               _selectedDay = selectedDay;
               _focusedDay = focusedDay;
+              calanderDate = _selectedDay;
             });
           }
         },

@@ -152,14 +152,14 @@ exports.getAddresses = async (req, res, next) => {
         // const id=data.id
         // const data = await CustomerServices.decodeToken(token, "mal123")
         // console.log(data);
-
+      
         const successRes = await CustomerModel.getAddress(data.id);
         console.log(successRes);
 
 
         res.status(200).json(successRes);
     } catch (error) {
-        console.log(error + "vye")
+        console.log(error + " bye")
     }
 }
 

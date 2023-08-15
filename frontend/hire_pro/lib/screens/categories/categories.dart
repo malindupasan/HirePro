@@ -16,7 +16,7 @@ class Categories {
       'Hair Cutting': 'images/hair-cut.png',
     },
     {
-      'Lawn Moving': 'images/lawn-mower.png',
+      'Lawn Mowing': 'images/lawn-mower.png',
     },
     {
       'Painting': 'images/painting.png',
