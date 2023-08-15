@@ -56,6 +56,7 @@ dependencies:
   fluttertoast: ^8.2.2
   motion_toast: ^2.7.8
   toastification: ^0.0.3
+  google_maps_flutter: ^2.4.0
  
   
 

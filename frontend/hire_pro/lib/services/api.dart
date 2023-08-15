@@ -49,9 +49,10 @@ class Api {
       Uri.parse(url + 'changepassword'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+         HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
       },
       body: jsonEncode(<String, String>{
-        'id': id,
+        // 'id': id,
         'oldPw': password,
         'password': newPassword,
         'confirmPw': newPasswordDup
@@ -78,7 +79,7 @@ class Api {
   return compute(parseAddresses, response.body);
 }
 
-// A function that converts a response body into a List<Photo>.
+// A function that converts a response body into a List<Address>.
 List<Address> parseAddresses(String responseBody) {
   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
 

@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+import 'package:hire_pro/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 
@@ -30,9 +32,10 @@ class ImageUpload {
   }
 
   Future<CroppedFile?> crop(
+    
       {required XFile file, CropStyle cropStyle = CropStyle.rectangle}) async {
     final croppedFile = await _imageCropper.cropImage(
-        sourcePath: file.path, cropStyle: cropStyle, compressQuality: 100);
+        sourcePath: file.path, cropStyle: cropStyle, compressQuality: 100,uiSettings: [AndroidUiSettings(toolbarColor: kMainYellow,toolbarTitle: "Crop Image")]);
     return croppedFile;
   }
 }

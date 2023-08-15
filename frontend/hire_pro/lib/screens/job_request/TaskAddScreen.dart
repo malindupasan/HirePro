@@ -1,9 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:hire_pro/env.dart';
+import 'package:hire_pro/models/address.dart';
+import 'package:hire_pro/widgets/radioButton.dart';
 import 'package:hire_pro/screens/job_request/jobRequest.dart';
 import 'package:hire_pro/services/timePicker.dart';
 import 'package:hire_pro/services/calander.dart';
+
+enum SingingCharacter { lafayette, jefferson }
 
 class TaskAddScreen extends StatefulWidget {
   const TaskAddScreen({super.key});
@@ -19,20 +27,27 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
     'Yes',
     'No',
   ];
+  List<PlatformFile> files = [];
+  late dynamic category;
   void openFiles() async {
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(allowMultiple: true);
-    List<PlatformFile> files =
-        []; // Declare the 'files' list outside the if block
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        allowMultiple: true,
+        type: FileType.custom,
+        allowedExtensions: ['jpg', 'png']);
 
     if (result != null) {
-      files = result.paths
-          .map((path) => PlatformFile(
-                path: path,
-                name: 'default_filename', // Provide a default filename
-                size: 0, // Provide a default size (e.g., 0 bytes)
-              ))
-          .toList();
+      setState(() {
+        files = result.paths
+            .map((path) => PlatformFile(
+                  path: path,
+                  name: id + '_' + category + '_' + DateTime.now().toString(),
+                  size: 0, // Provide a default size (e.g., 0 bytes)
+                ))
+            .toList();
+      });
+
+      print(files);
+      final file = File(files[0].path.toString());
     } else {
       // User canceled the picker
       // Handle the cancelation or provide appropriate code here
@@ -41,17 +56,10 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
 
   @override
   Widget build(BuildContext context) {
+    category = ModalRoute.of(context)!.settings.arguments;
+    print(category);
     return SingleChildScrollView(
       child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-        // Container(
-        //     margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        //     alignment: Alignment.centerLeft,
-        //     child: GestureDetector(
-        //       child: Icon(Icons.arrow_back),
-        //       onTap: () {
-        //         Navigator.pop(context);
-        //       },
-        //     )),
         Text(
           'Enter Task Details',
           style: kHeading1,
@@ -61,7 +69,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
           10,
           Icons.location_on,
           1,
-          'Default Address',
+          '',
           'Enter the location',
         ),
         FormLabel('Description'),
@@ -73,7 +81,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
           'Ex: I have to repair my ...',
         ),
         FormLabel('Goods Provided'),
-        RadioButton(_options, _selectedOption),
+        RadioExample(),
         FormLabel('Enter Price Estimate'),
         Row(
           children: [
@@ -85,44 +93,62 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
         ),
         FormLabel('Upload Photos'),
         FileUpload(),
+        SizedBox(
+          height: 20,
+        ),
+        if (files.isNotEmpty)
+          Container(
+            margin: EdgeInsets.all(10),
+            padding: EdgeInsets.all(5),
+            height: (files.length * 80 + 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Selected Images',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: files.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    String filename = files[index].name;
+
+                    return Card(
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: const Color.fromARGB(255, 151, 151, 151),
+                        ),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      color: Color.fromARGB(255, 246, 245, 244),
+                      child: ListTile(
+                        leading: Icon(
+                          FontAwesomeIcons.image,
+                          color: Colors.black,
+                        ),
+                        title: Text(
+                          filename,
+                          style: TextStyle(overflow: TextOverflow.ellipsis),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
         Toggle(),
         if (job.isSchedule()) Calander(),
         if (job.isSchedule()) TimePicker(),
-        // Container(
-        //     alignment: Alignment.bottomRight,
-        //     margin: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-        //     child: SmallButton(
-        //       'Submit',
-        //       () {
-        //         Navigator.pushNamed(context, '/confirm_job_request');
-        //       },
-        //       kMainYellow,
-        //       Colors.white,
-        //     ))
       ]),
-    );
-  }
-
-  Row RadioButton(List<String> _options, String _selectedOption) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: _options.map((option) {
-        return Row(
-          children: [
-            Radio<String>(
-              value: option,
-              groupValue: _selectedOption,
-              onChanged: (selectedOption) {
-                setState(() {
-                  if (selectedOption != null) _selectedOption = selectedOption;
-                });
-              },
-              activeColor: kMainYellow,
-            ),
-            Text(option),
-          ],
-        );
-      }).toList(),
     );
   }
 

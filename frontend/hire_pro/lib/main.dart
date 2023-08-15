@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
+import 'package:hire_pro/screens/addAddressScreen.dart';
 import 'package:hire_pro/screens/biddingScreen.dart';
-import 'package:hire_pro/screens/categoryScreen.dart';
-
+import 'package:hire_pro/screens/categories/categoryScreen.dart';
 import 'package:hire_pro/screens/editProfile/changePassword.dart';
 import 'package:hire_pro/screens/editProfile/emailcodereqScreen.dart';
 import 'package:hire_pro/screens/emailCodeVerifyScreen.dart';
@@ -45,7 +45,9 @@ class HirePro extends StatelessWidget {
         textTheme: const TextTheme(
           displayLarge: TextStyle(fontSize: 72),
           titleLarge: TextStyle(fontSize: 36),
+        
           bodyMedium: TextStyle(fontSize: 14),
+          
         ),
         // colorScheme:
         //     ColorScheme.fromSwatch().copyWith(secondary: Color(0xFFD4842B)),
@@ -73,6 +75,7 @@ class HirePro extends StatelessWidget {
         '/emailcoderequest': (context) => EmailcodereqScreen(),
         '/emailcodeverify': (context) => EmailCodeVerifyScreen(),
         '/change_password': (context) => ChangePassword(),
+        '/add_address': (context) => AddAddressScreen(),
       },
     );
   }
