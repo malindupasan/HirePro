@@ -13,7 +13,7 @@ router.post('/changepassword', CustomerController.changePwd)
 router.get('/getdata',CustomerController.getData)
 
 
-
+router.post('/addlawnmovingtask',CustomerController.addCustomerLawningTask)
 
 
 
