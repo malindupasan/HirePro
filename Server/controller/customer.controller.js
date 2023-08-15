@@ -8,11 +8,20 @@ exports.register = async (req, res, next) => {
     try {
         const { name, email, contact, password } = req.body;
 
+        const result = CustomerServices.registerCustomer(name, email, contact, password);
+        if(!result) {
+            throw new Error("Couldn't register");
+        }
 
+        let tokenData = { id: customer.id, email: customer.email }
+
+        const token = await CustomerServices.genarateToken(tokenData, "mal123", '1h')
+
+        res.status(200).json({ status: true, token: token })
 
 
     } catch (error) {
-
+        console.log(error);
     }
 }
 
