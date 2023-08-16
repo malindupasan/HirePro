@@ -33,6 +33,7 @@ class Api {
       Uri.parse(url + 'changename'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
       },
       body: jsonEncode(<String, String>{'name': name, 'id': id}),
     );
