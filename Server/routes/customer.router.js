@@ -21,6 +21,7 @@ router.get('/getaddress',CustomerController.getAddresses)
 
 router.post('/addaddress',CustomerController.addAddress)
 
+router.post('/storeotp',CustomerController.saveotp)
 
 
 module.exports = router;
