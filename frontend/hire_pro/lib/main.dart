@@ -12,8 +12,12 @@ import 'package:hire_pro/screens/homeScreen.dart';
 import 'package:hire_pro/screens/jobCompletedScreen.dart';
 import 'package:hire_pro/screens/job_request/stepper.dart';
 import 'package:hire_pro/screens/login/loginScreen.dart';
+import 'package:hire_pro/screens/myTasks.dart';
 import 'package:hire_pro/screens/ongoingScreen.dart';
+import 'package:hire_pro/screens/otpEnterScreen.dart';
+import 'package:hire_pro/screens/otpScreen.dart';
 import 'package:hire_pro/screens/pro_profile_screen/proProfileScreen.dart';
+import 'package:hire_pro/screens/registerSuccess.dart';
 import 'package:hire_pro/screens/userProfile.dart';
 import 'package:hire_pro/screens/userProfilesp.dart';
 import 'package:hire_pro/widgets/MyNavigationWidget.dart';
@@ -45,9 +49,7 @@ class HirePro extends StatelessWidget {
         textTheme: const TextTheme(
           displayLarge: TextStyle(fontSize: 72),
           titleLarge: TextStyle(fontSize: 36),
-        
           bodyMedium: TextStyle(fontSize: 14),
-          
         ),
         // colorScheme:
         //     ColorScheme.fromSwatch().copyWith(secondary: Color(0xFFD4842B)),
@@ -76,6 +78,11 @@ class HirePro extends StatelessWidget {
         '/emailcodeverify': (context) => EmailCodeVerifyScreen(),
         '/change_password': (context) => ChangePassword(),
         '/add_address': (context) => AddAddressScreen(),
+        '/otp': (context) => OtpScreen(),
+        '/otp_enter': (context) => OtpEnterScreen(),
+        '/register_success': (context) => RegisterSuccess(),
+        '/my_tasks':(context) => MyTasks(),
+        '/rate':(context) =>JobCompletedScreen(),
       },
     );
   }

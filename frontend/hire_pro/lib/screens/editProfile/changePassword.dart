@@ -36,7 +36,6 @@ class _ChangePasswordState extends State<ChangePassword> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-            resizeToAvoidBottomInset: true,
             appBar: HireProAppBar(context, 'Change Password'),
             body: Container(
               margin: EdgeInsets.symmetric(horizontal: 15),

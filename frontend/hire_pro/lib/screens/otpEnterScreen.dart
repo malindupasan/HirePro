@@ -69,10 +69,14 @@ class _OtpEnterScreen extends State<OtpEnterScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SmallArrowButton(
-                              kSecondaryYellow, Icons.arrow_back, () {}),
-                          SmallArrowButton(
-                              kMainYellow, Icons.arrow_forward, () {}),
+                          SmallArrowButton(kSecondaryYellow, Icons.arrow_back,
+                              () {
+                            Navigator.pop(context);
+                          }),
+                          SmallArrowButton(kMainYellow, Icons.arrow_forward,
+                              () {
+                            Navigator.pushNamed(context, '/register_success');
+                          }),
                         ],
                       ),
                     ),

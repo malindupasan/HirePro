@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hire_pro/widgets/HireProAppBar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -8,6 +10,7 @@ class AddAddressScreen extends StatefulWidget {
   @override
   State<AddAddressScreen> createState() => _AddAddressScreenState();
 }
+
 // AIzaSyDNOO9bzzNn34HNXZY1xT5IVvOlV37zFuE
 class _AddAddressScreenState extends State<AddAddressScreen> {
   @override
@@ -15,7 +18,11 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     return Scaffold(
       appBar: HireProAppBar(context, 'Add new address'),
       body: Column(children: [
-        Expanded(child: SingleChildScrollView()),
+        Expanded(
+            child: Container(
+          height: 300,
+          width: double.infinity,
+        )),
         Expanded(
           child: Column(children: []),
         )

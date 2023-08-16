@@ -30,7 +30,9 @@ class _OtpScreenState extends State<OtpScreen> {
               FormFieldRegular('Phone Number', phoneController, false),
               FormFieldRegular('Your Email', emailController, false),
               FormFieldRegular('Password', passwordController, false),
-              MainButton('Send OTP', () {})
+              MainButton('Send OTP', () {
+                Navigator.pushNamed(context, '/otp_enter');
+              })
             ]),
             TermsAndPolicy(),
           ],

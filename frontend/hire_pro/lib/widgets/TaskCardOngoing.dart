@@ -9,15 +9,14 @@ class TaskCardOngoing extends StatefulWidget {
   late String jobType;
   late double price;
   late String image;
-  TaskCardOngoing(this.serviceProvider, this.jobType, this.price, this.image);
+  late double progress;
+  TaskCardOngoing(this.serviceProvider, this.jobType, this.price, this.image,this.progress);
 
   @override
   State<TaskCardOngoing> createState() => _TaskCardOngoingState();
 }
 
 class _TaskCardOngoingState extends State<TaskCardOngoing> {
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -68,7 +67,7 @@ class _TaskCardOngoingState extends State<TaskCardOngoing> {
                   barRadius: Radius.circular(10),
                   width: 140.0,
                   lineHeight: 14.0,
-                  percent: 0.8,
+                  percent: widget.progress,
                   backgroundColor: Colors.grey[300],
                   progressColor: Colors.amberAccent,
                 ),

@@ -24,7 +24,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
               style: kHeading1,
             ),
             MainCard(
-                550,
+                630,
                 double.infinity,
                 kMainGrey,
                 Column(
