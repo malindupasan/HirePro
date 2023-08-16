@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/screens/job_request/TaskAddScreen.dart';
+import 'package:hire_pro/services/api.dart';
 import 'package:hire_pro/widgets/MainCard.dart';
 
 class ConfirmationScreen extends StatefulWidget {
@@ -46,12 +47,8 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                                   .toString()
                                   .split('(')[1]
                                   .split(')')[0]),
-                          ContentSection(
-                              'Scheduled Date',
-                              formselectedTime
-                                  .toString()
-                                  .split('(')[1]
-                                  .split(')')[0]),
+                          ContentSection('Scheduled Date',
+                              calanderDate.toString().split(' ')[0]),
                         ],
                       ),
                     Column(

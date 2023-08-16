@@ -13,7 +13,7 @@ class MainCard extends StatelessWidget {
       height: height,
       width: width,
       child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         color: color,
         elevation: 3,
         child: child,
