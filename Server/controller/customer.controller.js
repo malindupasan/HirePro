@@ -1,5 +1,7 @@
 
 const CustomerServices = require("../services/customer.services")
+const CustomerotpModel = require('../model/customerotp.model')
+
 const CustomerModel = require('../model/customer.model')
 const LawnmovingModel = require('../model/lawnmoving.model')
 
@@ -201,5 +203,26 @@ exports.changePwd = async (req, res, next) => {
 
     } catch (error) {
         console.log(error);
+    }
+}
+
+exports.saveotp = async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+
+
+        const customerid = await CustomerServices.getIdFromToken(authHeader);
+        // const id=data.id
+        // const data = await CustomerServices.decodeToken(token, "mal123")
+        // console.log(data);
+        const {otp}=req.body;
+      
+        const successRes = await CustomerotpModel.addotp({customerid,otp});
+        console.log(successRes);
+
+
+        res.status(200).json(successRes);
+    } catch (error) {
+        console.log(error + " bye")
     }
 }
