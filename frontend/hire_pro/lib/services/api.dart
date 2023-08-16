@@ -105,10 +105,9 @@ class Api {
         'estmax': formMax!,
         'location': formLocation!,
         'date': calanderDate.toString().split(' ')[0],
-        'latitude': '',
-        'longitude': ''
+        'latitude': ' ',
+        'longitude': ' '
       }),
-     
     );
 
     if (response.statusCode == 201) {

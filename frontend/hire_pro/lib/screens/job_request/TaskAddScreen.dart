@@ -108,16 +108,16 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
           style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
         ),
         FormLabel('Location'),
-        FormFieldNew(10, Icons.location_on, 1, '', location),
+        FormFieldNew(5, Icons.location_on, 1, '', location),
         if (category == 'Lawn Mowing')
           Column(
             children: [
               FormLabel('Land Area (sq. meters)'),
-              FormFieldNew(10, Icons.grass_sharp, 1, '', area),
+              FormFieldNew(5, Icons.grass_sharp, 1, '', area),
             ],
           ),
         FormLabel('Description'),
-        FormFieldNew(10, Icons.description, 5, '', description),
+        FormFieldNew(5, Icons.description, 5, '', description),
         FormLabel('Goods Provided'),
         RadioExample(
           character: _character,
@@ -126,9 +126,9 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
         Row(
           children: [
             Expanded(
-                child: FormFieldNew(20, Icons.monetization_on, 1, 'min', min)),
+                child: FormFieldNew(10, Icons.monetization_on, 1, 'min', min)),
             Expanded(
-                child: FormFieldNew(20, Icons.monetization_on, 1, 'max', max)),
+                child: FormFieldNew(10, Icons.monetization_on, 1, 'max', max)),
           ],
         ),
         FormLabel('Upload Photos'),
@@ -215,8 +215,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 50),
       child: RawMaterialButton(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(22.5)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         fillColor: Colors.grey[200],
         onPressed: () {
           openFiles();
