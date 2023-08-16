@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:hire_pro/screens/homeScreen.dart';
 import 'package:hire_pro/screens/jobCompletedScreen.dart';
 import 'package:hire_pro/screens/userProfile.dart';

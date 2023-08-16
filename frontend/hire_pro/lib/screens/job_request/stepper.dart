@@ -3,6 +3,8 @@ import 'package:hire_pro/screens/job_request/TaskAddScreen.dart';
 import 'package:hire_pro/screens/job_request/confirmationScreen.dart';
 import 'package:hire_pro/screens/job_request/searchingPros.dart';
 
+import '../../services/api.dart';
+
 class JobRequestScreen extends StatefulWidget {
   const JobRequestScreen({super.key});
 
@@ -12,7 +14,7 @@ class JobRequestScreen extends StatefulWidget {
 
 class _JobRequestScreenState extends State<JobRequestScreen> {
   int currentStep = 0;
-
+  Api api = Api();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -24,7 +26,10 @@ class _JobRequestScreenState extends State<JobRequestScreen> {
                 currentStep: currentStep,
                 onStepContinue: () {
                   setState(() {
-                    if (currentStep == 2) {
+                    if (currentStep == 1) {
+                      api.addLawnMowingTask();
+                      currentStep += 1;
+                    } else if (currentStep == 2) {
                       Navigator.pushNamed(context, '/biddings');
                     } else {
                       currentStep += 1;

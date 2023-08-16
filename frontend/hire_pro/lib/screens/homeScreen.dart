@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/widgets/MyNavigationWidget.dart';
 import 'package:hire_pro/widgets/MainCard.dart';
@@ -46,10 +47,34 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.pushNamed(context, '/category');
                   })),
               GestureDetector(
-                child: SearchBarWidget(),
                 onTap: () {
                   Navigator.pushNamed(context, '/category');
                 },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey, width: 1),
+                    borderRadius: BorderRadius.circular(25),
+                    color: Colors.white,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Icon(FontAwesomeIcons.magnifyingGlass),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      Text(
+                        "What's in your to-do list? ",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                      ),
+                    ],
+                  ),
+                  margin: EdgeInsets.symmetric(horizontal: 45),
+                  height: 50,
+                ),
               ),
               MainCard(110, 325, Color(0XFFF5F5F5),
                   Image.asset('images/townPNG.png')),
@@ -58,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   MainCard(
                       110,
-                      150,
+                      155,
                       kMainYellow,
                       Padding(
                         padding: EdgeInsets.all(8.0),
@@ -82,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       )),
                   MainCard(
                       110,
-                      150,
+                      155,
                       Color(0XFFD9D9D9),
                       Column(
                         children: [
@@ -116,42 +141,72 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              MainCard(
-                  100,
-                  325,
-                  Color(0XFFF5F5F5),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          margin:
-                              EdgeInsets.symmetric(horizontal: 24, vertical: 0),
-                          child: Text(
-                            "Plumbing",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 18.5),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/job_request',
+                      arguments: 'Lawn Moving');
+                },
+                child: MainCard(
+                    100,
+                    325,
+                    Color(0XFFF5F5F5),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 24, vertical: 0),
+                              child: Text(
+                                "Lawn Mowing",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 18.5),
+                              ),
+                            ),
                           ),
-                        ),
-                        Image.asset('images/image2 (2).png')
-                      ])),
-              MainCard(
-                  100,
-                  325,
-                  Color(0XFFF5F5F5),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Image.asset('images/image2 (1).png'),
-                        Container(
-                          margin:
-                              EdgeInsets.symmetric(horizontal: 24, vertical: 0),
-                          child: Text(
-                            "Technician",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 18.5),
-                          ),
-                        )
-                      ])),
+                          Expanded(
+                            child: ClipRect(
+                              child: Image.asset(
+                                'images/lawnhome.jpg',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          )
+                        ])),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/job_request',
+                      arguments: 'House Cleaning');
+                },
+                child: MainCard(
+                    100,
+                    325,
+                    Color(0XFFF5F5F5),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                              child: ClipRRect(
+                                  child: Image.asset(
+                            'images/househome.jpg',
+                            fit: BoxFit.cover,
+                          ))),
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 24, vertical: 0),
+                              child: Text(
+                                "House Cleaning",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 18.5),
+                              ),
+                            ),
+                          )
+                        ])),
+              ),
             ],
           ),
         ),

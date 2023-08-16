@@ -152,8 +152,8 @@ exports.getAddresses = async (req, res, next) => {
         // const id=data.id
         // const data = await CustomerServices.decodeToken(token, "mal123")
         // console.log(data);
-      
-        const successRes = await CustomerModel.getAddress(data.id);
+
+        const successRes = await CustomerModel.getAddress(id);
         console.log(successRes);
 
 
