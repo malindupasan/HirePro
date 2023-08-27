@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class FormFieldRegular extends StatelessWidget {
-  FormFieldRegular(this.placeholder, this.controller, this.password);
+  FormFieldRegular(this.placeholder, this.controller, this.password, this.icon);
   final String placeholder;
   final TextEditingController controller;
   final bool password;
+  final Icon? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +16,7 @@ class FormFieldRegular extends StatelessWidget {
         controller: controller,
         cursorColor: Colors.grey[400],
         decoration: InputDecoration(
+          suffixIcon: icon,
           fillColor: Colors.white,
           contentPadding: EdgeInsets.only(left: 20),
           enabledBorder: const OutlineInputBorder(

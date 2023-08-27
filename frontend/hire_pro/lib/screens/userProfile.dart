@@ -14,7 +14,6 @@ import 'package:hire_pro/widgets/smallButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
 

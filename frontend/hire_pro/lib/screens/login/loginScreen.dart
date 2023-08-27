@@ -1,7 +1,5 @@
-import 'dart:convert';
-import 'package:hire_pro/env.dart';
-import 'package:hire_pro/widgets/MyNavigationWidget.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:hire_pro/controllers/login.dart';
+import 'package:hire_pro/services/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
@@ -10,7 +8,7 @@ import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/GoogleLogin.dart';
 import 'package:hire_pro/widgets/LineDivider.dart';
 import 'package:hire_pro/widgets/TermsAndPolicy.dart';
-import 'package:http/http.dart' as http;
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -34,34 +32,8 @@ class _LoginScreenState extends State<LoginScreen> {
     preferences = await SharedPreferences.getInstance();
   }
 
-  void loginUser() async {
-    if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
-      var reqBody = {
-        'email': emailController.text,
-        'password': passwordController.text,
-      };
-      var response = await http.post(Uri.parse(login),
-          headers: {'Content-Type': 'application/json'},
-          body: jsonEncode(reqBody));
-      var jsonResponse = jsonDecode(response.body);
-      if (jsonResponse['status']) {
-        print(jsonResponse['status']);
-        var myToken = jsonResponse['token'];
-        sesstionToken = myToken;
-        Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(myToken);
-        id = jwtDecodedToken['id'];
-        preferences.setString('token', myToken);
-
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => MyNavigationWidget(token: myToken)));
-        // Navigator.pushNamed(context, '/category');
-      } else {
-        print('ggggg');
-      }
-    }
-  }
+  Api api = Api();
+  Login login = Login();
 
   @override
   Widget build(BuildContext context) {
@@ -91,8 +63,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      FormFieldRegular('Your Email', emailController, false),
-                      FormFieldRegular('Password', passwordController, true),
+                      FormFieldRegular('Your Email', emailController, false,
+                          Icon(Icons.email_rounded)),
+                      FormFieldRegular('Password', passwordController, true,
+                          Icon(Icons.lock_rounded)),
                     ],
                   ),
                 ),
@@ -111,7 +85,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       MainButton('Login', () {
-                        loginUser();
+                        api.loginUser(emailController, passwordController,
+                            preferences, context);
                         // Navigator.pushNamed(context, '/home');
                       }),
                       Row(

@@ -15,6 +15,8 @@ import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 
+String profilePic = '';
+
 class EditProfileScreen extends StatefulWidget {
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
@@ -63,6 +65,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           _image = File(
             croppedImage.path,
           );
+          profilePic = croppedImage.path;
         });
       }
     }

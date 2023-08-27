@@ -26,10 +26,14 @@ class _OtpScreenState extends State<OtpScreen> {
           children: [
             Column(children: [
               Image.asset('images/hireProWithoutBG.png'),
-              FormFieldRegular('Full Name', nameController, false),
-              FormFieldRegular('Phone Number', phoneController, false),
-              FormFieldRegular('Your Email', emailController, false),
-              FormFieldRegular('Password', passwordController, false),
+              FormFieldRegular(
+                  'Full Name', nameController, false, Icon(Icons.person)),
+              FormFieldRegular(
+                  'Phone Number', phoneController, false, Icon(Icons.phone)),
+              FormFieldRegular(
+                  'Your Email', emailController, false, Icon(Icons.mail)),
+              FormFieldRegular(
+                  'Password', passwordController, false, Icon(Icons.lock)),
               MainButton('Send OTP', () {
                 Navigator.pushNamed(context, '/otp_enter');
               })
