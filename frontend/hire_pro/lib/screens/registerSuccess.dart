@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/widgets/SmallArrowButton.dart';
 import 'package:hire_pro/widgets/TermsAndPolicy.dart';
-import 'package:hire_pro/widgets/CheckIconLarge.dart';
+import 'package:hire_pro/widgets/check_icon_large.dart';
 
 class RegisterSuccess extends StatefulWidget {
   const RegisterSuccess({super.key});

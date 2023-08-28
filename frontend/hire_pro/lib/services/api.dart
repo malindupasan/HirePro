@@ -5,7 +5,10 @@ import 'package:hire_pro/models/address.dart';
 import 'package:hire_pro/models/customer.dart';
 import 'package:hire_pro/env.dart';
 import 'package:hire_pro/screens/job_request/TaskAddScreen.dart';
+import 'package:hire_pro/widgets/MyNavigationWidget.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:flutter/material.dart';
 
 class Api {
   Future<Customer> getData() async {
@@ -117,6 +120,35 @@ class Api {
       return response;
     } else {
       throw Exception('Failed to request task');
+    }
+  }
+
+  void loginUser(emailController, passwordController, preferences,context) async {
+    if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+      var reqBody = {
+        'email': emailController.text,
+        'password': passwordController.text,
+      };
+      var response = await http.post(Uri.parse(login),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(reqBody));
+      var jsonResponse = jsonDecode(response.body);
+      if (jsonResponse['status']) {
+        print(jsonResponse['status']);
+        var myToken = jsonResponse['token'];
+        sesstionToken = myToken;
+        Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(myToken);
+        id = jwtDecodedToken['id'];
+        preferences.setString('token', myToken);
+
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MyNavigationWidget(token: myToken)));
+        // Navigator.pushNamed(context, '/category');
+      } else {
+        print('ggggg');
+      }
     }
   }
 }

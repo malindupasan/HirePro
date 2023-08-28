@@ -37,12 +37,11 @@ class _ChangePasswordState extends State<ChangePassword> {
     return SafeArea(
         child: Scaffold(
             appBar: HireProAppBar(context, 'Change Password'),
-            body: Container(
-              margin: EdgeInsets.symmetric(horizontal: 15),
-              child: Column(children: [
-                Expanded(
-                  flex: 2,
-                  child: Column(
+            body: SingleChildScrollView(
+              child: Container(
+                height: 400,
+                margin: EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ToggleEyeField(
@@ -68,21 +67,12 @@ class _ChangePasswordState extends State<ChangePassword> {
                           textAlign: TextAlign.right,
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Column(
-                    children: [
                       MainButton('Change Password', () {
                         checker.matchPasswords(currentPassword.text,
                             newPassword.text, newPasswordDup.text, context);
                       }),
-                    ],
-                  ),
-                )
-              ]),
+                    ]),
+              ),
             )));
   }
 }

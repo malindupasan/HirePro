@@ -57,6 +57,7 @@ dependencies:
   motion_toast: ^2.7.8
   toastification: ^0.0.3
   google_maps_flutter: ^2.4.0
+  provider: ^6.0.5
  
   
 
