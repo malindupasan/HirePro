@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/screens/homeScreen.dart';
-import 'package:hire_pro/screens/jobCompletedScreen.dart';
 import 'package:hire_pro/screens/myTasks.dart';
-import 'package:hire_pro/screens/ongoingScreen.dart';
 import 'package:hire_pro/screens/userProfile.dart';
 
 class MyNavigationWidget extends StatefulWidget {

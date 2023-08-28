@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:hire_pro/controllers/user_controller.dart';
 import 'package:hire_pro/models/address.dart';
 import 'package:hire_pro/models/customer.dart';
 import 'package:hire_pro/screens/editProfile/editProfile.dart';
@@ -21,21 +22,9 @@ class UserProfile extends StatefulWidget {
   State<UserProfile> createState() => _UserProfileState();
 }
 
-String getInitials(String name) {
-  List<String> names = name.split(' ');
-  int size = names.length;
-  late String initials;
-  if (size > 1) {
-    initials = names[0][0] + names[size - 1][0];
-  } else {
-    initials = names[0][0];
-  }
-  return initials;
-}
-
 class _UserProfileState extends State<UserProfile> {
   Api api = Api();
-
+  UserController user = UserController();
   late Future<Customer> customer;
   late Future<List<Address>> addresses;
   void initState() {
@@ -90,7 +79,7 @@ class _UserProfileState extends State<UserProfile> {
                                                       backgroundColor:
                                                           kMainGrey,
                                                       child: Text(
-                                                        getInitials(snapshot
+                                                        user.getInitials(snapshot
                                                             .data!.name),
                                                         style: TextStyle(
                                                             fontSize: 48,
