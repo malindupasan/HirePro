@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
+import 'package:hire_pro/providers/address_provider.dart';
 import 'package:hire_pro/providers/customer_provider.dart';
 import 'package:hire_pro/screens/addAddressScreen.dart';
 import 'package:hire_pro/screens/biddingScreen.dart';
@@ -36,8 +37,11 @@ class HirePro extends StatelessWidget {
   const HirePro({@required this.token, Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => CustomerProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => CustomerProvider()),
+        ChangeNotifierProvider(create: (context) => AddressProvider())
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -50,7 +54,6 @@ class HirePro extends StatelessWidget {
             titleLarge: TextStyle(fontSize: 36),
             bodyMedium: TextStyle(fontSize: 14),
           ),
-        
         ),
         initialRoute: '/',
         routes: {
@@ -79,8 +82,8 @@ class HirePro extends StatelessWidget {
           '/otp': (context) => OtpScreen(),
           '/otp_enter': (context) => OtpEnterScreen(),
           '/register_success': (context) => RegisterSuccess(),
-          '/my_tasks':(context) => MyTasks(),
-          '/rate':(context) =>JobCompletedScreen(),
+          '/my_tasks': (context) => MyTasks(),
+          '/rate': (context) => JobCompletedScreen(),
         },
       ),
     );

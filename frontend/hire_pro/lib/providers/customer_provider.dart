@@ -8,13 +8,11 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CustomerProvider extends ChangeNotifier {
-  late Customer? _customer;
-  final imageUpload = ImageUpload();
-
+   Customer? _customer;
   bool isLoading = false;
   Api api = Api();
 
-  Customer get customerData => _customer!;
+  Customer? get customerData => _customer!;
   Future<void> getCustomerData() async {
     isLoading = true;
     notifyListeners();

@@ -35,9 +35,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<CustomerProvider>(context, listen: false).getCustomerData();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   Provider.of<CustomerProvider>(context, listen: false).getCustomerData();
+    // });
   }
 
   bool editField = false;
@@ -69,7 +69,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             resizeToAvoidBottomInset: false,
             body:
                 Consumer<CustomerProvider>(builder: (context, customer, child) {
-              nameController.text = customer.customerData.name;
+              nameController.text =  customer.customerData!.name;
               return SingleChildScrollView(
                 child: RawScrollbar(
                   thumbColor: Colors.grey,
@@ -106,7 +106,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                             : null,
                                         child: Text(
                                           user.getInitials(
-                                              customer.customerData.name),
+                                              customer.customerData!.name),
                                           style: TextStyle(
                                               fontSize: 48, color: kMainYellow),
                                         ),
@@ -188,15 +188,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               ),
                               EditField(
                                   label: 'Email',
-                                  value: customer.customerData.email,
+                                  value: customer.customerData!.email,
                                   edit: () {
                                     Navigator.pushNamed(
                                         context, '/emailcoderequest',
-                                        arguments: customer.customerData.email);
+                                        arguments: customer.customerData!.email);
                                   }),
                               EditField(
                                   label: 'Mobile Number',
-                                  value: customer.customerData.contact,
+                                  value: customer.customerData!.contact,
                                   edit: () {
                                     print('pressed');
                                   }),
@@ -211,7 +211,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                           MainButton("Save", () async {
                             if (nameController.text !=
-                                customer.customerData.name) {
+                                customer.customerData!.name) {
                               customer.changeName(nameController.text);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
