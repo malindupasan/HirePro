@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/widgets/SmallArrowButton.dart';
 import 'package:hire_pro/widgets/TermsAndPolicy.dart';
-import 'package:hire_pro/widgets/CheckIconLarge.dart';
+import 'package:hire_pro/widgets/check_icon_large.dart';
 
 class RegisterSuccess extends StatefulWidget {
   const RegisterSuccess({super.key});
@@ -39,7 +39,7 @@ class _RegisterSuccessState extends State<RegisterSuccess> {
                                 fontSize: 16, fontWeight: FontWeight.w600),
                           ),
                         ),
-                        Text('Click next to continue to the home page.'),
+                        Text('Click next to continue to the login page.'),
                       ],
                     ),
                     Container(
@@ -47,7 +47,7 @@ class _RegisterSuccessState extends State<RegisterSuccess> {
                           EdgeInsets.symmetric(horizontal: 40, vertical: 30),
                       child: SmallArrowButton(kMainYellow, Icons.arrow_forward,
                           () {
-                        Navigator.pushNamed(context, '/home');
+                        Navigator.pushNamed(context, '/');
                       }),
                     ),
                   ]),
@@ -59,4 +59,3 @@ class _RegisterSuccessState extends State<RegisterSuccess> {
     ));
   }
 }
-

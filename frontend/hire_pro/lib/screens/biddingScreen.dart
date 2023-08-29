@@ -139,41 +139,52 @@ class _BiddingPageState extends State<BiddingPage> {
               ),
               Container(
                   alignment: Alignment.bottomRight,
-                  child: SmallButton('Cancel', () {
-                    showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                                title: const Text(
-                                  'Cancel Task',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color.fromARGB(255, 245, 110, 69)),
-                                ),
-                                content: const Text(
-                                  'You\'ll loose all your bidding requests.\nAre you sure you want to cancel the task?',
-                                  textAlign: TextAlign.justify,
-                                ),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () => Navigator.popUntil(context,
-                                        ModalRoute.withName('/category')),
-                                    child: const Text(
-                                      'Yes',
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SmallButton('Categories', () {
+                        Navigator.popUntil(
+                            context, ModalRoute.withName('/category'));
+                      }, kMainYellow, Colors.white),
+                      SmallButton('Cancel', () {
+                        showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                                    title: const Text(
+                                      'Cancel Task',
                                       style: TextStyle(
-                                          color: Colors.grey, fontSize: 16),
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color.fromARGB(
+                                              255, 245, 110, 69)),
                                     ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, 'OK'),
-                                    child: const Text(
-                                      'No',
-                                      style: TextStyle(fontSize: 16),
+                                    content: const Text(
+                                      'You\'ll loose all your bidding requests.\nAre you sure you want to cancel the task?',
+                                      textAlign: TextAlign.justify,
                                     ),
-                                  )
-                                ]));
-                  }, Colors.grey, Colors.white))
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () => Navigator.popUntil(
+                                            context,
+                                            ModalRoute.withName('/category')),
+                                        child: const Text(
+                                          'Yes',
+                                          style: TextStyle(
+                                              color: Colors.grey, fontSize: 16),
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'OK'),
+                                        child: const Text(
+                                          'No',
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      )
+                                    ]));
+                      }, Colors.grey, Colors.white),
+                    ],
+                  ))
             ],
           ),
         ),

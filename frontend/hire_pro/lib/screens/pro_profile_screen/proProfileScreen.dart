@@ -137,7 +137,7 @@ class _proProfileScreenState extends State<proProfileScreen> {
             ),
             Container(
               height: 100,
-              margin: EdgeInsets.symmetric(horizontal: 20),
+              margin: EdgeInsets.symmetric(horizontal: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -222,7 +222,7 @@ class StarRatingSingle extends StatelessWidget {
           FontAwesomeIcons.star,
           size: 13,
         ),
-        PercentageBar(percentage, 150, 10),
+        PercentageBar(percentage, 120, 10),
         Text((percentage * 100).toString() + '%'),
       ],
     );

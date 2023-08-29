@@ -18,12 +18,17 @@ class _OngoingScreenState extends State<OngoingScreen> {
         body: SingleChildScrollView(
           child: Column(
             children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/rate');
+                },
+                child: TaskCardOngoing(
+                    'John Doe', 'Plumbing', 5000, 'images/plumber.png', 1),
+              ),
               TaskCardOngoing(
-                  'John Doe', 'Plumbing', 5000, 'images/plumber.png'),
+                  'Sam Wilson', 'Gardening', 3200, 'images/gardener.png', 0.7),
               TaskCardOngoing(
-                  'Sam Wilson', 'Gardening', 3200, 'images/gardener.png'),
-              TaskCardOngoing(
-                  'Emily Clerk', 'Cleaning', 5000, 'images/cleaning.png'),
+                  'Emily Clerk', 'Cleaning', 5000, 'images/cleaning.png', 0.2),
             ],
           ),
         ),

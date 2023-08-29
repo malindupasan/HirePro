@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/screens/homeScreen.dart';
-import 'package:hire_pro/screens/jobCompletedScreen.dart';
+import 'package:hire_pro/screens/myTasks.dart';
 import 'package:hire_pro/screens/userProfile.dart';
 
 class MyNavigationWidget extends StatefulWidget {
@@ -22,7 +22,7 @@ class _MyNavigationWidgetState extends State<MyNavigationWidget> {
           HomeScreen(
             token: widget.token,
           ),
-          JobCompletedScreen(),
+          MyTasks(),
           UserProfile()
         ],
       ),
@@ -33,8 +33,8 @@ class _MyNavigationWidgetState extends State<MyNavigationWidget> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
+            icon: Icon(Icons.task_alt),
+            label: 'My Tasks',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

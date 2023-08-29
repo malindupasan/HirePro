@@ -95,38 +95,45 @@ class _CategoryScreenState extends State<CategoryScreen> {
               crossAxisCount: 2,
               children: _filteredItems.map((category) {
                 return Card(
+                  elevation: 5,
+                  margin: EdgeInsets.all(10),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(25.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(category.values.elementAt(0)))),
-                      child: ListTile(
-                        title: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Color.fromARGB(209, 0, 0, 0),
-                              ),
-                              width: double.infinity,
-                              height: 25,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage(category.values.elementAt(0)))),
+                    child: ListTile(
+                      title: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Color.fromARGB(209, 0, 0, 0),
+                            ),
+                            width: double.infinity,
+                            height: 35,
+                            child: Center(
                               child: Text(category.keys.first,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w600)),
                             ),
-                          ],
-                        ),
-                        onTap: () {
-                          String selectedCategory = category.keys.first;
-                          Navigator.pushNamed(context, '/job_request',arguments:selectedCategory);
-                        },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          )
+                        ],
                       ),
+                      onTap: () {
+                        String selectedCategory = category.keys.first;
+                        Navigator.pushNamed(context, '/job_request',
+                            arguments: selectedCategory);
+                      },
                     ),
                   ),
                 );

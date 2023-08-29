@@ -6,6 +6,7 @@ import 'package:hire_pro/models/customer.dart';
 import 'package:hire_pro/services/api.dart';
 import 'package:hire_pro/services/imageUpload.dart';
 import 'package:hire_pro/env.dart';
+import 'package:hire_pro/widgets/HireProAppBar.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/smallButton.dart';
 import 'dart:io';
@@ -13,6 +14,8 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
+
+String profilePic = '';
 
 class EditProfileScreen extends StatefulWidget {
   @override
@@ -62,6 +65,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           _image = File(
             croppedImage.path,
           );
+          profilePic = croppedImage.path;
         });
       }
     }
@@ -71,6 +75,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+            appBar: HireProAppBar(context, 'Edit Profile'),
             resizeToAvoidBottomInset: false,
             body: FutureBuilder<Customer>(
                 future: customer,
@@ -78,159 +83,166 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   if (snapshot.hasData) {
                     nameController.text = snapshot.data!.name;
                     return SingleChildScrollView(
-                      child: Center(
-                        child: Container(
-                          height: 700,
-                          margin: EdgeInsets.symmetric(horizontal: 40),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Stack(
-                                children: [
-                                  Container(
-                                    width: 150,
-                                    height: 150,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: kMainYellow,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    child: Hero(
-                                      tag: 'image',
-                                      child: Center(
-                                        child: FittedBox(
-                                          fit: BoxFit.contain,
-                                          child: CircleAvatar(
-                                            radius: 72,
-                                            backgroundColor: kMainGrey,
-                                            foregroundImage: _image != null
-                                                ? FileImage(_image!)
-                                                : null,
-                                            child: Text(
-                                              getInitials(snapshot.data!.name),
-                                              style: TextStyle(
-                                                  fontSize: 48,
-                                                  color: kMainYellow),
-                                            ),
-                                          ),
+                      child: RawScrollbar(
+                        thumbColor: Colors.grey,
+                        thickness: 5,
+                        child: Center(
+                          child: Container(
+                            height: 700,
+                            margin: EdgeInsets.symmetric(horizontal: 40),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Stack(
+                                  children: [
+                                    Container(
+                                      width: 150,
+                                      height: 150,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: kMainYellow,
+                                          width: 2,
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: 100,
-                                    left: 105,
-                                    child: FloatingActionButton.small(
-                                        backgroundColor: kMainYellow,
-                                        child: Icon(
-                                          FontAwesomeIcons.camera,
-                                          size: 15,
-                                        ),
-                                        onPressed: () => showDialog<String>(
-                                              context: context,
-                                              builder: (BuildContext context) =>
-                                                  Popup(),
-                                            )),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                'Edit Account',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 18),
-                              ),
-                              Column(
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Full Name',
-                                        style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                      SizedBox(height: 6),
-                                      Stack(
-                                        children: [
-                                          TextFormField(
-                                            controller: nameController,
-                                            readOnly: editField,
-                                            // initialValue: snapshot.data!.name,
-                                            decoration: InputDecoration(
-                                              border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: Colors.grey,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
+                                      child: Hero(
+                                        tag: 'image',
+                                        child: Center(
+                                          child: FittedBox(
+                                            fit: BoxFit.contain,
+                                            child: CircleAvatar(
+                                              radius: 72,
+                                              backgroundColor: kMainGrey,
+                                              foregroundImage: _image != null
+                                                  ? FileImage(_image!)
+                                                  : null,
+                                              child: Text(
+                                                getInitials(
+                                                    snapshot.data!.name),
+                                                style: TextStyle(
+                                                    fontSize: 48,
+                                                    color: kMainYellow),
                                               ),
                                             ),
                                           ),
-                                          Positioned(
-                                            left: 280,
-                                            top: 10,
-                                            child: SizedBox(
-                                              height: 30,
-                                              child: FloatingActionButton.small(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    editField = !editField;
-                                                  });
-                                                },
-                                                backgroundColor:
-                                                    kSecondaryYellow,
-                                                child: Icon(
-                                                  FontAwesomeIcons.pen,
-                                                  color: Colors.grey[800],
-                                                  size: 12,
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: 100,
+                                      left: 105,
+                                      child: FloatingActionButton.small(
+                                          backgroundColor: kMainYellow,
+                                          child: Icon(
+                                            FontAwesomeIcons.camera,
+                                            size: 15,
+                                          ),
+                                          onPressed: () => showDialog<String>(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        Popup(),
+                                              )),
+                                    ),
+                                  ],
+                                ),
+                                // Text(
+                                //   'Edit Account',
+                                //   style: TextStyle(
+                                //       fontWeight: FontWeight.w500, fontSize: 18),
+                                // ),
+                                Column(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Full Name',
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        SizedBox(height: 6),
+                                        Stack(
+                                          children: [
+                                            TextFormField(
+                                              controller: nameController,
+                                              readOnly: editField,
+                                              // initialValue: snapshot.data!.name,
+                                              decoration: InputDecoration(
+                                                border: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                    color: Colors.grey,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
                                                 ),
-                                                elevation: 1,
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 6),
-                                    ],
-                                  ),
-                                  EditField(
-                                      label: 'Email',
-                                      value: snapshot.data!.email,
-                                      edit: () {
-                                        Navigator.pushNamed(
-                                            context, '/emailcoderequest',
-                                            arguments: snapshot.data!.email);
-                                      }),
-                                  EditField(
-                                      label: 'Mobile Number',
-                                      value: snapshot.data!.contact,
-                                      edit: () {
-                                        print('pressed');
-                                      }),
-                                  EditField(
-                                      label: 'Password',
-                                      value: 'DummyPassword',
-                                      edit: () {
-                                        Navigator.pushNamed(
-                                            context, '/change_password');
-                                      }),
-                                ],
-                              ),
-                              MainButton("Save", () async {
-                                if (nameController.text !=
-                                    snapshot.data!.name) {
-                                  await api.changeName(nameController.text);
-                                  Navigator.pop(context, true);
-                                } else {
-                                  Navigator.pop(context);
-                                }
-                              })
-                            ],
+                                            Positioned(
+                                              left: 270,
+                                              top: 10,
+                                              child: SizedBox(
+                                                height: 30,
+                                                child:
+                                                    FloatingActionButton.small(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      editField = !editField;
+                                                    });
+                                                  },
+                                                  backgroundColor:
+                                                      kSecondaryYellow,
+                                                  child: Icon(
+                                                    FontAwesomeIcons.pen,
+                                                    color: Colors.grey[800],
+                                                    size: 12,
+                                                  ),
+                                                  elevation: 1,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 6),
+                                      ],
+                                    ),
+                                    EditField(
+                                        label: 'Email',
+                                        value: snapshot.data!.email,
+                                        edit: () {
+                                          Navigator.pushNamed(
+                                              context, '/emailcoderequest',
+                                              arguments: snapshot.data!.email);
+                                        }),
+                                    EditField(
+                                        label: 'Mobile Number',
+                                        value: snapshot.data!.contact,
+                                        edit: () {
+                                          print('pressed');
+                                        }),
+                                    EditField(
+                                        label: 'Password',
+                                        value: 'DummyPassword',
+                                        edit: () {
+                                          Navigator.pushNamed(
+                                              context, '/change_password');
+                                        }),
+                                  ],
+                                ),
+                                MainButton("Save", () async {
+                                  if (nameController.text !=
+                                      snapshot.data!.name) {
+                                    await api.changeName(nameController.text);
+                                    Navigator.pop(context, true);
+                                  } else {
+                                    Navigator.pop(context);
+                                  }
+                                })
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -325,7 +337,7 @@ class _EditFieldState extends State<EditField> {
               ),
             ),
             Positioned(
-              left: 280,
+              left: 270,
               top: 10,
               child: SizedBox(
                 height: 30,
