@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hire_pro/controllers/user_controller.dart';
 import 'package:hire_pro/models/address.dart';
 import 'package:hire_pro/models/customer.dart';
+import 'package:hire_pro/providers/customer_provider.dart';
 import 'package:hire_pro/screens/editProfile/editProfile.dart';
 import 'package:hire_pro/screens/editProfile/editProfileScreen.dart';
 import 'package:hire_pro/services/api.dart';
@@ -12,6 +13,7 @@ import 'package:hire_pro/widgets/HireProAppBar.dart';
 import 'package:hire_pro/widgets/LineDivider.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:hire_pro/widgets/smallButton.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -39,257 +41,222 @@ class _UserProfileState extends State<UserProfile> {
         child: Scaffold(
             appBar: HireProAppBar(context, 'Profile'),
             resizeToAvoidBottomInset: false,
-            body: SingleChildScrollView(
-              child: Container(
-                height: 750,
-                child: FutureBuilder<Customer>(
-                    future: customer,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Center(
-                            child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 40),
-                                child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Expanded(
-                                        flex: 5,
+            body:
+                Consumer<CustomerProvider>(builder: (context, customer, child) {
+              return SingleChildScrollView(
+                child: Container(
+                    height: 750,
+                    child: Center(
+                        child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 40),
+                            child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Expanded(
+                                    flex: 5,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Container(
+                                          width: 150,
+                                          height: 150,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: kMainYellow,
+                                              width: 2,
+                                            ),
+                                          ),
+                                          child: Hero(
+                                            tag: 'image',
+                                            child: Center(
+                                              child: FittedBox(
+                                                fit: BoxFit.contain,
+                                                child: CircleAvatar(
+                                                  radius: 72,
+                                                  backgroundColor: kMainGrey,
+                                                  child: Text(
+                                                    user.getInitials(customer
+                                                        .customerData.name),
+                                                    style: TextStyle(
+                                                        fontSize: 48,
+                                                        color: kMainYellow),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Text(
+                                          customer.customerData.name,
+                                          style: TextStyle(
+                                            fontSize: 30,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: kSecondaryYellow,
+                                          ),
+                                          child: GestureDetector(
+                                              child: Padding(
+                                                padding: EdgeInsets.all(8),
+                                                child: Text(
+                                                  "EDIT PROFILE",
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: kMainYellow,
+                                                  ),
+                                                ),
+                                              ),
+                                              onTap: () {
+                                                Navigator.pushNamed(
+                                                    context, '/edit_profile');
+                                              }),
+                                        ),
+                                        RatingBarIndicator(
+                                          rating: 3.35,
+                                          itemBuilder: (context, index) => Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
+                                          itemCount: 5,
+                                          itemSize: 30.0,
+                                          direction: Axis.horizontal,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            ProfileSummary(
+                                                '10', 'Total no of jobs'),
+                                            ProfileSummary(
+                                                customer.customerData
+                                                    .loyalityPoints,
+                                                'Loyality points')
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                      flex: 3,
+                                      child: Container(
+                                        width: double.infinity,
+                                        margin: EdgeInsetsDirectional.symmetric(
+                                            horizontal: 10, vertical: 30),
                                         child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
                                             Container(
-                                              width: 150,
-                                              height: 150,
                                               decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                  color: kMainYellow,
-                                                  width: 2,
-                                                ),
-                                              ),
-                                              child: Hero(
-                                                tag: 'image',
-                                                child: Center(
-                                                  child: FittedBox(
-                                                    fit: BoxFit.contain,
-                                                    child: CircleAvatar(
-                                                      radius: 72,
-                                                      backgroundColor:
-                                                          kMainGrey,
-                                                      child: Text(
-                                                        user.getInitials(snapshot
-                                                            .data!.name),
-                                                        style: TextStyle(
-                                                            fontSize: 48,
-                                                            color: kMainYellow),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Text(
-                                              snapshot.data!.name,
-                                              style: TextStyle(
-                                                fontSize: 30,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                            Container(
-                                              decoration: BoxDecoration(
+                                                color: Colors.white,
                                                 borderRadius:
                                                     BorderRadius.circular(10),
-                                                color: kSecondaryYellow,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.5),
+                                                    spreadRadius: 1,
+                                                    blurRadius: 5,
+                                                    offset: Offset(0,
+                                                        3), // horizontal, vertical offset
+                                                  ),
+                                                ],
                                               ),
-                                              child: GestureDetector(
-                                                  child: Padding(
-                                                    padding: EdgeInsets.all(8),
-                                                    child: Text(
-                                                      "EDIT PROFILE",
-                                                      style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: kMainYellow,
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 20),
+                                                    height: 40,
+                                                    child: Center(
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            'Saved Places',
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                                fontSize: 17,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                          Container(
+                                                            height: 25,
+                                                            child: FloatingActionButton
+                                                                .small(
+                                                                    child: Icon(
+                                                                      size: 15,
+                                                                      FontAwesomeIcons
+                                                                          .plus,
+                                                                    ),
+                                                                    elevation:
+                                                                        3,
+                                                                    backgroundColor:
+                                                                        kMainYellow,
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.pushNamed(
+                                                                          context,
+                                                                          '/add_address');
+                                                                    }),
+                                                          )
+                                                        ],
                                                       ),
                                                     ),
                                                   ),
-                                                  onTap: () async {
-                                                    final result =
-                                                        await Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        EditProfileScreen()));
-
-                                                    if (result == true) {
-                                                      setState(() {
-                                                        customer =
-                                                            api.getData();
-                                                      });
-                                                    }
-                                                  }),
-                                            ),
-                                            RatingBarIndicator(
-                                              rating: 3.35,
-                                              itemBuilder: (context, index) =>
-                                                  Icon(
-                                                Icons.star,
-                                                color: Colors.amber,
+                                                  FutureBuilder<List<Address>>(
+                                                    future: api.fetchAddresses(
+                                                        http.Client()),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      if (snapshot.hasError) {
+                                                        print(snapshot.error);
+                                                        return const Center(
+                                                          child: Text(
+                                                              'An error has occurred!'),
+                                                        );
+                                                      } else if (snapshot
+                                                          .hasData) {
+                                                        return AddressList(
+                                                            addresses:
+                                                                snapshot.data!);
+                                                      } else {
+                                                        return const Center(
+                                                          child:
+                                                              CircularProgressIndicator(),
+                                                        );
+                                                      }
+                                                    },
+                                                  ),
+                                                ],
                                               ),
-                                              itemCount: 5,
-                                              itemSize: 30.0,
-                                              direction: Axis.horizontal,
                                             ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                ProfileSummary(
-                                                    '10', 'Total no of jobs'),
-                                                ProfileSummary(
-                                                    snapshot
-                                                        .data!.loyalityPoints,
-                                                    'Loyality points')
-                                              ],
-                                            )
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            MainButton('Sign out', () {
+                                              //  signout();
+                                            }),
                                           ],
                                         ),
-                                      ),
-                                      Expanded(
-                                          flex: 3,
-                                          child: Container(
-                                            width: double.infinity,
-                                            margin:
-                                                EdgeInsetsDirectional.symmetric(
-                                                    horizontal: 10,
-                                                    vertical: 30),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: Colors.grey
-                                                            .withOpacity(0.5),
-                                                        spreadRadius: 1,
-                                                        blurRadius: 5,
-                                                        offset: Offset(0,
-                                                            3), // horizontal, vertical offset
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  child: Column(
-                                                    children: [
-                                                      Container(
-                                                        margin: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal: 20),
-                                                        height: 40,
-                                                        child: Center(
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Text(
-                                                                'Saved Places',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        17,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              ),
-                                                              Container(
-                                                                height: 25,
-                                                                child: FloatingActionButton
-                                                                    .small(
-                                                                        child:
-                                                                            Icon(
-                                                                          size:
-                                                                              15,
-                                                                          FontAwesomeIcons
-                                                                              .plus,
-                                                                        ),
-                                                                        elevation:
-                                                                            3,
-                                                                        backgroundColor:
-                                                                            kMainYellow,
-                                                                        onPressed:
-                                                                            () {
-                                                                          Navigator.pushNamed(
-                                                                              context,
-                                                                              '/add_address');
-                                                                        }),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      FutureBuilder<
-                                                          List<Address>>(
-                                                        future:
-                                                            api.fetchAddresses(
-                                                                http.Client()),
-                                                        builder: (context,
-                                                            snapshot) {
-                                                          if (snapshot
-                                                              .hasError) {
-                                                            print(
-                                                                snapshot.error);
-                                                            return const Center(
-                                                              child: Text(
-                                                                  'An error has occurred!'),
-                                                            );
-                                                          } else if (snapshot
-                                                              .hasData) {
-                                                            return AddressList(
-                                                                addresses:
-                                                                    snapshot
-                                                                        .data!);
-                                                          } else {
-                                                            return const Center(
-                                                              child:
-                                                                  CircularProgressIndicator(),
-                                                            );
-                                                          }
-                                                        },
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                MainButton('Sign out', () {
-                                                  //  signout();
-                                                }),
-                                              ],
-                                            ),
-                                          ))
-                                    ])));
-                      } else if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
-                      }
-                      return Center(
-                        child: CircularProgressIndicator(color: kMainYellow),
-                      );
-                    }),
-              ),
-            )));
+                                      ))
+                                ])))),
+              );
+            })));
   }
 }
 
