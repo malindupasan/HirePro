@@ -226,3 +226,28 @@ exports.saveotp = async (req, res, next) => {
         console.log(error + " bye")
     }
 }
+exports.checkotp = async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+
+
+        const customerid = await CustomerServices.getIdFromToken(authHeader);
+        // const id=data.id
+        // const data = await CustomerServices.decodeToken(token, "mal123")
+        // console.log(data);
+        const {otp}=req.body;
+      
+        const otpindb = await CustomerotpModel.checkotp({customerid});
+        if(otpindb===otp){
+            res.status(200).json("Success");
+
+        }
+        else{
+            res.status(404).json("Error");
+        }
+
+
+    } catch (error) {
+        console.log(error + " bye")
+    }
+}
