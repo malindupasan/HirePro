@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
@@ -35,9 +34,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   void initState() {
     super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //   Provider.of<CustomerProvider>(context, listen: false).getCustomerData();
-    // });
   }
 
   bool editField = false;
@@ -69,7 +65,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             resizeToAvoidBottomInset: false,
             body:
                 Consumer<CustomerProvider>(builder: (context, customer, child) {
-              nameController.text =  customer.customerData!.name;
+              nameController.text = customer.customerData!.name;
               return SingleChildScrollView(
                 child: RawScrollbar(
                   thumbColor: Colors.grey,
@@ -192,7 +188,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   edit: () {
                                     Navigator.pushNamed(
                                         context, '/emailcoderequest',
-                                        arguments: customer.customerData!.email);
+                                        arguments:
+                                            customer.customerData!.email);
                                   }),
                               EditField(
                                   label: 'Mobile Number',

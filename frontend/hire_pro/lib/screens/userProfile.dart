@@ -9,7 +9,6 @@ import 'package:hire_pro/providers/customer_provider.dart';
 import 'package:hire_pro/services/api.dart';
 import 'package:hire_pro/widgets/HireProAppBar.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
-
 import 'package:provider/provider.dart';
 
 class UserProfile extends StatefulWidget {

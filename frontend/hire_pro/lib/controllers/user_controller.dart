@@ -1,4 +1,4 @@
-import 'package:hire_pro/models/customer.dart';
+
 
 class UserController {
   String getInitials(String name) {

@@ -8,7 +8,7 @@ class Customer {
    File? image;
 
    Customer({
-    required this.name,
+    required this.name, 
     required this.email,
     required this.contact,
     required this.loyalityPoints,

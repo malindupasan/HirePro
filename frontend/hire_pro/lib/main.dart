@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/providers/address_provider.dart';
+import 'package:hire_pro/providers/category_provider.dart';
 import 'package:hire_pro/providers/customer_provider.dart';
 import 'package:hire_pro/screens/addAddressScreen.dart';
 import 'package:hire_pro/screens/biddingScreen.dart';
-import 'package:hire_pro/screens/categories/categoryScreen.dart';
+import 'package:hire_pro/screens/categoryScreen.dart';
 import 'package:hire_pro/screens/editProfile/changePassword.dart';
 import 'package:hire_pro/screens/editProfile/emailcodereqScreen.dart';
 import 'package:hire_pro/screens/emailCodeVerifyScreen.dart';
@@ -12,7 +13,7 @@ import 'package:hire_pro/screens/job_request/confirmationScreen.dart';
 import 'package:hire_pro/screens/editProfile/editProfileScreen.dart';
 import 'package:hire_pro/screens/jobCompletedScreen.dart';
 import 'package:hire_pro/screens/job_request/stepper.dart';
-import 'package:hire_pro/screens/login/loginScreen.dart';
+import 'package:hire_pro/screens/loginScreen.dart';
 import 'package:hire_pro/screens/myTasks.dart';
 import 'package:hire_pro/screens/ongoingScreen.dart';
 import 'package:hire_pro/screens/otpEnterScreen.dart';
@@ -37,10 +38,12 @@ class HirePro extends StatelessWidget {
   const HirePro({@required this.token, Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => CustomerProvider()),
-        ChangeNotifierProvider(create: (context) => AddressProvider())
+        ChangeNotifierProvider(create: (context) => AddressProvider()),
+        ChangeNotifierProvider(create: (context) => CategoryProvider())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

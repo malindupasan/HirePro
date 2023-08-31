@@ -1,11 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:hire_pro/models/customer.dart';
 import 'package:hire_pro/services/api.dart';
-import 'package:hire_pro/services/imageUpload.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 
 class CustomerProvider extends ChangeNotifier {
    Customer? _customer;
@@ -16,7 +11,7 @@ class CustomerProvider extends ChangeNotifier {
   Future<void> getCustomerData() async {
     isLoading = true;
     notifyListeners();
-    final response = await api.getData();
+    final response = await api.getData(); 
     _customer = response;
     isLoading = false;
     notifyListeners();
@@ -30,17 +25,5 @@ class CustomerProvider extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
   }
-  // void changeProfilePicture(ImageSource source) async {
-  //   final file = await imageUpload.pickImage(source);
-  //   if (file != null) {
-  //     final croppedImage =
-  //         await imageUpload.crop(file: file, cropStyle: CropStyle.circle);
-  //     if (croppedImage != null ) {
-  //       _customer.image = File(
-  //         croppedImage.path,
-  //       );
-  //       notifyListeners();
-  //     }
-  //   }
-  // }
+
 }
