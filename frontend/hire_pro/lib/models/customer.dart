@@ -1,14 +1,18 @@
-class Customer {
-  final String name;
-  final String email;
-  final String contact;
-  final String loyalityPoints;
+import 'dart:io';
 
-  const Customer({
-    required this.name,
+class Customer {
+   String name;
+   String email;
+   String contact;
+   String loyalityPoints;
+   File? image;
+
+   Customer({
+    required this.name, 
     required this.email,
     required this.contact,
     required this.loyalityPoints,
+    this.image,
   });
 
   factory Customer.fromJson(Map<String, dynamic> json) {
