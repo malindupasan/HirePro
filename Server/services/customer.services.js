@@ -44,9 +44,9 @@ class CustomerServices {
 
     }
     static async getIdFromToken(authHeader) {
-        if (!authHeader) {
-            // return res.status(401).json({ message: 'No authorization header found' });
-            return false;
+
+           return false;
+
         }
 
         const token = authHeader.split(' ')[1]; // Extract the token part
