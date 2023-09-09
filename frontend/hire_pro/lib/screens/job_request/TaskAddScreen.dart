@@ -144,7 +144,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                         FormLabel('Upload Photos'),
                         // FileUpload(),
                         UploadImageBox("Upload Images Here"),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
 
@@ -189,6 +189,8 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                       }
                     }, kMainYellow, Colors.white),
                     SmallButton('Back', () {
+                      Provider.of<TaskProvider>(context, listen: false)
+                          .resetFiles();
                       Navigator.pop(context);
                     }, Colors.grey, Colors.white)
                   ],

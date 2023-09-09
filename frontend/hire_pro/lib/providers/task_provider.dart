@@ -7,7 +7,7 @@ import 'package:hire_pro/services/api.dart';
 
 class TaskProvider extends ChangeNotifier {
   late Task _task;
-    List<File> _selectedFiles = [];
+  List<File> _selectedFiles = [];
   List<File> get files => _selectedFiles;
   Api api = Api();
   void initialize() {
@@ -69,6 +69,7 @@ class TaskProvider extends ChangeNotifier {
         _task.longitude);
     notifyListeners();
   }
+
   void openFiles() async {
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(allowMultiple: true);
@@ -77,5 +78,9 @@ class TaskProvider extends ChangeNotifier {
       _selectedFiles = result.paths.map((path) => File(path!)).toList();
       notifyListeners();
     } else {}
+  }
+
+  void resetFiles() {
+    _selectedFiles = [];
   }
 }

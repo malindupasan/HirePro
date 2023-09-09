@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
-import 'package:hire_pro/providers/file_upload_provider.dart';
 import 'package:hire_pro/providers/task_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -25,24 +24,24 @@ class UploadImageBox extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    if (taskData.files.isEmpty)
-                      Column(
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.cloud_upload_outlined, size: 40),
-                            color: Colors.grey,
-                            onPressed: () {
-                              taskData.openFiles();
-                            },
-                          ),
-                          Text(placeholder,
-                              style: TextStyle(color: Colors.grey)),
-                        ],
-                      ),
-                    SizedBox(height: 10), // Add some spacing
+                    Column(
+                      children: [
+                        IconButton(
+                          icon:
+                              const Icon(Icons.cloud_upload_outlined, size: 40),
+                          color: Colors.grey,
+                          onPressed: () {
+                            taskData.openFiles();
+                          },
+                        ),
+                        Text(placeholder,
+                            style: const TextStyle(color: Colors.grey)),
+                      ],
+                    ),
+                    const SizedBox(height: 10), // Add some spacing
                     if (taskData.files.isNotEmpty) // Display selected images
-                      Container(
-                        height: 150,
+                      SizedBox(
+                        height: 120,
                         width: double.infinity,
                         child: Column(
                           children: [
