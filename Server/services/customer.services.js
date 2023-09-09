@@ -8,7 +8,7 @@ class CustomerServices {
 
             const newCustomer = await CustomerModel.create({ name, email, contact, password_hash });
             console.log('New customer created:', newCustomer);
-            return true;
+            return newCustomer;
 
         } catch (error) {
             console.error('Error creating customer:', error);
