@@ -3,12 +3,15 @@ import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/providers/address_provider.dart';
 import 'package:hire_pro/providers/category_provider.dart';
 import 'package:hire_pro/providers/customer_provider.dart';
+import 'package:hire_pro/providers/file_upload_provider.dart';
+import 'package:hire_pro/providers/task_provider.dart';
 import 'package:hire_pro/screens/addAddressScreen.dart';
 import 'package:hire_pro/screens/biddingScreen.dart';
 import 'package:hire_pro/screens/categoryScreen.dart';
 import 'package:hire_pro/screens/editProfile/changePassword.dart';
 import 'package:hire_pro/screens/editProfile/emailcodereqScreen.dart';
 import 'package:hire_pro/screens/emailCodeVerifyScreen.dart';
+import 'package:hire_pro/screens/job_request/TaskAddScreen.dart';
 import 'package:hire_pro/screens/job_request/confirmationScreen.dart';
 import 'package:hire_pro/screens/editProfile/editProfileScreen.dart';
 import 'package:hire_pro/screens/jobCompletedScreen.dart';
@@ -38,12 +41,13 @@ class HirePro extends StatelessWidget {
   const HirePro({@required this.token, Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => CustomerProvider()),
         ChangeNotifierProvider(create: (context) => AddressProvider()),
-        ChangeNotifierProvider(create: (context) => CategoryProvider())
+        ChangeNotifierProvider(create: (context) => CategoryProvider()),
+        ChangeNotifierProvider(create: (context) =>TaskProvider()),
+        ChangeNotifierProvider(create: (context)=>FileUploadProvider())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -74,7 +78,7 @@ class HirePro extends StatelessWidget {
           '/ongoing': (context) => OngoingScreen(),
           // '/profile': (context) => MyHomePage(),
           '/edit_profile': (context) => EditProfileScreen(),
-          '/job_request': (context) => JobRequestScreen(),
+          '/job_request': (context) => TaskAddScreen(),
           '/confirm_job_request': (context) => ConfirmationScreen(),
           '/biddings': (context) => BiddingPage(),
           '/pro_profile': (context) => proProfileScreen(),

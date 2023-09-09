@@ -5,7 +5,7 @@ class JobRequest {
     Text('Just Now'),
     Text('Schedule'),
   ];
-  final List<bool> _selectedType = <bool>[false, false];
+  final List<bool> _selectedType = <bool>[true, false];
   bool vertical = false;
   bool isSchedule() {
     if (_selectedType[1]) {

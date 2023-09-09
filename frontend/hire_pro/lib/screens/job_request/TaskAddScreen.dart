@@ -1,26 +1,21 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hire_pro/constants.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:hire_pro/env.dart';
+import 'package:hire_pro/controllers/task_controller.dart';
+import 'package:hire_pro/providers/task_provider.dart';
 import 'package:hire_pro/screens/job_request/jobRequest.dart';
 import 'package:hire_pro/services/timePicker.dart';
 import 'package:hire_pro/services/calander.dart';
+import 'package:hire_pro/widgets/image_upload.dart';
 import 'package:hire_pro/widgets/smallButton.dart';
+import 'package:hire_pro/widgets/stepper_bar.dart';
+import 'package:provider/provider.dart';
 
-enum SingingCharacter { Yes, No }
+enum GoodsProvided { Yes, No }
 
-String? formLocation;
-String? formDescription;
-String? formMin;
-String? formMax;
-String? formGoods;
+String formGoods = '';
 DateTime? calanderDate;
 TimeOfDay? formselectedTime;
-late String globalCategory;
-String? formArea;
-SingingCharacter? formbool = SingingCharacter.No;
+GoodsProvided? formbool = GoodsProvided.No;
 
 class TaskAddScreen extends StatefulWidget {
   const TaskAddScreen({super.key});
@@ -36,7 +31,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
   final max = TextEditingController();
   final area = TextEditingController();
   bool isChecked = false;
-  SingingCharacter? _character = SingingCharacter.No;
+  GoodsProvided? _character = GoodsProvided.No;
 
   @override
   void dispose() {
@@ -48,187 +43,159 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
   }
 
   JobRequest job = JobRequest();
-  String _selectedOption = '';
-  List<String> _options = [
-    'Yes',
-    'No',
-  ];
-  List<PlatformFile> files = [];
+
   late dynamic category;
-  void openFiles() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-        allowMultiple: true,
-        type: FileType.custom,
-        allowedExtensions: ['jpg', 'png']);
 
-    if (result != null) {
-      setState(() {
-        files = result.paths
-            .map((path) => PlatformFile(
-                  path: path,
-                  name: id + '_' + category + '_' + DateTime.now().toString(),
-                  size: 0, // Provide a default size (e.g., 0 bytes)
-                ))
-            .toList();
-      });
-
-      print(files);
-      final file = File(files[0].path.toString());
-    } else {
-      // User canceled the picker
-      // Handle the cancelation or provide appropriate code here
-    }
-  }
-
-  void updateValues() {
-    formLocation = location.text;
-    formDescription = description.text;
-    formMax = max.text;
-    formMin = min.text;
-    formArea = area.text;
-  }
+  final _taskFormKey = GlobalKey<FormState>();
+  TaskController taskController = TaskController();
 
   @override
   Widget build(BuildContext context) {
     category = ModalRoute.of(context)!.settings.arguments;
 
-    globalCategory = category;
-
-    return SingleChildScrollView(
-      child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-        Text(
-          'Enter Task Details',
-          style: kHeading1,
-        ),
-        SizedBox(
-          height: 5,
-        ),
-        Text(
-          category,
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-        ),
-        FormLabel('Location'),
-        FormFieldNew(5, Icons.location_on, 1, '', location),
-        if (category == 'Lawn Mowing')
-          Column(
-            children: [
-              FormLabel('Land Area (sq. meters)'),
-              FormFieldNew(5, Icons.grass_sharp, 1, '', area),
-            ],
-          ),
-        FormLabel('Description'),
-        FormFieldNew(5, Icons.description, 5, '', description),
-        FormLabel('Goods Provided'),
-        RadioExample(
-          character: _character,
-        ),
-        FormLabel('Enter Price Estimate'),
-        Row(
-          children: [
-            Expanded(
-                child: FormFieldNew(10, Icons.monetization_on, 1, 'min', min)),
-            Expanded(
-                child: FormFieldNew(10, Icons.monetization_on, 1, 'max', max)),
-          ],
-        ),
-        FormLabel('Upload Photos'),
-        FileUpload(),
-        SizedBox(
-          height: 20,
-        ),
-        if (files.isNotEmpty)
-          Container(
-            margin: EdgeInsets.all(10),
-            padding: EdgeInsets.all(5),
-            height: (files.length * 80 + 20),
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+          child: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Selected Images',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: files.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    String filename = files[index].name;
+                NewStepper(kMainYellow, Colors.grey, Colors.grey),
+                Form(
+                  key: _taskFormKey,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Enter Task Details',
+                          style: kHeading1,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          category,
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500),
+                        ),
+                        FormLabel('Location'),
+                        FormFieldNew(5, Icons.location_on, 1, '', location,
+                            (value) {
+                          if (taskController.locationValidate(value) != null) {
+                            return taskController.locationValidate(value);
+                          }
 
-                    return Card(
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: const Color.fromARGB(255, 151, 151, 151),
+                          return null;
+                        }),
+                        if (category == 'Lawn Mowing')
+                          Column(
+                            children: [
+                              FormLabel('Land Area (sq. meters)'),
+                              FormFieldNew(5, Icons.grass_sharp, 1, '', area,
+                                  (value) {
+                                if (taskController.priceValidate(value) !=
+                                    null) {
+                                  return taskController.priceValidate(value);
+                                }
+
+                                return null;
+                              }),
+                            ],
+                          ),
+                        FormLabel('Description'),
+                        FormFieldNew(5, Icons.description, 5, '', description,
+                            (value) {
+                          if (taskController.descriptionValidate(value) !=
+                              null) {
+                            return taskController.descriptionValidate(value);
+                          }
+
+                          return null;
+                        }),
+                        FormLabel('Goods Provided'),
+                        RadioExample(
+                          character: _character,
                         ),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      color: Color.fromARGB(255, 246, 245, 244),
-                      child: ListTile(
-                        leading: Icon(
-                          FontAwesomeIcons.image,
-                          color: Colors.black,
+                        FormLabel('Enter Price Estimate'),
+                        Row(
+                          children: [
+                            Expanded(
+                                child: FormFieldNew(
+                                    10, Icons.monetization_on, 1, 'min', min,
+                                    (value) {
+                              if (taskController.priceValidate(value) != null) {
+                                return taskController.priceValidate(value);
+                              }
+
+                              return null;
+                            })),
+                            Expanded(
+                                child: FormFieldNew(
+                                    10, Icons.monetization_on, 1, 'max', max,
+                                    (value) {
+                              if (taskController.priceValidate(value) != null) {
+                                return taskController.priceValidate(value);
+                              }
+
+                              return null;
+                            })),
+                          ],
                         ),
-                        title: Text(
-                          filename,
-                          style: TextStyle(overflow: TextOverflow.ellipsis),
+                        FormLabel('Upload Photos'),
+                        // FileUpload(),
+                        UploadImageBox("Upload Images Here"),
+                        SizedBox(
+                          height: 20,
                         ),
-                      ),
-                    );
-                  },
+
+                        Toggle(),
+                        if (job.isSchedule()) Calander(),
+                        if (job.isSchedule()) TimePicker(),
+                      ]),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SmallButton('Continue', () {
+                      if (_taskFormKey.currentState!.validate()) {
+                        if (category == "Lawn Mowing") {
+                          Provider.of<TaskProvider>(context, listen: false)
+                              .taskCategory = category;
+                          Provider.of<TaskProvider>(context, listen: false)
+                              .initialize();
+                          Provider.of<TaskProvider>(context, listen: false)
+                              .createLawnMowingTask(
+                                  area.text,
+                                  description.text,
+                                  location.text,
+                                  min.text,
+                                  max.text,
+                                  '0',
+                                  '0',
+                                  calanderDate.toString(),
+                                  formselectedTime.toString(),
+                                  job.isSchedule());
+                        }
+
+                        Navigator.pushNamed(context, '/confirm_job_request');
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              backgroundColor:
+                                  Color.fromARGB(255, 247, 141, 141),
+                              content:
+                                  Text('Please fill the details properly.')),
+                        );
+                      }
+                    }, kMainYellow, Colors.white),
+                    SmallButton('Back', () {
+                      Navigator.pop(context);
+                    }, Colors.grey, Colors.white)
+                  ],
+                )
               ],
             ),
           ),
-        Toggle(),
-        if (job.isSchedule()) Calander(),
-        if (job.isSchedule()) TimePicker(),
-        Row(
-          children: [
-            Checkbox(
-                value: isChecked,
-                activeColor: kMainYellow,
-                onChanged: (value) {
-                  setState(() {
-                    isChecked = !isChecked;
-                    updateValues();
-                  });
-                }),
-            Text(
-              "I agree that the information provided above is accurate.",
-              style: TextStyle(fontSize: 12),
-            )
-          ],
-        ),
-      ]),
-    );
-  }
-
-  Container FileUpload() {
-    return Container(
-      height: 120,
-      width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 50),
-      child: RawMaterialButton(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        fillColor: Colors.grey[200],
-        onPressed: () {
-          openFiles();
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.upload_file,
-              size: 75,
-            ),
-            Text("Upload here"),
-          ],
         ),
       ),
     );
@@ -281,11 +248,11 @@ class FormLabel extends StatelessWidget {
 
 class FormFieldNew extends StatelessWidget {
   FormFieldNew(this.borderRadius, this.icon, this.lines, this.placeholder,
-      this.controller);
+      this.controller, this.function);
   final double borderRadius;
   final int lines;
   final IconData icon;
-
+  final String? Function(String?)? function;
   final String placeholder;
   TextEditingController? controller;
 
@@ -296,6 +263,7 @@ class FormFieldNew extends StatelessWidget {
         Container(
           margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: TextFormField(
+            validator: function,
             style: TextStyle(fontSize: 14),
             maxLines: lines,
             cursorColor: Colors.blueGrey[700],
@@ -323,7 +291,7 @@ class FormFieldNew extends StatelessWidget {
 }
 
 class RadioExample extends StatefulWidget {
-  SingingCharacter? character;
+  GoodsProvided? character;
   RadioExample({
     super.key,
     this.character,
@@ -341,11 +309,11 @@ class _RadioExampleState extends State<RadioExample> {
         Expanded(
           child: ListTile(
             title: const Text('No'),
-            leading: Radio<SingingCharacter>(
+            leading: Radio<GoodsProvided>(
               activeColor: kMainYellow,
-              value: SingingCharacter.No,
+              value: GoodsProvided.No,
               groupValue: widget.character,
-              onChanged: (SingingCharacter? value) {
+              onChanged: (GoodsProvided? value) {
                 setState(() {
                   widget.character = value;
                   formbool = value;
@@ -357,11 +325,11 @@ class _RadioExampleState extends State<RadioExample> {
         Expanded(
           child: ListTile(
             title: const Text('Yes'),
-            leading: Radio<SingingCharacter>(
+            leading: Radio<GoodsProvided>(
               activeColor: kMainYellow,
-              value: SingingCharacter.Yes,
+              value: GoodsProvided.Yes,
               groupValue: widget.character,
-              onChanged: (SingingCharacter? value) {
+              onChanged: (GoodsProvided? value) {
                 setState(() {
                   widget.character = value;
                   formbool = value;
