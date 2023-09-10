@@ -45,7 +45,8 @@ class CustomerServices {
     }
     static async getIdFromToken(authHeader) {
 
-           return false;
+        if(!authHeader){
+           return false;}
 
         
 
@@ -58,7 +59,9 @@ class CustomerServices {
 
 
         const data = await CustomerServices.decodeToken(token, "mal123")
+        // console.log(data);
         return data.id;
+
     }
 
 
