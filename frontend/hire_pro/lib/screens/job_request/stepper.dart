@@ -25,16 +25,16 @@ class _JobRequestScreenState extends State<JobRequestScreen> {
                 type: StepperType.horizontal,
                 currentStep: currentStep,
                 onStepContinue: () {
-                  setState(() {
-                    if (currentStep == 1) {
-                      api.addLawnMowingTask();
-                      currentStep += 1;
-                    } else if (currentStep == 2) {
-                      Navigator.pushNamed(context, '/biddings');
-                    } else {
-                      currentStep += 1;
-                    }
-                  });
+                  // setState(() {
+                  //   if (currentStep == 1) {
+                  //     api.addLawnMowingTask();
+                  //     currentStep += 1;
+                  //   } else if (currentStep == 2) {
+                  //     Navigator.pushNamed(context, '/biddings');
+                  //   } else {
+                  //     currentStep += 1;
+                  //   }
+                  // });
                 },
                 onStepCancel: () {
                   setState(() {

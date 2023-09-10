@@ -1,106 +1,141 @@
 import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
+import 'package:hire_pro/providers/task_provider.dart';
 import 'package:hire_pro/screens/job_request/TaskAddScreen.dart';
-import 'package:hire_pro/services/api.dart';
 import 'package:hire_pro/widgets/MainCard.dart';
+import 'package:hire_pro/widgets/smallButton.dart';
+import 'package:hire_pro/widgets/stepper_bar.dart';
+import 'package:provider/provider.dart';
 
-class ConfirmationScreen extends StatefulWidget {
-  const ConfirmationScreen({super.key});
-
-  @override
-  State<ConfirmationScreen> createState() => _ConfirmationScreenState();
-}
-
-class _ConfirmationScreenState extends State<ConfirmationScreen> {
+class ConfirmationScreen extends StatelessWidget {
   List<String> images = ['images/lawn1.jpg', 'images/lawn2.jpg'];
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Center(
-        child: Column(
-          children: [
-            Text(
-              'Confirmation',
-              style: kHeading1,
-            ),
-            MainCard(
-                630,
-                double.infinity,
-                kMainGrey,
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ContentSection('Task', globalCategory),
-                    if (globalCategory == "Lawn Mowing")
-                      Column(
-                        children: [
-                          ContentSection('Land Area', formArea.toString()),
-                        ],
-                      ),
-                    ContentSection('Where', formLocation!),
-                    if (formselectedTime != null && calanderDate != null)
-                      Column(
-                        children: [
-                          ContentSection(
-                              'Scheduled Time',
-                              formselectedTime
-                                  .toString()
-                                  .split('(')[1]
-                                  .split(')')[0]),
-                          ContentSection('Scheduled Date',
-                              calanderDate.toString().split(' ')[0]),
-                        ],
-                      ),
-                    Column(
+    return Scaffold(
+      body: SafeArea(
+        child: Consumer<TaskProvider>(
+          builder: (context, task, child) => SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              child: Column(
+                children: [
+                  NewStepper(Colors.grey, kMainYellow, Colors.grey),
+                  Center(
+                    child: Column(
                       children: [
-                        ContentSection('Description', ''),
-                        Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: const Color.fromARGB(255, 65, 65, 65),
-                              width: 1.0,
-                            ),
-                          ),
-                          margin:
-                              EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                          child: Text(
-                              textAlign: TextAlign.justify,
-                              formDescription!,
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis),
+                        Text(
+                          'Confirmation',
+                          style: kHeading1,
                         ),
+                        MainCard(
+                            630,
+                            double.infinity,
+                            kMainGrey,
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ContentSection('Task', task.taskCategory),
+                                if (task.taskCategory == "Lawn Mowing")
+                                  Column(
+                                    children: [
+                                      ContentSection(
+                                          'Land Area', task.taskData.area!),
+                                    ],
+                                  ),
+                                ContentSection('Where', task.taskData.location),
+                                if (task.taskData.date != null &&
+                                    task.taskData.postedtime != null)
+                                  Column(
+                                    children: [
+                                      ContentSection(
+                                          'Scheduled Time',
+                                          task.taskData.date!
+                                              .split(' ')[1]
+                                              .split('.')[0]),
+                                      ContentSection('Scheduled Date',
+                                          task.taskData.date!.split(' ')[0]),
+                                    ],
+                                  ),
+                                Column(
+                                  children: [
+                                    ContentSection('Description', ''),
+                                    Container(
+                                      width: double.infinity,
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: const Color.fromARGB(
+                                              255, 65, 65, 65),
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 0, horizontal: 20),
+                                      child: Text(
+                                          textAlign: TextAlign.justify,
+                                          task.taskData!.description,
+                                          maxLines: 3,
+                                          overflow: TextOverflow.ellipsis),
+                                    ),
+                                  ],
+                                ),
+                                ContentSection('Goods Provided',
+                                    formbool.toString().split('.')[1]),
+                                ContentSection('Estimate (Rs.)',
+                                    '${task.taskData.estmin} - ${task.taskData.estmax}'),
+                                ContentSection('Photos', ''),
+                                Expanded(
+                                  child: GridView.count(
+                                    crossAxisCount: 2,
+                                    children: task.files.map((image) {
+                                      return Card(
+                                        color: kMainGrey,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          child: Image.file(
+                                            image,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ],
+                            )),
+                        Container(
+                          margin: EdgeInsets.only(top: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SmallButton('Continue', () {
+                                final task = Provider.of<TaskProvider>(context,
+                                    listen: false);
+                                if (task.taskCategory == "Lawn Mowing") {
+                                  task.addLawnMowingTask();
+                                }
+                              }, kMainYellow, Colors.white),
+                              SmallButton('Cancel', () {
+                                Navigator.pop(context);
+                              }, Colors.grey, Colors.white)
+                            ],
+                          ),
+                        )
                       ],
                     ),
-                    ContentSection(
-                        'Goods Provided', formbool.toString().split('.')[1]),
-                    ContentSection('Estimate (Rs.)', formMin! + '-' + formMax!),
-                    ContentSection('Photos', ''),
-                    Expanded(
-                      child: GridView.count(
-                        crossAxisCount: 2,
-                        children: images.map((image) {
-                          return Card(
-                            color: kMainGrey,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: AssetImage(image))),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ],
-                ))
-          ],
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -117,7 +152,7 @@ class ContentSection extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
         child: Row(
           children: [
             Expanded(
@@ -129,12 +164,20 @@ class ContentSection extends StatelessWidget {
             ),
             Expanded(
               flex: 5,
-              child: Text(
-                data,
-                style: Knormal1,
-                textAlign: TextAlign.left,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text(
+                    data,
+                    style: Knormal1,
+                    textAlign: TextAlign.left,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
             )
           ],

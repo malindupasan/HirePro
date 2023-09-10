@@ -27,7 +27,7 @@ class _TimePickerState extends State<TimePicker> {
               if (time != null) {
                 setState(() {
                   selectedTime = time;
-                  formselectedTime = time;  
+                  formselectedTime = time;
                 });
               }
             },

@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:hire_pro/models/address.dart';
 import 'package:hire_pro/models/customer.dart';
 import 'package:hire_pro/env.dart';
-import 'package:hire_pro/screens/job_request/TaskAddScreen.dart';
 import 'package:hire_pro/widgets/MyNavigationWidget.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -91,7 +90,8 @@ class Api {
     return parsed.map<Address>((json) => Address.fromJson(json)).toList();
   }
 
-  Future<http.Response> addLawnMowingTask() async {
+  Future<http.Response> addLawnMowingTask(area, description, time, min, max,
+      location, date, latitude, longitude) async {
     final response = await http.post(
       Uri.parse(url + 'addlawnmovingtask'),
       headers: <String, String>{
@@ -99,18 +99,16 @@ class Api {
         HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
       },
       body: jsonEncode(<String, String>{
-        'area': formArea!,
-        'description': formDescription!,
-        'postedtime': calanderDate!.toString().split(' ')[0] +
-            ' ' +
-            formselectedTime.toString().split('(')[1].split(')')[0] +
-            ":00",
-        'estmin': formMin!,
-        'estmax': formMax!,
-        'location': formLocation!,
-        'date': calanderDate.toString().split(' ')[0],
-        'latitude': ' ',
-        'longitude': ' '
+        'area': area,
+        'description': description,
+        'postedtime':
+            date.split(' ')[0] + ' ' + time.split('(')[1].split(')')[0] + ":00",
+        'estmin': min,
+        'estmax': max,
+        'location': location,
+        'date': date.toString().split(' ')[0],
+        'latitude': latitude,
+        'longitude': longitude
       }),
     );
 
@@ -123,7 +121,8 @@ class Api {
     }
   }
 
-  void loginUser(emailController, passwordController, preferences,context) async {
+  void loginUser(
+      emailController, passwordController, preferences, context) async {
     if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
       var reqBody = {
         'email': emailController.text,
@@ -133,21 +132,24 @@ class Api {
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode(reqBody));
       var jsonResponse = jsonDecode(response.body);
-      if (jsonResponse['status']) {
-        print(jsonResponse['status']);
-        var myToken = jsonResponse['token'];
-        sesstionToken = myToken;
-        Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(myToken);
-        id = jwtDecodedToken['id'];
-        preferences.setString('token', myToken);
+      try {
+        if (jsonResponse['status']) {
+          print(jsonResponse['status']);
+          var myToken = jsonResponse['token'];
+          sesstionToken = myToken;
+          Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(myToken);
+          id = jwtDecodedToken['id'];
+          preferences.setString('token', myToken);
 
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => MyNavigationWidget(token: myToken)));
-        // Navigator.pushNamed(context, '/category');
-      } else {
-        print('ggggg');
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MyNavigationWidget(token: myToken)));
+          // Navigator.pushNamed(context, '/category');
+        }
+      } catch (e) {
+        print("Wrong credentials");
+        
       }
     }
   }
