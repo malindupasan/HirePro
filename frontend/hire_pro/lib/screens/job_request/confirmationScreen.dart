@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/providers/task_provider.dart';
 import 'package:hire_pro/screens/job_request/TaskAddScreen.dart';
+import 'package:hire_pro/screens/job_request/jobRequest.dart';
 import 'package:hire_pro/widgets/MainCard.dart';
 import 'package:hire_pro/widgets/smallButton.dart';
 import 'package:hire_pro/widgets/stepper_bar.dart';
@@ -9,6 +10,7 @@ import 'package:provider/provider.dart';
 
 class ConfirmationScreen extends StatelessWidget {
   List<String> images = ['images/lawn1.jpg', 'images/lawn2.jpg'];
+  JobRequest jobStatus = JobRequest();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +18,7 @@ class ConfirmationScreen extends StatelessWidget {
         child: Consumer<TaskProvider>(
           builder: (context, task, child) => SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
               child: Column(
                 children: [
                   NewStepper(Colors.grey, kMainYellow, Colors.grey),
@@ -43,15 +45,15 @@ class ConfirmationScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ContentSection('Where', task.taskData.location),
-                                if (task.taskData.date != null &&
-                                    task.taskData.postedtime != null)
+                                if (task.taskData.date! !=
+                                    DateTime.now().toString())
                                   Column(
                                     children: [
                                       ContentSection(
                                           'Scheduled Time',
-                                          task.taskData.date!
-                                              .split(' ')[1]
-                                              .split('.')[0]),
+                                          task.taskData.postedtime!
+                                              .split('(')[1]
+                                              .split(')')[0]),
                                       ContentSection('Scheduled Date',
                                           task.taskData.date!.split(' ')[0]),
                                     ],
@@ -75,7 +77,7 @@ class ConfirmationScreen extends StatelessWidget {
                                           vertical: 0, horizontal: 20),
                                       child: Text(
                                           textAlign: TextAlign.justify,
-                                          task.taskData!.description,
+                                          task.taskData.description,
                                           maxLines: 3,
                                           overflow: TextOverflow.ellipsis),
                                     ),
@@ -112,7 +114,7 @@ class ConfirmationScreen extends StatelessWidget {
                               ],
                             )),
                         Container(
-                           margin: EdgeInsets.only(top: 20),
+                          margin: EdgeInsets.only(top: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -174,7 +176,7 @@ class ContentSection extends StatelessWidget {
                     data,
                     style: Knormal1,
                     textAlign: TextAlign.left,
-                    maxLines: 2,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],

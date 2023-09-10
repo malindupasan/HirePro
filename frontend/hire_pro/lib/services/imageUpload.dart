@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';

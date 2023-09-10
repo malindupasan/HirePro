@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:hire_pro/models/address.dart';
 import 'package:hire_pro/models/task.dart';
 import 'package:hire_pro/services/api.dart';
 
 class TaskProvider extends ChangeNotifier {
   late Task _task;
+   
   List<File> _selectedFiles = [];
   List<File> get files => _selectedFiles;
   Api api = Api();
@@ -49,8 +51,8 @@ class TaskProvider extends ChangeNotifier {
       _task.date = date;
       _task.postedtime = postedtime;
     } else {
-      _task.date = null;
-      _task.postedtime = null;
+      _task.date = DateTime.now().toString();
+      _task.postedtime = TimeOfDay.now().toString();
     }
 
     notifyListeners();
@@ -63,7 +65,7 @@ class TaskProvider extends ChangeNotifier {
         _task.postedtime,
         _task.estmin,
         _task.estmax,
-        _task.location, 
+        _task.location,
         _task.date,
         _task.latitude,
         _task.longitude);
