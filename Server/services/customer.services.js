@@ -47,7 +47,7 @@ class CustomerServices {
 
            return false;
 
-        }
+        
 
         const token = authHeader.split(' ')[1]; // Extract the token part
 
