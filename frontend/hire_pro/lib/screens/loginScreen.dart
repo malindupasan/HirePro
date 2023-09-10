@@ -45,14 +45,14 @@ class _LoginScreenState extends State<LoginScreen> {
             Form(
               key: _loginFormKey,
               child: Expanded(
-                flex: 10,
+                flex: 11,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
-                        flex: 3,
+                        flex: 4,
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Image.asset('images/hireProWithoutBG.png'),
                             GoogleLogin(),
@@ -61,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       Expanded(
-                        flex: 2,
+                        flex: 3,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

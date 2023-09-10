@@ -47,6 +47,7 @@ class Api {
     }
   }
 
+
   Future<Customer> changePassword(
       String password, String newPassword, String newPasswordDup) async {
     final response = await http.post(
@@ -90,6 +91,29 @@ class Api {
     return parsed.map<Address>((json) => Address.fromJson(json)).toList();
   }
 
+  Future<bool> addAddress(title, address, latitude, longitude,) async {
+    final response = await http.post(
+      Uri.parse(url + 'addaddress'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
+      },
+      body: jsonEncode(<String, String>{
+        'title': title,
+        'address': address,
+        'latitude': latitude,
+        'longitude': longitude
+      }),
+    );
+
+    if (response.statusCode == 201) {
+      // return Customer.fromJson(jsonDecode(response.body));
+      print("data sent");
+      return true;
+    } else {
+      throw Exception('Failed to request task');
+    }
+  }
   Future<http.Response> addLawnMowingTask(area, description, time, min, max,
       location, date, latitude, longitude) async {
     final response = await http.post(

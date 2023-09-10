@@ -5,6 +5,7 @@ import 'package:hire_pro/providers/task_provider.dart';
 import 'package:hire_pro/screens/job_request/jobRequest.dart';
 import 'package:hire_pro/services/timePicker.dart';
 import 'package:hire_pro/services/calander.dart';
+import 'package:hire_pro/widgets/form_field_new.dart';
 import 'package:hire_pro/widgets/image_upload.dart';
 import 'package:hire_pro/widgets/smallButton.dart';
 import 'package:hire_pro/widgets/stepper_bar.dart';
@@ -56,7 +57,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -244,50 +245,6 @@ class FormLabel extends StatelessWidget {
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
         ),
       ),
-    );
-  }
-}
-
-class FormFieldNew extends StatelessWidget {
-  FormFieldNew(this.borderRadius, this.icon, this.lines, this.placeholder,
-      this.controller, this.function);
-  final double borderRadius;
-  final int lines;
-  final IconData icon;
-  final String? Function(String?)? function;
-  final String placeholder;
-  TextEditingController? controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          child: TextFormField(
-            validator: function,
-            style: TextStyle(fontSize: 14),
-            maxLines: lines,
-            cursorColor: Colors.blueGrey[700],
-            controller: controller,
-            decoration: InputDecoration(
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(borderRadius)),
-              hoverColor: Colors.blueGrey[700],
-              hintText: placeholder,
-              hintStyle: TextStyle(fontSize: 14),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(borderRadius)),
-              focusColor: Colors.grey,
-              suffixIcon: Icon(
-                icon,
-                color: Colors.grey,
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

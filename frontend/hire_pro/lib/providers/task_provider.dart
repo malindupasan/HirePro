@@ -63,7 +63,7 @@ class TaskProvider extends ChangeNotifier {
         _task.postedtime,
         _task.estmin,
         _task.estmax,
-        _task.location,
+        _task.location, 
         _task.date,
         _task.latitude,
         _task.longitude);

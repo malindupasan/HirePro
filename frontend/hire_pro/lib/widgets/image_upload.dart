@@ -47,7 +47,7 @@ class UploadImageBox extends StatelessWidget {
                           children: [
                             Expanded(
                               child: GridView.count(
-                                crossAxisCount: 3,
+                                crossAxisCount: 3, 
                                 children: taskData.files.map((file) {
                                   return Card(
                                     color: kMainGrey,

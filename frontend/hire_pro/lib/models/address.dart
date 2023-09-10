@@ -1,12 +1,12 @@
 class Address {
-  final String id;
+  final String? id;
   final String address;
   final String title;
   final String latitude;
   final String longitude;
 
   const Address({
-    required this.id,
+     this.id,
     required this.address,
     required this.title,
     required this.latitude,
