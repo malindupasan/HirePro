@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/controllers/task_controller.dart';
+import 'package:hire_pro/models/address.dart';
+import 'package:hire_pro/providers/address_provider.dart';
 import 'package:hire_pro/providers/task_provider.dart';
 import 'package:hire_pro/screens/job_request/jobRequest.dart';
 import 'package:hire_pro/services/timePicker.dart';
 import 'package:hire_pro/services/calander.dart';
+import 'package:hire_pro/widgets/MediumButton.dart';
 import 'package:hire_pro/widgets/form_field_new.dart';
 import 'package:hire_pro/widgets/image_upload.dart';
 import 'package:hire_pro/widgets/smallButton.dart';
@@ -26,17 +30,21 @@ class TaskAddScreen extends StatefulWidget {
 }
 
 class _TaskAddScreenState extends State<TaskAddScreen> {
-  final location = TextEditingController();
+  // final location = TextEditingController();
+  String location = '';
   final description = TextEditingController();
   final min = TextEditingController();
   final max = TextEditingController();
   final area = TextEditingController();
+  String currentLocation = '';
+  String latitude = '';
+  String longitude = '';
   bool isChecked = false;
   GoodsProvided? _character = GoodsProvided.No;
 
   @override
   void dispose() {
-    location.dispose();
+   
     description.dispose();
     min.dispose();
     max.dispose();
@@ -49,9 +57,13 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
 
   final _taskFormKey = GlobalKey<FormState>();
   TaskController taskController = TaskController();
-
+  bool isClicked = false;
   @override
   Widget build(BuildContext context) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      Provider.of<AddressProvider>(context, listen: false).setSelectedAddress();
+    });
+
     category = ModalRoute.of(context)!.settings.arguments;
 
     return Scaffold(
@@ -71,23 +83,73 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                           'Enter Task Details',
                           style: kHeading1,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Text(
                           category,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 14, fontWeight: FontWeight.w500),
                         ),
-                        FormLabel('Location'),
-                        FormFieldNew(5, Icons.location_on, 1, '', location,
-                            (value) {
-                          if (taskController.locationValidate(value) != null) {
-                            return taskController.locationValidate(value);
-                          }
 
-                          return null;
-                        }),
+                        Consumer<AddressProvider>(
+                          
+                          builder: (context, address, child) => Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  FormLabel('Location'),
+                                  SmallButton('My addresses', () {
+                                    setState(() {
+                                      isClicked = false;
+                                    });
+                                  }, kSecondaryYellow, Colors.black),
+                                  SmallButton("Set location", () async {
+                                    setState(() {
+                                      isClicked = true;
+                                    });
+                                    await address.getCurrentLocation();
+                                    Navigator.pushNamed(
+                                        context, '/set_location');
+                                  }, kMainYellow, Colors.white),
+                                ],
+                              ),
+                              if (isClicked)
+                                FormFieldNew(10, Icons.location_on, 1,
+                                    address.pinAddress, null, (p0) => null),
+                              if (!isClicked)
+                                DropdownButton<Address>(
+                                  value: address.selectedAddress,
+                                  onChanged: (newValue) {
+                                    address.changeSelectedAddress(newValue!);
+                                    address.updateCoordinates(
+                                        double.parse(newValue.latitude),
+                                        double.parse(newValue.longitude));
+                                  },
+                                  items: address.addresses
+                                      .map<DropdownMenuItem<Address>>(
+                                          (Address value) {
+                                    return DropdownMenuItem<Address>(
+                                      value: value,
+                                      child: Text(value.address),
+                                    );
+                                  }).toList(),
+                                ),
+                            ],
+                          ),
+                        ),
+                        // FormFieldNew(
+                        //     5, Icons.location_on, 1, currentLocation, location,
+                        //     (value) {
+                        //   if (taskController.locationValidate(value) != null) {
+                        //     return taskController.locationValidate(value);
+                        //   }
+
+                        //   return null;
+                        // }),
+
                         if (category == 'Lawn Mowing')
                           Column(
                             children: [
@@ -154,47 +216,49 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                         if (job.isSchedule()) TimePicker(),
                       ]),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SmallButton('Continue', () {
-                      if (_taskFormKey.currentState!.validate()) {
-                        if (category == "Lawn Mowing") {
-                          Provider.of<TaskProvider>(context, listen: false)
-                              .taskCategory = category;
-                          Provider.of<TaskProvider>(context, listen: false)
-                              .initialize();
-                          Provider.of<TaskProvider>(context, listen: false)
-                              .createLawnMowingTask(
-                                  area.text,
-                                  description.text,
-                                  location.text,
-                                  min.text,
-                                  max.text,
-                                  '0',
-                                  '0',
-                                  calanderDate.toString(),
-                                  formselectedTime.toString(),
-                                  job.isSchedule());
-                        }
+                Consumer<AddressProvider>(
+                  builder: (context, locationData, child) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SmallButton('Continue', () {
+                        if (_taskFormKey.currentState!.validate()) {
+                          if (category == "Lawn Mowing") {
+                            Provider.of<TaskProvider>(context, listen: false)
+                                .taskCategory = category;
+                            Provider.of<TaskProvider>(context, listen: false)
+                                .initialize();
+                            Provider.of<TaskProvider>(context, listen: false)
+                                .createLawnMowingTask(
+                                    area.text,
+                                    description.text,
+                                  locationData.selectedAddress.address,
+                                    min.text,
+                                    max.text,
+                                    locationData.getLatitude().toString(),
+                                    locationData.getLongitude().toString(),
+                                    calanderDate.toString(),
+                                    formselectedTime.toString(),
+                                    job.isSchedule());
+                          }
 
-                        Navigator.pushNamed(context, '/confirm_job_request');
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              backgroundColor:
-                                  Color.fromARGB(255, 247, 141, 141),
-                              content:
-                                  Text('Please fill the details properly.')),
-                        );
-                      }
-                    }, kMainYellow, Colors.white),
-                    SmallButton('Back', () {
-                      Provider.of<TaskProvider>(context, listen: false)
-                          .resetFiles();
-                      Navigator.pop(context);
-                    }, Colors.grey, Colors.white)
-                  ],
+                          Navigator.pushNamed(context, '/confirm_job_request');
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                backgroundColor:
+                                    Color.fromARGB(255, 247, 141, 141),
+                                content:
+                                    Text('Please fill the details properly.')),
+                          );
+                        }
+                      }, kMainYellow, Colors.white),
+                      SmallButton('Back', () {
+                        Provider.of<TaskProvider>(context, listen: false)
+                            .resetFiles();
+                        Navigator.pop(context);
+                      }, Colors.grey, Colors.white)
+                    ],
+                  ),
                 )
               ],
             ),

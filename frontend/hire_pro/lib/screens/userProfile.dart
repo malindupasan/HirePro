@@ -25,6 +25,7 @@ class _UserProfileState extends State<UserProfile> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<AddressProvider>(context, listen: false).getAllAddresses();
+     
       Provider.of<CustomerProvider>(context, listen: false).getCustomerData();
     });
     super.initState();
@@ -37,11 +38,11 @@ class _UserProfileState extends State<UserProfile> {
             appBar: HireProAppBar(context, 'Profile'),
             resizeToAvoidBottomInset: false,
             body: SingleChildScrollView(
-              child:  Container(
+              child: Container(
                   height: 750,
                   child: Center(
                       child: Container(
-                          margin:const EdgeInsets.symmetric(horizontal: 40),
+                          margin: const EdgeInsets.symmetric(horizontal: 40),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -85,7 +86,7 @@ class _UserProfileState extends State<UserProfile> {
                                           ),
                                           Text(
                                             customer.customerData!.name,
-                                            style:const TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 30,
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -115,7 +116,7 @@ class _UserProfileState extends State<UserProfile> {
                                           RatingBarIndicator(
                                             rating: 3.35,
                                             itemBuilder: (context, index) =>
-                                               const Icon(
+                                                const Icon(
                                               Icons.star,
                                               color: Colors.amber,
                                             ),
@@ -209,8 +210,8 @@ class _UserProfileState extends State<UserProfile> {
                                                                       backgroundColor:
                                                                           kMainYellow,
                                                                       onPressed:
-                                                                          () {
-                                                                        addressList
+                                                                          () async{
+                                                                       await addressList
                                                                             .getCurrentLocation();
                                                                         Navigator.pushNamed(
                                                                             context,

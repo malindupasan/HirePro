@@ -12,13 +12,30 @@ import 'package:geocoding/geocoding.dart';
 
 class AddressProvider extends ChangeNotifier {
   List<Address> _addressList = [];
-  late Address _address;
+  late Address? _selectedAddress;
+
+  void setSelectedAddress() {
+    _selectedAddress = _addressList.first;
+    notifyListeners();
+  }
+
+  void changeSelectedAddress(Address address) {
+    _selectedAddress = address;
+    notifyListeners();
+  }
+
   Api api = Api();
 
   double _latitude = 0;
   double _longitude = 0;
   // double _newlatitude = 0;
   // double _longitude = 0;
+  void updateCoordinates(latitude, longitude) {
+    _latitude = latitude;
+    _longitude = _longitude;
+    print(_latitude);
+    notifyListeners();
+  }
 
   Prediction? p;
   bool isLoading = false;
@@ -28,6 +45,7 @@ class AddressProvider extends ChangeNotifier {
   Set<Marker> get mapMarkers => markers;
   List<Address> get addresses => _addressList;
   String get pinAddress => addressStr;
+  Address get selectedAddress => _selectedAddress!;
 
   double getLatitude() {
     return _latitude;
@@ -37,7 +55,7 @@ class AddressProvider extends ChangeNotifier {
     return _longitude;
   }
 
-  Future<bool> addAddress(title, address, latitude, longitude) async{
+  Future<bool> addAddress(title, address, latitude, longitude) async {
     bool response = await api.addAddress(title, address, latitude, longitude);
     notifyListeners();
     print(response);
