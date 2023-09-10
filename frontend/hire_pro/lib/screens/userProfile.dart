@@ -37,11 +37,11 @@ class _UserProfileState extends State<UserProfile> {
             appBar: HireProAppBar(context, 'Profile'),
             resizeToAvoidBottomInset: false,
             body: SingleChildScrollView(
-              child: Container(
+              child:  Container(
                   height: 750,
                   child: Center(
                       child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 40),
+                          margin:const EdgeInsets.symmetric(horizontal: 40),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -85,7 +85,7 @@ class _UserProfileState extends State<UserProfile> {
                                           ),
                                           Text(
                                             customer.customerData!.name,
-                                            style: TextStyle(
+                                            style:const TextStyle(
                                               fontSize: 30,
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -115,7 +115,7 @@ class _UserProfileState extends State<UserProfile> {
                                           RatingBarIndicator(
                                             rating: 3.35,
                                             itemBuilder: (context, index) =>
-                                                Icon(
+                                               const Icon(
                                               Icons.star,
                                               color: Colors.amber,
                                             ),
@@ -151,76 +151,82 @@ class _UserProfileState extends State<UserProfile> {
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
                                           Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.grey
-                                                      .withOpacity(0.5),
-                                                  spreadRadius: 1,
-                                                  blurRadius: 5,
-                                                  offset: Offset(0,
-                                                      3), // horizontal, vertical offset
-                                                ),
-                                              ],
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  margin: EdgeInsets.symmetric(
-                                                      horizontal: 20),
-                                                  height: 40,
-                                                  child: Center(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          'Saved Places',
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: TextStyle(
-                                                              fontSize: 17,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
-                                                        Container(
-                                                          height: 25,
-                                                          child: FloatingActionButton
-                                                              .small(
-                                                                  child: Icon(
-                                                                    size: 15,
-                                                                    FontAwesomeIcons
-                                                                        .plus,
-                                                                  ),
-                                                                  elevation: 3,
-                                                                  backgroundColor:
-                                                                      kMainYellow,
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.pushNamed(
-                                                                        context,
-                                                                        '/add_address');
-                                                                  }),
-                                                        )
-                                                      ],
-                                                    ),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.5),
+                                                    spreadRadius: 1,
+                                                    blurRadius: 5,
+                                                    offset: Offset(0,
+                                                        3), // horizontal, vertical offset
                                                   ),
+                                                ],
+                                              ),
+                                              child: Consumer<AddressProvider>(
+                                                builder: (context, addressList,
+                                                        child) =>
+                                                    Column(
+                                                  children: [
+                                                    Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 20),
+                                                      height: 40,
+                                                      child: Center(
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                              'Saved Places',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                  fontSize: 17,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            ),
+                                                            Container(
+                                                              height: 25,
+                                                              child: FloatingActionButton
+                                                                  .small(
+                                                                      child:
+                                                                          Icon(
+                                                                        size:
+                                                                            15,
+                                                                        FontAwesomeIcons
+                                                                            .plus,
+                                                                      ),
+                                                                      elevation:
+                                                                          3,
+                                                                      backgroundColor:
+                                                                          kMainYellow,
+                                                                      onPressed:
+                                                                          () {
+                                                                        addressList
+                                                                            .getCurrentLocation();
+                                                                        Navigator.pushNamed(
+                                                                            context,
+                                                                            '/add_address');
+                                                                      }),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    AddressList(
+                                                        addresses: addressList
+                                                            .addresses),
+                                                  ],
                                                 ),
-                                                Consumer<AddressProvider>(
-                                                    builder: (context,
-                                                        addressList, child) {
-                                                  return AddressList(
-                                                      addresses: addressList
-                                                          .addresses);
-                                                }),
-                                              ],
-                                            ),
-                                          ),
+                                              )),
                                           SizedBox(
                                             height: 10,
                                           ),

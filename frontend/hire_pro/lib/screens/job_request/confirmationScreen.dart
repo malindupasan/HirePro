@@ -112,7 +112,7 @@ class ConfirmationScreen extends StatelessWidget {
                               ],
                             )),
                         Container(
-                          margin: EdgeInsets.only(top: 20),
+                           margin: EdgeInsets.only(top: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [

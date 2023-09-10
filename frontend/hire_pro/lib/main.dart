@@ -15,7 +15,6 @@ import 'package:hire_pro/screens/job_request/TaskAddScreen.dart';
 import 'package:hire_pro/screens/job_request/confirmationScreen.dart';
 import 'package:hire_pro/screens/editProfile/editProfileScreen.dart';
 import 'package:hire_pro/screens/jobCompletedScreen.dart';
-import 'package:hire_pro/screens/job_request/stepper.dart';
 import 'package:hire_pro/screens/loginScreen.dart';
 import 'package:hire_pro/screens/myTasks.dart';
 import 'package:hire_pro/screens/ongoingScreen.dart';

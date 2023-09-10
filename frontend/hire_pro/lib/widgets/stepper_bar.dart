@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:hire_pro/constants.dart';
 
 class NewStepper extends StatelessWidget {
-  Color color1;
-  Color color2;
-  Color color3;
+  final Color color1;
+  final Color color2;
+  final Color color3;
   NewStepper(this.color1, this.color2, this.color3);
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(bottom: 20),
-      padding: EdgeInsets.all(5),
       width: double.infinity,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
