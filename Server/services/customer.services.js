@@ -8,7 +8,7 @@ class CustomerServices {
 
             const newCustomer = await CustomerModel.create({ name, email, contact, password_hash });
             console.log('New customer created:', newCustomer);
-            return true;
+            return newCustomer;
 
         } catch (error) {
             console.error('Error creating customer:', error);
@@ -44,10 +44,11 @@ class CustomerServices {
 
     }
     static async getIdFromToken(authHeader) {
-        if (!authHeader) {
-            // return res.status(401).json({ message: 'No authorization header found' });
-            return false;
-        }
+
+        if(!authHeader){
+           return false;}
+
+        
 
         const token = authHeader.split(' ')[1]; // Extract the token part
 
@@ -58,7 +59,9 @@ class CustomerServices {
 
 
         const data = await CustomerServices.decodeToken(token, "mal123")
+        // console.log(data);
         return data.id;
+
     }
 
 

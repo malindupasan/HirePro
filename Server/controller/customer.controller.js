@@ -1,5 +1,7 @@
 
 const CustomerServices = require("../services/customer.services")
+const CustomerotpModel = require('../model/customerotp.model')
+
 const CustomerModel = require('../model/customer.model')
 const LawnmovingModel = require('../model/lawnmoving.model')
 
@@ -8,12 +10,12 @@ exports.register = async (req, res, next) => {
     try {
         const { name, email, contact, password } = req.body;
 
-        const result = CustomerServices.registerCustomer(name, email, contact, password);
-        if(!result) {
+        const newCustomer = CustomerServices.registerCustomer(name, email, contact, password);
+        if(!newCustomer) {
             throw new Error("Couldn't register");
         }
 
-        let tokenData = { id: customer.id, email: customer.email }
+        let tokenData = { id: newCustomer.id, email: newCustomer.email }
 
         const token = await CustomerServices.genarateToken(tokenData, "mal123", '1h')
 
@@ -203,3 +205,50 @@ exports.changePwd = async (req, res, next) => {
         console.log(error);
     }
 }
+
+exports.saveotp = async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+
+
+        const customerid = await CustomerServices.getIdFromToken(authHeader);
+        // const id=data.id
+        // const data = await CustomerServices.decodeToken(token, "mal123")
+        // console.log(data);
+        const {otp}=req.body;
+      
+        const successRes = await CustomerotpModel.addotp({customerid,otp});
+        console.log(successRes);
+
+
+        res.status(200).json(successRes);
+    } catch (error) {
+        console.log(error + " bye")
+    }
+}
+exports.checkotp = async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+
+
+        const customerid = await CustomerServices.getIdFromToken(authHeader);
+        // const id=data.id
+        // const data = await CustomerServices.decodeToken(token, "mal123")
+        // console.log(data);
+        const {otp}=req.body;
+      
+        const otpindb = await CustomerotpModel.checkotp({customerid});
+        if(otpindb===otp){
+            res.status(200).json("Success");
+
+        }
+        else{
+            res.status(404).json("Error");
+        }
+
+
+    } catch (error) {
+        console.log(error + " bye")
+    }
+}
+
