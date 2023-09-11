@@ -1,15 +1,19 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hire_pro/models/task.dart';
 import 'package:hire_pro/services/api.dart';
+import 'package:http/http.dart';
 
 class TaskProvider extends ChangeNotifier {
   late Task _task;
-   
+  late String _addedTaskId;
+
   List<File> _selectedFiles = [];
   List<File> get files => _selectedFiles;
+  String get addedTaskId => _addedTaskId;
   Api api = Api();
   void initialize() {
     _task = Task(
@@ -57,8 +61,8 @@ class TaskProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addLawnMowingTask() {
-    api.addLawnMowingTask(
+  void addLawnMowingTask() async {
+    Response response = await api.addLawnMowingTask(
         _task.area,
         _task.description,
         _task.postedtime,
@@ -69,6 +73,8 @@ class TaskProvider extends ChangeNotifier {
         _task.latitude,
         _task.longitude);
     notifyListeners();
+    Map<String, dynamic> responseObject = jsonDecode(response.body);
+    _addedTaskId = responseObject['serviceid'];
   }
 
   void openFiles() async {

@@ -1,25 +1,19 @@
-
 import 'package:hire_pro/constants.dart';
 import 'package:hire_pro/controllers/address_controller.dart';
 import 'package:hire_pro/providers/address_provider.dart';
-import 'package:hire_pro/widgets/FormFieldRegular.dart';
 import 'package:hire_pro/widgets/HireProAppBar.dart';
-
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hire_pro/widgets/MediumButton.dart';
 import 'package:hire_pro/widgets/form_field_new.dart';
-import 'package:hire_pro/widgets/smallButton.dart';
 import 'package:provider/provider.dart';
 
 class AddAddressScreen extends StatefulWidget {
   const AddAddressScreen({super.key});
 
   @override
-  State<AddAddressScreen> createState() => AddAddressScreenState();
+  State<AddAddressScreen> createState() => _AddAddressScreenState();
 }
-
 
 // AIzaSyDNOO9bzzNn34HNXZY1xT5IVvOlV37zFuE
 
@@ -41,7 +35,6 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
         resizeToAvoidBottomInset: false,
         key: addAddressKey,
         appBar: HireProAppBar(context, 'Add new address'),
@@ -103,7 +96,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                     color: Colors.white,
                                     child: Text(
                                       addressData.pinAddress,
-                                      style: TextStyle(
+                                      style:const TextStyle(
                                           fontWeight: FontWeight.w400),
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
@@ -223,14 +216,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     )
                   ],
                 )));
-
   }
 
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
-  }
-}
 // class AddAddressScreen extends StatefulWidget {
 //   const AddAddressScreen({super.key});
 //
@@ -252,3 +239,4 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 //     );
 //   }
 // }
+}
