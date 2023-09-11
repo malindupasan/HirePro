@@ -123,6 +123,15 @@ class ConfirmationScreen extends StatelessWidget {
                                     listen: false);
                                 if (task.taskCategory == "Lawn Mowing") {
                                   task.addLawnMowingTask();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 42, 201, 74),
+                                        content:
+                                            Text('Task posted successfully!')),
+                                  );
+                                  Navigator.pushNamed(
+                                      context, '/searching_pros');
                                 }
                               }, kMainYellow, Colors.white),
                               SmallButton('Cancel', () {

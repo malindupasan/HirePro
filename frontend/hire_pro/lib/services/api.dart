@@ -47,7 +47,6 @@ class Api {
     }
   }
 
-
   Future<Customer> changePassword(
       String password, String newPassword, String newPasswordDup) async {
     final response = await http.post(
@@ -91,7 +90,12 @@ class Api {
     return parsed.map<Address>((json) => Address.fromJson(json)).toList();
   }
 
-  Future<bool> addAddress(title, address, latitude, longitude,) async {
+  Future<bool> addAddress(
+    title,
+    address,
+    latitude,
+    longitude,
+  ) async {
     final response = await http.post(
       Uri.parse(url + 'addaddress'),
       headers: <String, String>{
@@ -114,6 +118,7 @@ class Api {
       throw Exception('Failed to request task');
     }
   }
+
   Future<http.Response> addLawnMowingTask(area, description, time, min, max,
       location, date, latitude, longitude) async {
     final response = await http.post(
@@ -136,15 +141,35 @@ class Api {
       }),
     );
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       // return Customer.fromJson(jsonDecode(response.body));
       print("data sent");
+
       return response;
     } else {
       throw Exception('Failed to request task');
     }
   }
-
+  Future<Customer> getBids(id) async {
+    final response = await http.get(
+      Uri.parse(url + 'getbids'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'serviceid':id,
+        HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
+      },
+    );
+    try {
+      if (response.statusCode == 200) {
+        return await Customer.fromJson(jsonDecode(response.body));
+      } else {
+        throw Exception('Failed to load customer');
+      }
+    } catch (e) {
+      print(e);
+      throw (e);
+    }
+  }
   void loginUser(
       emailController, passwordController, preferences, context) async {
     if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
@@ -173,7 +198,6 @@ class Api {
         }
       } catch (e) {
         print("Wrong credentials");
-        
       }
     }
   }

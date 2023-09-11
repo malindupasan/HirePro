@@ -1,25 +1,25 @@
 class Categories {
   List<Map<String, String>> _categories = [
     {
-      'Gardening': 'images/gardening-min.webp',
+      'Gardening': 'images/gardening.jpeg',
     },
     {
-      'Plumbing': 'images/plumbing.jpg',
+      'Plumbing': 'images/plumbing.jpeg',
     },
     {
-      'Cleaning': 'images/cleaning-min.webp',
+      'Cleaning': 'images/cleaning.jpeg',
+    },
+    // {
+    //   'Furniture Mounting': 'images/furnituremounting-min.webp',
+    // },
+    {
+      'Hair Cutting': 'images/hair_cutting.jpeg',
     },
     {
-      'Furniture Mounting': 'images/furnituremounting-min.webp',
+      'Lawn Mowing': 'images/lawn_mowing.jpeg',
     },
     {
-      'Hair Cutting': 'images/haircut-min.webp',
-    },
-    {
-      'Lawn Mowing': 'images/lawnmowing-min.webp',
-    },
-    {
-      'Painting': 'images/painting-min.webp',
+      'Painting': 'images/painting.jpeg',
     },
   ];
   List<Map<String, String>> getCategories() {
