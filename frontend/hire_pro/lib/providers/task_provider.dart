@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:hire_pro/models/address.dart';
 import 'package:hire_pro/models/task.dart';
 import 'package:hire_pro/services/api.dart';
 

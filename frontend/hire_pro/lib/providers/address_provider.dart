@@ -12,7 +12,7 @@ import 'package:geocoding/geocoding.dart';
 
 class AddressProvider extends ChangeNotifier {
   List<Address> _addressList = [];
-  late Address? _selectedAddress;
+  late Address _selectedAddress;
 
   void setSelectedAddress() {
     _selectedAddress = _addressList.first;
@@ -45,7 +45,7 @@ class AddressProvider extends ChangeNotifier {
   Set<Marker> get mapMarkers => markers;
   List<Address> get addresses => _addressList;
   String get pinAddress => addressStr;
-  Address get selectedAddress => _selectedAddress!;
+  Address get selectedAddress => _selectedAddress;
 
   double getLatitude() {
     return _latitude;

@@ -44,7 +44,6 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
 
   @override
   void dispose() {
-   
     description.dispose();
     min.dispose();
     max.dispose();
@@ -91,9 +90,10 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                           style: const TextStyle(
                               fontSize: 14, fontWeight: FontWeight.w500),
                         ),
-
+                        SizedBox(
+                          height: 20,
+                        ),
                         Consumer<AddressProvider>(
-                          
                           builder: (context, address, child) => Column(
                             children: [
                               Row(
@@ -101,41 +101,75 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   FormLabel('Location'),
-                                  SmallButton('My addresses', () {
-                                    setState(() {
-                                      isClicked = false;
-                                    });
-                                  }, kSecondaryYellow, Colors.black),
-                                  SmallButton("Set location", () async {
-                                    setState(() {
-                                      isClicked = true;
-                                    });
-                                    await address.getCurrentLocation();
-                                    Navigator.pushNamed(
-                                        context, '/set_location');
-                                  }, kMainYellow, Colors.white),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          isClicked = false;
+                                        });
+                                      },
+                                      child: const Text(
+                                        'My addresses',
+                                        style: TextStyle(color: Colors.white),
+                                      )),
+                                  ElevatedButton(
+                                      onPressed: () async {
+                                        setState(() {
+                                          isClicked = true;
+                                        });
+                                        await address.getCurrentLocation();
+                                        Navigator.pushNamed(
+                                            context, '/set_location');
+                                      },
+                                      child: const Text(
+                                        'Set location',
+                                        style: TextStyle(color: Colors.white),
+                                      )),
                                 ],
+                              ),
+                              SizedBox(
+                                height: 5,
                               ),
                               if (isClicked)
                                 FormFieldNew(10, Icons.location_on, 1,
                                     address.pinAddress, null, (p0) => null),
                               if (!isClicked)
-                                DropdownButton<Address>(
-                                  value: address.selectedAddress,
-                                  onChanged: (newValue) {
-                                    address.changeSelectedAddress(newValue!);
-                                    address.updateCoordinates(
-                                        double.parse(newValue.latitude),
-                                        double.parse(newValue.longitude));
-                                  },
-                                  items: address.addresses
-                                      .map<DropdownMenuItem<Address>>(
-                                          (Address value) {
-                                    return DropdownMenuItem<Address>(
-                                      value: value,
-                                      child: Text(value.address),
-                                    );
-                                  }).toList(),
+                                Container(
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  width: double.infinity,
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(color: Colors.grey)),
+                                    child: DropdownButton<Address>(
+                                    
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 10),
+                                      dropdownColor: Colors.grey[100],
+                                      borderRadius: BorderRadius.circular(10),
+                                      
+                                      icon: Icon(
+                                        Icons.arrow_drop_down_circle,
+                                        color: Colors.grey[500],
+                                      ),
+                                      value: address.selectedAddress,
+                                      onChanged: (newValue) {
+                                        address
+                                            .changeSelectedAddress(newValue!);
+                                        address.updateCoordinates(
+                                            double.parse(newValue.latitude),
+                                            double.parse(newValue.longitude));
+                                      },
+                                      items: address.addresses
+                                          .map<DropdownMenuItem<Address>>(
+                                              (Address value) {
+                                        return DropdownMenuItem<Address>(
+                                          value: value,
+                                          child: Text(value.address),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
                                 ),
                             ],
                           ),
@@ -231,7 +265,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                                 .createLawnMowingTask(
                                     area.text,
                                     description.text,
-                                  locationData.selectedAddress.address,
+                                    locationData.selectedAddress.address,
                                     min.text,
                                     max.text,
                                     locationData.getLatitude().toString(),
