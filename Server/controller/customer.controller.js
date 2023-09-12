@@ -228,14 +228,14 @@ exports.saveotp = async (req, res, next) => {
 }
 exports.checkotp = async (req, res, next) => {
     try {
-        const authHeader = req.headers.authorization;
+        // const authHeader = req.headers.authorization;
 
 
-        const customerid = await CustomerServices.getIdFromToken(authHeader);
+        // const customerid = await CustomerServices.getIdFromToken(authHeader);
         // const id=data.id
         // const data = await CustomerServices.decodeToken(token, "mal123")
         // console.log(data);
-        const {otp}=req.body;
+        const {otp,customerid}=req.body;
       
         const otpindb = await CustomerotpModel.checkotp({customerid});
         if(otpindb===otp){
