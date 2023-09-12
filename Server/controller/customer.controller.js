@@ -238,7 +238,8 @@ exports.checkotp = async (req, res, next) => {
         const {otp,customerid}=req.body;
         console.log(otp);
         const otpindb = await CustomerotpModel.checkotp({customerid});
-        if(otpindb.toString()===otp){
+        console.log(otpindb);
+        if(otpindb.otp.toString()===otp){
             res.status(200).json("Success");
 
         }
