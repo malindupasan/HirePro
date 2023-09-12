@@ -10,6 +10,56 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:flutter/material.dart';
 
 class Api {
+  Future<bool> signup(
+    name,
+    phone,
+    email,
+    password,
+  ) async {
+    final response = await http.post(
+      Uri.parse(url + 'register'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'name': name,
+        'email': email,
+        'contact': phone,
+        'password': password
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      // return Customer.fromJson(jsonDecode(response.body));
+      print("data sent");
+      return true;
+    } else {
+      throw Exception('Failed to register');
+    }
+  }
+
+  Future<bool> sendCode(
+    code,
+  ) async {
+    final response = await http.post(
+      Uri.parse(url + 'saveotp'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'code': code,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      // return Customer.fromJson(jsonDecode(response.body));
+      print("code sent");
+      return true;
+    } else {
+      throw Exception('Failed to send code');
+    }
+  }
+
   Future<Customer> getData() async {
     final response = await http.get(
       Uri.parse(url + 'getdata'),
@@ -150,12 +200,13 @@ class Api {
       throw Exception('Failed to request task');
     }
   }
+
   Future<Customer> getBids(id) async {
     final response = await http.get(
       Uri.parse(url + 'getbids'),
       headers: <String, String>{
         'Content-Type': 'application/json',
-        'serviceid':id,
+        'serviceid': id,
         HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
       },
     );
@@ -170,6 +221,7 @@ class Api {
       throw (e);
     }
   }
+
   void loginUser(
       emailController, passwordController, preferences, context) async {
     if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {

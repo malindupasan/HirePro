@@ -13,6 +13,7 @@ import 'package:geocoding/geocoding.dart';
 class AddressProvider extends ChangeNotifier {
   List<Address> _addressList = [];
   late Address _selectedAddress;
+  late bool? isLoading;
 
   void setSelectedAddress() {
     _selectedAddress = _addressList.first;
@@ -37,8 +38,8 @@ class AddressProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool get loading => isLoading!;
   Prediction? p;
-  bool isLoading = false;
   Set<Marker> markers = {};
   String addressStr = '';
 
@@ -134,6 +135,7 @@ class AddressProvider extends ChangeNotifier {
   }
 
   Future<void> getCurrentLocation() async {
+    isLoading = true;
     LocationPermission permission = await Geolocator.requestPermission();
     print(permission);
     try {
@@ -163,9 +165,10 @@ class AddressProvider extends ChangeNotifier {
           markerId: const MarkerId('current_location'),
           position: LatLng(_latitude, _longitude), //move to new location
           icon: BitmapDescriptor.defaultMarker));
-
-      print(_latitude);
+      isLoading = false;
+      print(isLoading.toString());
       print(_longitude);
+
       notifyListeners();
     } catch (e) {
       print(e);

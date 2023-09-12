@@ -15,7 +15,7 @@ class SignupController {
       return 'This field is required';
     }
 
-    if (!RegExp(r"^\+?0[0-9]{10}$").hasMatch(phone)) {
+    if (!RegExp(r'^[0-9]+$').hasMatch(phone)) {
       return "Please enter a valid phone number";
     }
     if (phone.length != 10) {

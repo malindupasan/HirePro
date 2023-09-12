@@ -25,7 +25,7 @@ class _EmailcodereqScreenState extends State<EmailcodereqScreen> {
         child: Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.all(40).copyWith(top: 0),
+          margin: const EdgeInsets.all(40).copyWith(top: 0),
           child: Column(
             children: [
               Image.asset('images/hireProWithoutBG.png'),
@@ -33,11 +33,11 @@ class _EmailcodereqScreenState extends State<EmailcodereqScreen> {
                 'Press "Continue" to receive a 5-digit code to change your email address.',
                 style: kHeading1.copyWith(fontWeight: FontWeight.w400),
               ),
-              SizedBox(
+            const  SizedBox(
                 height: 50,
               ),
               Image.asset('images/email.png', height: 250),
-              SizedBox(
+           const   SizedBox(
                 height: 50,
               ),
               MediumButton('Continue', () {

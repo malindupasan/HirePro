@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SmallSquareInput extends StatelessWidget {
-  const SmallSquareInput({
-    super.key,
-  });
+  final TextEditingController value;
+  SmallSquareInput(this.value);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +11,9 @@ class SmallSquareInput extends StatelessWidget {
         color: Color(0XFFEEEE),
         height: 50,
         width: 50,
+
         child: TextFormField(
+          controller: value,
           decoration: InputDecoration(
             enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.white)),

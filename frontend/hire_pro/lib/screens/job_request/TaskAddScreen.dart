@@ -8,7 +8,6 @@ import 'package:hire_pro/providers/task_provider.dart';
 import 'package:hire_pro/screens/job_request/jobRequest.dart';
 import 'package:hire_pro/services/timePicker.dart';
 import 'package:hire_pro/services/calander.dart';
-import 'package:hire_pro/widgets/MediumButton.dart';
 import 'package:hire_pro/widgets/form_field_new.dart';
 import 'package:hire_pro/widgets/image_upload.dart';
 import 'package:hire_pro/widgets/smallButton.dart';
@@ -174,16 +173,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                             ],
                           ),
                         ),
-                        // FormFieldNew(
-                        //     5, Icons.location_on, 1, currentLocation, location,
-                        //     (value) {
-                        //   if (taskController.locationValidate(value) != null) {
-                        //     return taskController.locationValidate(value);
-                        //   }
-
-                        //   return null;
-                        // }),
-
+                       
                         if (category == 'Lawn Mowing')
                           Column(
                             children: [

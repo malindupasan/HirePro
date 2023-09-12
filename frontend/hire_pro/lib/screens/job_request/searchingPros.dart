@@ -46,7 +46,10 @@ class _SearchingProsState extends State<SearchingPros> {
               children: [
                 SmallButton('Cancel', () {
                   Navigator.pop(context);
-                }, Colors.grey, Colors.white)
+                }, Colors.grey, Colors.white),
+                SmallButton('Continue', () {
+                  Navigator.pushNamed(context, '/biddings');
+                }, kMainYellow, Colors.white)
               ],
             ),
           )
