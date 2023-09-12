@@ -26,7 +26,31 @@ class Service {
 
 
   static async getbids(serviceid){
-    const query = 'SELECT * FROM "Bid" where "serviceId" = $1';
+    // const query = 'SELECT * FROM "Bid" where "serviceId" = $1';
+    const query = 'SELECT b.* ,s.contact,s.name,s.id  FROM "Bid" AS b inner join "ServiceProvider" AS s on s.id=b."serviceProviderId" where "serviceId" = $1';
+
+    const values = [serviceid];
+
+    try{
+      const result = await db.query(query, values);
+      if(result.length ==0){
+        return "No bids found for service";
+
+      }
+      else{
+        return result.rows[0];
+      }
+
+
+    }
+    catch(error){
+      throw error;
+    }
+
+  }
+
+  static async alltasks (serviceid){
+    const query = 'SELECT * FROM "service" where "customerid" = $1 and';
     const values = [serviceid];
 
     try{
@@ -46,6 +70,9 @@ class Service {
     }
 
   }
+
+
+
 
   
 
