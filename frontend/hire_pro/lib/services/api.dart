@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:hire_pro/models/address.dart';
@@ -10,7 +11,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:flutter/material.dart';
 
 class Api {
-  Future<bool> signup(
+  Future<http.Response> signup(
     name,
     phone,
     email,
@@ -32,29 +33,28 @@ class Api {
     if (response.statusCode == 200) {
       // return Customer.fromJson(jsonDecode(response.body));
       print("data sent");
-      return true;
+      return response;
     } else {
       throw Exception('Failed to register');
     }
   }
 
-  Future<bool> sendCode(
-    code,
-  ) async {
+  Future<http.Response> sendCode(code, IdleRequestCallback) async {
     final response = await http.post(
       Uri.parse(url + 'saveotp'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'customerid': id
       },
       body: jsonEncode(<String, String>{
-        'code': code,
+        'code': code.toString(),
       }),
     );
 
     if (response.statusCode == 200) {
       // return Customer.fromJson(jsonDecode(response.body));
       print("code sent");
-      return true;
+      return response;
     } else {
       throw Exception('Failed to send code');
     }
