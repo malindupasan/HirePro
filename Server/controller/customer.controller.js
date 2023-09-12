@@ -10,14 +10,13 @@ exports.register = async (req, res, next) => {
     try {
         const { name, email, contact, password } = req.body;
 
-        const newCustomer = CustomerServices.registerCustomer(name, email, contact, password);
+        const newCustomer = await CustomerServices.registerCustomer(name, email, contact, password);
         if(!newCustomer) {
             throw new Error("Couldn't register");
         }
 
-        let tokenData = { id: newCustomer.id, email: newCustomer.email }
-
-        const token = await CustomerServices.genarateToken(tokenData, "mal123", '1h')
+        console.log(newCustomer.id)
+       
 
         res.status(200).json({ status: true, id: newCustomer.id })
 
@@ -216,7 +215,7 @@ exports.saveotp = async (req, res, next) => {
         // const id=data.id
         // const data = await CustomerServices.decodeToken(token, "mal123")
         // console.log(data);
-        const {customerid,tp}=req.body;
+        const {customerid,otp}=req.body;
       
         const successRes = await CustomerotpModel.addotp({customerid,otp});
         console.log(successRes);
