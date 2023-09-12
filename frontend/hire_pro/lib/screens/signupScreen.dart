@@ -75,18 +75,18 @@ class _OtpScreenState extends State<OtpScreen> {
                         emailController.text,
                         phoneController.text,
                         passwordController.text);
-                    await customer.sendVerifyCode(code, customer.signupId);
+                    await customer.sendVerifyCode(code);
                     if (response) {
                       if (context.mounted) {
                         Navigator.pushNamed(context, '/otp_enter',
                             arguments: emailController.text);
 
-                        // email_verify.sendEmail(
-                        //     name: nameController.text,
-                        //     email: emailController.text,
-                        //     subject: 'Email Verification Code',
-                        //     message:
-                        //         'To change your email address please verify with the 5 digit code $code');
+                        email_verify.sendEmail(
+                            name: nameController.text,
+                            email: emailController.text,
+                            subject: 'Email Verification Code',
+                            message:
+                                'To change your email address please verify with the 5 digit code $code');
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
@@ -97,7 +97,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         print('context not mounted');
                       }
                     } else {
-                      print('kk');
+                      print('response error');
                     }
                   }
                 })

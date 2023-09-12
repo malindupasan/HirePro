@@ -29,16 +29,22 @@ class CustomerProvider extends ChangeNotifier {
     return status;
   }
 
-  Future<bool> sendVerifyCode(code, id) async {
+  Future<bool> sendVerifyCode(code) async {
     bool val = false;
-    Response response = await api.sendCode(code, id);
+    print('entered' + signupId);
+    Response response = await api.sendCode(code, signupId);
 
-    notifyListeners();
     if (response.statusCode == 200) {
       print('code sent');
       val = true;
     }
     return val;
+  }
+
+  Future<bool> verifyCode(code) async {
+    bool response = await api.checkCode(code, signupId);
+
+    return response;
   }
 
   void updateCode(int code) {

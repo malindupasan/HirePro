@@ -77,12 +77,38 @@ class OtpEnterScreen extends StatelessWidget {
                             Navigator.pop(context);
                           }),
                           SmallArrowButton(kMainYellow, Icons.arrow_forward,
-                              () {
-                          //   String code =
-                          //       '{$digit1.text}.{$digit2.text}.{$digit3.text}.{$digit4.text}.{$digit5.text}';
-                          // int codeno=  int.parse(code);
-
-                            // Navigator.pushNamed(context, '/register_success');
+                              () async {
+                            String code = digit1.text +
+                                digit2.text +
+                                digit3.text +
+                                digit4.text +
+                                digit5.text;
+                            print(code);
+                            final customer = Provider.of<CustomerProvider>(
+                                context,
+                                listen: false);
+                            print(code);
+                            if (await customer.verifyCode(code)) {
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 42, 201, 74),
+                                        content: Text('Code Verified!')));
+                                Navigator.pushNamed(
+                                    context, '/register_success');
+                              }
+                            } else {
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 255, 104, 87),
+                                        content:
+                                            Text('Code Verification failed!')));
+                              }
+                            }
+                            // int codeno=  int.parse(code);
                           }),
                         ],
                       ),

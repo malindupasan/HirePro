@@ -39,15 +39,15 @@ class Api {
     }
   }
 
-  Future<http.Response> sendCode(code, IdleRequestCallback) async {
+  Future<http.Response> sendCode(code, id) async {
     final response = await http.post(
       Uri.parse(url + 'saveotp'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'customerid': id
       },
       body: jsonEncode(<String, String>{
-        'code': code.toString(),
+        'otp': code.toString(),
+        'customerid': id.toString()
       }),
     );
 
@@ -57,6 +57,28 @@ class Api {
       return response;
     } else {
       throw Exception('Failed to send code');
+    }
+  }
+
+  Future<bool> checkCode(code, id) async {
+    final response = await http.post(
+      Uri.parse(url + 'checkotp'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'otp': code.toString(),
+        'customerid': id.toString()
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      // return Customer.fromJson(jsonDecode(response.body));
+      print("code correct");
+      return true;
+    } else {
+      print('Code incorrect');
+      return false;
     }
   }
 
