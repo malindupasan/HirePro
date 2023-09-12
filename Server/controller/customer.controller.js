@@ -19,7 +19,7 @@ exports.register = async (req, res, next) => {
 
         const token = await CustomerServices.genarateToken(tokenData, "mal123", '1h')
 
-        res.status(200).json({ status: true, token: token })
+        res.status(200).json({ status: true, id: newCustomer.id })
 
 
     } catch (error) {
@@ -208,14 +208,15 @@ exports.changePwd = async (req, res, next) => {
 
 exports.saveotp = async (req, res, next) => {
     try {
-        const authHeader = req.headers.authorization;
+        // const authHeader = req.headers.authorization;
 
 
-        const customerid = await CustomerServices.getIdFromToken(authHeader);
+
+        // const customerid = await CustomerServices.getIdFromToken(authHeader);
         // const id=data.id
         // const data = await CustomerServices.decodeToken(token, "mal123")
         // console.log(data);
-        const {otp}=req.body;
+        const {customerid,tp}=req.body;
       
         const successRes = await CustomerotpModel.addotp({customerid,otp});
         console.log(successRes);
