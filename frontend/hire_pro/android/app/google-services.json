@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "586003194448",
+    "project_id": "hirepro-temp",
+    "storage_bucket": "hirepro-temp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586003194448:android:79b4e1e1f9b1ff711a2755",
+        "android_client_info": {
+          "package_name": "com.example.hire_pro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBv8yRiKncx1KAk9Gj5Hd8F6k6mABSp_rw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

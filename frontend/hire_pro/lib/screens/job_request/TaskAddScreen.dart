@@ -125,7 +125,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                                       )),
                                 ],
                               ),
-                              SizedBox(
+                           const   SizedBox(
                                 height: 5,
                               ),
                               if (isClicked)
@@ -133,7 +133,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                                     address.pinAddress, null, (p0) => null),
                               if (!isClicked)
                                 Container(
-                                  margin: EdgeInsets.symmetric(
+                                  margin:const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 10),
                                   width: double.infinity,
                                   child: DecoratedBox(
