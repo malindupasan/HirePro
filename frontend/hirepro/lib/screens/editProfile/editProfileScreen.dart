@@ -4,59 +4,22 @@ import 'package:hirepro/constants.dart';
 import 'package:hirepro/controllers/user_controller.dart';
 import 'package:hirepro/providers/customer_provider.dart';
 import 'package:hirepro/services/api.dart';
-import 'package:hirepro/services/imageUpload.dart';
 import 'package:hirepro/widgets/HireProAppBar.dart';
 import 'package:hirepro/widgets/MainButton.dart';
 import 'package:hirepro/widgets/smallButton.dart';
-import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:provider/provider.dart';
 
-String profilePic = '';
-
-class EditProfileScreen extends StatefulWidget {
-  @override
-  State<EditProfileScreen> createState() => _EditProfileScreenState();
-}
-
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class EditProfileScreen extends StatelessWidget {
   TextEditingController nameController = TextEditingController();
-  @override
+
   void dispose() {
     nameController.dispose();
-    super.dispose();
   }
 
   Api api = Api();
   UserController user = UserController();
-
-  void initState() {
-    super.initState();
-  }
-
-  bool editField = false;
-
-  String defaultImage = 'images/profile_pic.png';
-  final imageUpload = ImageUpload();
-  File? _image;
-  void changeProfilePicture(ImageSource source) async {
-    final file = await imageUpload.pickImage(source);
-    if (file != null) {
-      final croppedImage =
-          await imageUpload.crop(file: file, cropStyle: CropStyle.circle);
-      if (croppedImage != null) {
-        setState(() {
-          _image = File(
-            croppedImage.path,
-          );
-          profilePic = croppedImage.path;
-        });
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -73,7 +36,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   child: Center(
                     child: Container(
                       height: 700,
-                      margin: EdgeInsets.symmetric(horizontal: 40),
+                      margin: const EdgeInsets.symmetric(horizontal: 40),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -89,23 +52,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     width: 2,
                                   ),
                                 ),
-                                child: Hero(
-                                  tag: 'image',
-                                  child: Center(
-                                    child: FittedBox(
-                                      fit: BoxFit.contain,
-                                      child: CircleAvatar(
-                                        radius: 72,
-                                        backgroundColor: kMainGrey,
-                                        foregroundImage: _image != null
-                                            ? FileImage(_image!)
-                                            : null,
-                                        child: Text(
-                                          user.getInitials(
-                                              customer.customerData!.name),
-                                          style: TextStyle(
-                                              fontSize: 48, color: kMainYellow),
-                                        ),
+                                child: Center(
+                                  child: FittedBox(
+                                    fit: BoxFit.contain,
+                                    child: CircleAvatar(
+                                      radius: 72,
+                                      backgroundColor: kMainGrey,
+                                      foregroundImage: customer.image.path != ''
+                                          ? FileImage(customer.image)
+                                          : null,
+                                      child: Text(
+                                        user.getInitials(
+                                            customer.customerData!.name),
+                                        style: TextStyle(
+                                            fontSize: 48, color: kMainYellow),
                                       ),
                                     ),
                                   ),
@@ -115,16 +75,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 top: 100,
                                 left: 105,
                                 child: FloatingActionButton.small(
-                                    backgroundColor: kMainYellow,
-                                    child: Icon(
-                                      FontAwesomeIcons.camera,
-                                      size: 15,
-                                    ),
-                                    onPressed: () => showDialog<String>(
-                                          context: context,
-                                          builder: (BuildContext context) =>
-                                              Popup(),
-                                        )),
+                                  backgroundColor: kMainYellow,
+                                  onPressed: () => showDialog<String>(
+                                    context: context,
+                                    builder: (BuildContext context) => Popup(),
+                                  ),
+                                  child: const Icon(
+                                    FontAwesomeIcons.camera,
+                                    size: 15,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -133,7 +93,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Full Name',
                                     style: TextStyle(
                                       color: Colors.grey,
@@ -145,10 +105,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     children: [
                                       TextFormField(
                                         controller: nameController,
-                                        readOnly: editField,
+                                        readOnly: customer.editField,
                                         decoration: InputDecoration(
                                           border: OutlineInputBorder(
-                                            borderSide: BorderSide(
+                                            borderSide: const BorderSide(
                                               color: Colors.grey,
                                             ),
                                             borderRadius:
@@ -162,18 +122,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                         child: SizedBox(
                                           height: 30,
                                           child: FloatingActionButton.small(
+                                            heroTag: 'Name',
                                             onPressed: () {
-                                              setState(() {
-                                                editField = !editField;
-                                              });
+                                              customer.toggleEditField();
                                             },
                                             backgroundColor: kSecondaryYellow,
+                                            elevation: 1,
                                             child: Icon(
                                               FontAwesomeIcons.pen,
                                               color: Colors.grey[800],
                                               size: 12,
                                             ),
-                                            elevation: 1,
                                           ),
                                         ),
                                       ),
@@ -207,14 +166,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             ],
                           ),
                           MainButton("Save", () async {
-                            if (nameController.text !=
+                            if (customer.isImageChanged) {
+                              if (await customer.uploadProfilePicture()) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            'Changes saved successfully!')),
+                                  );
+                                }
+                              }
+                            } else if (nameController.text !=
                                 customer.customerData!.name) {
                               customer.changeName(nameController.text);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content:
-                                        Text('Changes saved successfully!')),
-                              );
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content:
+                                          Text('Changes saved successfully!')),
+                                );
+                              }
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -239,17 +210,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       ),
       content: const Text(''),
       actions: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            SmallButton('Camera', () async {
-              changeProfilePicture(ImageSource.camera);
-            }, kMainYellow, Colors.white),
-            SmallButton('Gallery', () async {
-              changeProfilePicture(ImageSource.gallery);
-            }, kMainYellow, Colors.white)
-          ],
-        )
+        Consumer<CustomerProvider>(
+            builder: (context, customer, child) => Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SmallButton('Camera', () async {
+                      customer.changeProfilePicture(ImageSource.camera);
+                    }, kMainYellow, Colors.white),
+                    SmallButton('Gallery', () async {
+                      customer.changeProfilePicture(ImageSource.gallery);
+                    }, kMainYellow, Colors.white)
+                  ],
+                ))
       ],
     );
   }
@@ -290,12 +262,12 @@ class _EditFieldState extends State<EditField> {
       children: [
         Text(
           widget.label,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.grey,
             fontSize: 12,
           ),
         ),
-        SizedBox(height: 6),
+        const SizedBox(height: 6),
         Stack(
           children: [
             TextFormField(
@@ -304,7 +276,7 @@ class _EditFieldState extends State<EditField> {
               initialValue: widget.value,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                     color: Colors.grey,
                   ),
                   borderRadius: BorderRadius.circular(10),
@@ -317,6 +289,7 @@ class _EditFieldState extends State<EditField> {
               child: SizedBox(
                 height: 30,
                 child: FloatingActionButton.small(
+                  heroTag: widget.label,
                   onPressed: widget.edit,
                   backgroundColor: kSecondaryYellow,
                   child: Icon(

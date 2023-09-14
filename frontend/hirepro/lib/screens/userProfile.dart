@@ -65,22 +65,30 @@ class _UserProfileState extends State<UserProfile> {
                                                 width: 2,
                                               ),
                                             ),
-                                            child: Hero(
-                                              tag: 'image',
-                                              child: Center(
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: CircleAvatar(
-                                                    radius: 72,
-                                                    backgroundColor: kMainGrey,
-                                                    child: Text(
-                                                      user.getInitials(customer
-                                                          .customerData!.name),
-                                                      style: TextStyle(
-                                                          fontSize: 48,
-                                                          color: kMainYellow),
-                                                    ),
-                                                  ),
+                                            child: Center(
+                                              child: FittedBox(
+                                                fit: BoxFit.contain,
+                                                child: CircleAvatar(
+                                                  radius: 72,
+                                                  backgroundColor: kMainGrey,
+                                                  backgroundImage:
+                                                      customer.image.path != ''
+                                                          ? FileImage(
+                                                              customer.image)
+                                                          : null,
+                                                  child:
+                                                      customer.image.path == ''
+                                                          ? Text(
+                                                              user.getInitials(
+                                                                  customer
+                                                                      .customerData!
+                                                                      .name),
+                                                              style: TextStyle(
+                                                                  fontSize: 48,
+                                                                  color:
+                                                                      kMainYellow),
+                                                            )
+                                                          : null,
                                                 ),
                                               ),
                                             ),
@@ -212,18 +220,16 @@ class _UserProfileState extends State<UserProfile> {
                                                                           kMainYellow,
                                                                       onPressed:
                                                                           () async {
-                                                                      
                                                                         await addressList
                                                                             .getCurrentLocation();
 
                                                                         if (addressList
                                                                             .isLoading!) {
-                                                                     
-                                                                         showDialog(
+                                                                          showDialog(
                                                                             context:
                                                                                 context,
                                                                             barrierDismissible:
-                                                                                false, 
+                                                                                false,
                                                                             builder:
                                                                                 (BuildContext context) {
                                                                               return Center(
@@ -239,7 +245,6 @@ class _UserProfileState extends State<UserProfile> {
                                                                             },
                                                                           );
                                                                         } else {
-                                                                         
                                                                           Navigator.pushNamed(
                                                                               context,
                                                                               '/add_address');
