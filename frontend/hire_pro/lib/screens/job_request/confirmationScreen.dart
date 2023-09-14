@@ -114,24 +114,29 @@ class ConfirmationScreen extends StatelessWidget {
                               ],
                             )),
                         Container(
-                          margin: EdgeInsets.only(top: 20),
+                          margin: const EdgeInsets.only(top: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SmallButton('Continue', () {
+                              SmallButton('Continue', () async {
                                 final task = Provider.of<TaskProvider>(context,
                                     listen: false);
                                 if (task.taskCategory == "Lawn Mowing") {
-                                  task.addLawnMowingTask();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        backgroundColor:
-                                            Color.fromARGB(255, 42, 201, 74),
-                                        content:
-                                            Text('Task posted successfully!')),
-                                  );
-                                  Navigator.pushNamed(
-                                      context, '/searching_pros');
+                                  await task.addLawnMowingTask();
+                                  if (task.addedTaskId.isNotEmpty) {
+                                    task.uploadFile();
+                                  }
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          backgroundColor:
+                                              Color.fromARGB(255, 42, 201, 74),
+                                          content: Text(
+                                              'Task posted successfully!')),
+                                    );
+                                    Navigator.pushNamed(
+                                        context, '/searching_pros');
+                                  }
                                 }
                               }, kMainYellow, Colors.white),
                               SmallButton('Cancel', () {

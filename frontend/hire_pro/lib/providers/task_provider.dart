@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hire_pro/models/task.dart';
 import 'package:hire_pro/services/api.dart';
@@ -61,7 +63,7 @@ class TaskProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addLawnMowingTask() async {
+  Future<void> addLawnMowingTask() async {
     Response response = await api.addLawnMowingTask(
         _task.area,
         _task.description,
@@ -89,5 +91,42 @@ class TaskProvider extends ChangeNotifier {
 
   void resetFiles() {
     _selectedFiles = [];
+  }
+
+  // void uploadImages() {
+  //   _selectedFiles.map((file) async {
+  //     print('_selectedFiles[0].path');
+  //     String filePath = file.path;
+  //     try {
+  //       print('done1');
+  //       final firebase_storage.FirebaseStorage storage =
+  //           firebase_storage.FirebaseStorage.instance;
+  //       final storageRef = storage.ref().child('images/$filePath.jpeg');
+  //       await storageRef.putFile(file);
+  //       print('done2');
+  //     } catch (e) {
+  //       print(e);
+  //     }
+  //   });
+  //   _selectedFiles = [];
+  //   notifyListeners();
+  // }
+  Future<void> uploadFile() async {
+    if (_selectedFiles.isEmpty) {
+      print('no file selected');
+      return;
+    }
+
+    try {
+      for (var file in _selectedFiles) {
+        final storageRef = firebase_storage.FirebaseStorage.instance
+            .ref()
+            .child(
+                'images/${taskCategory}_${addedTaskId}_${file.hashCode}.png');
+        await storageRef.putFile(file);
+      }
+    } catch (error) {
+      print('Error uploading file: $error');
+    }
   }
 }

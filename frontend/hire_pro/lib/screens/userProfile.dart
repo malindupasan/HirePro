@@ -10,6 +10,7 @@ import 'package:hire_pro/services/api.dart';
 import 'package:hire_pro/widgets/HireProAppBar.dart';
 import 'package:hire_pro/widgets/MainButton.dart';
 import 'package:provider/provider.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -25,7 +26,7 @@ class _UserProfileState extends State<UserProfile> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<AddressProvider>(context, listen: false).getAllAddresses();
-     
+
       Provider.of<CustomerProvider>(context, listen: false).getCustomerData();
     });
     super.initState();
@@ -183,7 +184,7 @@ class _UserProfileState extends State<UserProfile> {
                                                               MainAxisAlignment
                                                                   .spaceBetween,
                                                           children: [
-                                                            Text(
+                                                            const Text(
                                                               'Saved Places',
                                                               textAlign:
                                                                   TextAlign
@@ -210,12 +211,39 @@ class _UserProfileState extends State<UserProfile> {
                                                                       backgroundColor:
                                                                           kMainYellow,
                                                                       onPressed:
-                                                                          () async{
-                                                                       await addressList
+                                                                          () async {
+                                                                      
+                                                                        await addressList
                                                                             .getCurrentLocation();
-                                                                        Navigator.pushNamed(
-                                                                            context,
-                                                                            '/add_address');
+
+                                                                        if (addressList
+                                                                            .isLoading!) {
+                                                                     
+                                                                         showDialog(
+                                                                            context:
+                                                                                context,
+                                                                            barrierDismissible:
+                                                                                false, 
+                                                                            builder:
+                                                                                (BuildContext context) {
+                                                                              return Center(
+                                                                                child: LoadingIndicator(
+                                                                                  indicatorType: Indicator.ballPulse,
+                                                                                  colors: const [
+                                                                                    Colors.white
+                                                                                  ],
+                                                                                  strokeWidth: 2,
+                                                                                  pathBackgroundColor: Colors.black,
+                                                                                ),
+                                                                              );
+                                                                            },
+                                                                          );
+                                                                        } else {
+                                                                         
+                                                                          Navigator.pushNamed(
+                                                                              context,
+                                                                              '/add_address');
+                                                                        }
                                                                       }),
                                                             )
                                                           ],
