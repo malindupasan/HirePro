@@ -14,6 +14,30 @@ class Customer {
   static async create(customerData) {
     const { contact, name, email, password_hash } = customerData;
 
+    //check email exists
+
+    const query1='select * from customer where email=$1';
+    const values1=[email];
+
+    const query2='select * from customer where contact=$1';
+    const values2=[contact];
+
+
+    try {
+      const res1=await db.query(query1, values1);
+      if(res1){
+        return "EMAILEXISTS!";
+      }
+
+      const res2=await db.query(query2,values2);
+      if(res2){
+        return "PHONEEXISTS";
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+
 
     const salt = await bcrypt.genSalt(10);
     const hashed_pw = await bcrypt.hash(password_hash, salt);
