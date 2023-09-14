@@ -40,7 +40,7 @@ class _SearchingProsState extends State<SearchingPros> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: 20),
+            margin:const EdgeInsets.only(top: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
