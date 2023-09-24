@@ -3,7 +3,7 @@ const CustomerServices = require("../services/customer.services")
 
 exports.addReview = async (req, res, next) => {
     try {
-        const authHeader = req.headers.authorization;
+        const authHeader = req.headers.authorization; 
 
 
         const customerid = await CustomerServices.getIdFromToken(authHeader);
