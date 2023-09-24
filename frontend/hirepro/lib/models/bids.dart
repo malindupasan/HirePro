@@ -1,26 +1,40 @@
 class Bids {
-  final String? id;
-  final String address;
-  final String title;
-  final String latitude;
-  final String longitude;
+  final String bidId;
+  final String serviceId;
+  final String serviceProId;
+  final String timeStamp;
+  final String additionalInfo;
+  final String amount;
+  final String contact;
+  final String name;
+  // final String acceptCustomerId;
+  // final String acceptTimestamp;
 
   const Bids({
-     this.id,
-    required this.address,
-    required this.title,
-    required this.latitude,
-    required this.longitude,
+    required this.bidId,
+    required this.serviceId,
+    required this.serviceProId,
+    required this.timeStamp,
+    required this.additionalInfo,
+    required this.amount,
+    required this.contact,
+    required this.name,
+    // required this.acceptCustomerId,
+    // required this.acceptTimestamp
   });
 
   factory Bids.fromJson(Map<String, dynamic> json) {
     return Bids(
-       id: json['id'],
-      address: json['address'],
-      title: json['title'],
-      latitude: json['latitude'] != null ? json['latitude'] : null,
-      longitude: json['longitude'] != null ? json['longitude'] : null,
+      bidId: json['id'],
+      serviceId: json['serviceId'],
+      serviceProId: json['serviceProviderId'],
+      contact: json['contact'],
+      amount: json['amount'].toString(),
+      name: json['name'],
+      timeStamp: json['timestamp'],
+      additionalInfo: json['additionalInfo'],
+      // acceptCustomerId: json['accept_customerid'],
+      // acceptTimestamp: json['accept_timestamp'],
     );
   }
 }
-

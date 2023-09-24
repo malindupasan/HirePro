@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hirepro/constants.dart';
+import 'package:hirepro/screens/allBiddingsScreen.dart';
 import 'package:hirepro/screens/homeScreen.dart';
 import 'package:hirepro/screens/myTasks.dart';
 import 'package:hirepro/screens/userProfile.dart';
@@ -23,18 +26,27 @@ class _MyNavigationWidgetState extends State<MyNavigationWidget> {
             token: widget.token,
           ),
           MyTasks(),
-          UserProfile()
+          AllBiddingsScreen(),
+          const UserProfile(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        unselectedItemColor: Colors.grey,
+        selectedItemColor: kMainYellow,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(
+              Icons.home,
+            ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.task_alt),
             label: 'My Tasks',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.sackDollar),
+            label: 'Bids',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

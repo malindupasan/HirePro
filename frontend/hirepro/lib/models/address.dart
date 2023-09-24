@@ -1,6 +1,6 @@
 class Address {
   final String? id;
-  final String address;
+  final String address; 
   final String title;
   final String latitude;
   final String longitude;

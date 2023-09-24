@@ -7,6 +7,7 @@ import 'package:hirepro/widgets/MainCard.dart';
 import 'package:hirepro/widgets/smallButton.dart';
 import 'package:hirepro/widgets/stepper_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:workmanager/workmanager.dart';
 
 class ConfirmationScreen extends StatelessWidget {
   List<String> images = ['images/lawn1.jpg', 'images/lawn2.jpg'];
@@ -87,30 +88,40 @@ class ConfirmationScreen extends StatelessWidget {
                                     formbool.toString().split('.')[1]),
                                 ContentSection('Estimate (Rs.)',
                                     '${task.taskData.estmin} - ${task.taskData.estmax}'),
-                                ContentSection('Photos', ''),
-                                Expanded(
-                                  child: GridView.count(
-                                    crossAxisCount: 2,
-                                    children: task.files.map((image) {
-                                      return Card(
-                                        color: kMainGrey,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
+                                ContentSection('Images', ''),
+                                if (task.files.isNotEmpty)
+                                  Expanded(
+                                    child: GridView.count(
+                                      crossAxisCount: 2,
+                                      children: task.files.map((image) {
+                                        return Card(
+                                          color: kMainGrey,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                            ),
+                                            child: Image.file(
+                                              image,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                          child: Image.file(
-                                            image,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
+                                        );
+                                      }).toList(),
+                                    ),
                                   ),
-                                ),
+                                if (task.files.isEmpty)
+                                  Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.only(left: 30),
+                                    child: const Text(
+                                      'No images selected',
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  )
                               ],
                             )),
                         Container(
@@ -123,6 +134,7 @@ class ConfirmationScreen extends StatelessWidget {
                                     listen: false);
                                 if (task.taskCategory == "Lawn Mowing") {
                                   await task.addLawnMowingTask();
+
                                   if (task.addedTaskId.isNotEmpty) {
                                     task.uploadFile();
                                   }

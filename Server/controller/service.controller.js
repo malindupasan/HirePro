@@ -13,7 +13,7 @@ exports.getBids = async (req, res, next) => {
         
         
         const successRes=await ServiceModel.getbids(serviceid)
-        
+      
         const serviceProviderId=successRes.serviceProviderId;
 
 
@@ -21,7 +21,7 @@ exports.getBids = async (req, res, next) => {
 
 
     } catch (error) {
-        console.log(error + " error inserting the rating")
+        console.log(error + "error inserting the rating")
     }
 }
 

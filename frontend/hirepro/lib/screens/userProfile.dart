@@ -79,10 +79,13 @@ class _UserProfileState extends State<UserProfile> {
                                                   child:
                                                       customer.image.path == ''
                                                           ? Text(
-                                                              user.getInitials(
-                                                                  customer
-                                                                      .customerData!
-                                                                      .name),
+                                                              customer.customerData !=
+                                                                      null
+                                                                  ? user.getInitials(
+                                                                      customer
+                                                                          .customerData!
+                                                                          .name)
+                                                                  : '',
                                                               style: TextStyle(
                                                                   fontSize: 48,
                                                                   color:
@@ -94,7 +97,8 @@ class _UserProfileState extends State<UserProfile> {
                                             ),
                                           ),
                                           Text(
-                                            customer.customerData!.name,
+                                              customer.customerData !=null?
+                                            customer.customerData!.name:'',
                                             style: const TextStyle(
                                               fontSize: 30,
                                               overflow: TextOverflow.ellipsis,
@@ -140,8 +144,9 @@ class _UserProfileState extends State<UserProfile> {
                                               ProfileSummary(
                                                   '10', 'Total no of jobs'),
                                               ProfileSummary(
+                                                   customer.customerData !=null?
                                                   customer.customerData!
-                                                      .loyalityPoints,
+                                                      .loyalityPoints:'',
                                                   'Loyality points')
                                             ],
                                           )

@@ -1,8 +1,8 @@
 import 'dart:convert';
-
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:hirepro/models/address.dart';
+import 'package:hirepro/models/bids.dart';
 import 'package:hirepro/models/customer.dart';
 import 'package:hirepro/env.dart';
 import 'package:hirepro/widgets/MyNavigationWidget.dart';
@@ -223,28 +223,32 @@ class Api {
       throw Exception('Failed to request task');
     }
   }
+//----getting bids data
 
-  Future<Customer> getBids(id) async {
-    final response = await http.get(
+  Future<List<Bids>> fetchBids(http.Client client, id) async {
+    final response = await client.post(
       Uri.parse(url + 'getbids'),
       headers: <String, String>{
         'Content-Type': 'application/json',
-        'serviceid': id,
         HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
       },
+      body: jsonEncode(<String, String>{'serviceid': id}),
     );
-    try {
-      if (response.statusCode == 200) {
-        return await Customer.fromJson(jsonDecode(response.body));
-      } else {
-        throw Exception('Failed to load customer');
-      }
-    } catch (e) {
-      print(e);
-      throw (e);
+    if (response.statusCode == 200) {
+      print('Data received');
+      print(response.body);
     }
+
+    return compute(parseBids, response.body);
   }
 
+  List<Bids> parseBids(String responseBody) {
+    final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+
+    return parsed.map<Bids>((json) => Bids.fromJson(json)).toList();
+  }
+
+//----------------login
   void loginUser(
       emailController, passwordController, preferences, context) async {
     if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {

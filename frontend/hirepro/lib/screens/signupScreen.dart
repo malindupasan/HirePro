@@ -7,14 +7,7 @@ import 'package:hirepro/widgets/MainButton.dart';
 import 'package:hirepro/widgets/TermsAndPolicy.dart';
 import 'package:provider/provider.dart';
 
-class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key});
-
-  @override
-  State<OtpScreen> createState() => _OtpScreenState();
-}
-
-class _OtpScreenState extends State<OtpScreen> {
+class OtpScreen extends StatelessWidget {
   SignupController signupController = SignupController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -23,6 +16,13 @@ class _OtpScreenState extends State<OtpScreen> {
   Email email_verify = Email();
 
   final _signupFormKey = GlobalKey<FormState>();
+  void dispose() {
+    phoneController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    nameController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
