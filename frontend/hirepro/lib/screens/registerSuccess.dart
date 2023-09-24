@@ -4,14 +4,8 @@ import 'package:hirepro/widgets/SmallArrowButton.dart';
 import 'package:hirepro/widgets/TermsAndPolicy.dart';
 import 'package:hirepro/widgets/check_icon_large.dart';
 
-class RegisterSuccess extends StatefulWidget {
-  const RegisterSuccess({super.key});
+class RegisterSuccess extends StatelessWidget {
 
-  @override
-  State<RegisterSuccess> createState() => _RegisterSuccessState();
-}
-
-class _RegisterSuccessState extends State<RegisterSuccess> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
