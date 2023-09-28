@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hirepro/constants.dart';
-import 'package:hirepro/widgets/MyNavigationWidget.dart';
 import 'package:hirepro/widgets/MainCard.dart';
-import 'package:hirepro/widgets/NavButton.dart';
 import 'package:hirepro/widgets/NavTop.dart';
-import 'package:hirepro/widgets/SearchBarWidget.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 class HomeScreen extends StatefulWidget {

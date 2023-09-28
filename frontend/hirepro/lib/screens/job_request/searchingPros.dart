@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:hirepro/constants.dart';
 import 'package:hirepro/providers/bids_provider.dart';
@@ -18,17 +16,23 @@ class SearchingPros extends StatefulWidget {
 }
 
 class _SearchingProsState extends State<SearchingPros> {
+  // final FlutterLocalNotificationsPlugin notificationPlugin =
+  //     FlutterLocalNotificationsPlugin();
+ String id='';
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
-    String id = Provider.of<TaskProvider>(context, listen: false).addedTaskId;
-    Timer.periodic(const Duration(seconds: 3), (timer) async {
-      await Provider.of<BidsProvider>(context, listen: false).getBids(id);
-    });
+
+    // Notifications.initializeNotification(notificationPlugin);
+   id = Provider.of<TaskProvider>(context, listen: false).addedTaskId;
+
+    Provider.of<BidsProvider>(context, listen: false).startTimer(id);
   }
 
   Widget build(BuildContext context) {
+    //  String id = Provider.of<TaskProvider>(context, listen: false).addedTaskId;
+    // Provider.of<BidsProvider>(context, listen: false).getFilteredBids(id);
     return Scaffold(
         body: SafeArea(
             child: Consumer<BidsProvider>(
@@ -73,7 +77,7 @@ class _SearchingProsState extends State<SearchingPros> {
                 if (bidData.checkBids())
                   Column(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                       Container(
