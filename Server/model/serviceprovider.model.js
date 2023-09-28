@@ -17,8 +17,10 @@ class ServiceProvider {
 
  
   static async findById(id) {
-    const query = 'SELECT id,contact,name,email,points,password_hash,bank_details,category FROM serviceprovider WHERE id = $1';
+    const query = 'SELECT id,contact,name,email,points,bank_details,category FROM "ServiceProvider" WHERE id = $1';
     const values = [id];
+
+   
 
     try {
       const result = await db.query(query, values);
@@ -29,7 +31,22 @@ class ServiceProvider {
       throw error;
     }
   }
+ 
+  static async findAvgRaings(id) {
 
+    const query = 'select SUM(starRate) as sumrate ,count(customerid) as custno  from "Rating" where serviceproviderid = $1';
+    const values = [id];
+
+    try {
+      const result = await db.query(query, values);
+      //   console.log(result.rows[0]);
+      return result.rows[0];
+    } catch (error) {
+      console.log(error);
+      
+    }
+
+  }
 
 
 

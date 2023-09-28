@@ -29,20 +29,33 @@ class Rating {
   
   }
 
+  static async getRating(serviceproviderid){ 
+    const query = 'SELECT * FROM "Rating where serviceproviderid=$1';
+    const values = [serviceproviderid];
+
+    try {
+        const result = await db.query(query, values);
+        return result.rows[0];
+    } catch (error) {
+      throw error;
+    }
+  }
+
 
 
 
 
   
 
-  static async findByEmail(email) {
-    const query = 'SELECT * FROM customer WHERE email = $1';
-    const values = [email];
+  static async getReviews(serviceProviderId) {
+    const query = 'SELECT r.*, c.name FROM  "Rating" r inner join customer c on r.customerid =c.id where r.serviceproviderid=$1';
+    const values = [serviceProviderId];
 
     try {
       const result = await db.query(query, values);
       //   console.log(result.rows[0]);
-      return result.rows[0];
+      // console.log(result.rows[0]);
+      return result.rows;
 
     } catch (error) {
       throw error;
