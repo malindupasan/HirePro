@@ -8,6 +8,13 @@ import 'package:hirepro/services/api.dart';
 import 'package:http/http.dart';
 
 class TaskProvider extends ChangeNotifier {
+   static final TaskProvider _instance = TaskProvider._internal();
+
+  // Private constructor
+  TaskProvider._internal();
+
+  // Factory constructor to access the singleton instance
+  factory TaskProvider() => _instance;
   late Task _task;
   late String _addedTaskId;
 

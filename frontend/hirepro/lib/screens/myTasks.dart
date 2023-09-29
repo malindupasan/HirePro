@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hirepro/widgets/HireProAppBar.dart';
 
-class MyTasks extends StatefulWidget {
-  const MyTasks({super.key});
+class MyTasks extends StatelessWidget {
 
-  @override
-  State<MyTasks> createState() => _MyTasksState();
-}
-
-class _MyTasksState extends State<MyTasks> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: HireProAppBar(context, 'My Tasks'),
       body: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           Expanded(

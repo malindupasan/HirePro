@@ -20,7 +20,7 @@ class CustomerProvider extends ChangeNotifier {
   bool _editField = true;
   bool _isImageChanged = false;
 
-  Customer? get customerData => _customer!;
+  Customer? get customerData => _customer;
   int get verificationCode => _code;
   String get signupId => _signupId!;
   File get image => _image;

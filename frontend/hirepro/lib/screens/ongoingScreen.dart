@@ -2,14 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hirepro/widgets/HireProAppBar.dart';
 import 'package:hirepro/widgets/TaskCardOngoing.dart';
 
-class OngoingScreen extends StatefulWidget {
-  const OngoingScreen({super.key});
-
-  @override
-  State<OngoingScreen> createState() => _OngoingScreenState();
-}
-
-class _OngoingScreenState extends State<OngoingScreen> {
+class OngoingScreen extends StatelessWidget {
+ 
   @override
   Widget build(BuildContext context) {
     return SafeArea(

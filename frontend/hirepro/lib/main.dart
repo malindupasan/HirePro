@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hirepro/constants.dart';
 import 'package:hirepro/providers/address_provider.dart';
+import 'package:hirepro/providers/bids_provider.dart';
 import 'package:hirepro/providers/category_provider.dart';
 import 'package:hirepro/providers/customer_provider.dart';
 import 'package:hirepro/providers/file_upload_provider.dart';
@@ -26,11 +27,29 @@ import 'package:hirepro/screens/otpEnterScreen.dart';
 import 'package:hirepro/screens/signupScreen.dart';
 import 'package:hirepro/screens/pro_profile_screen/proProfileScreen.dart';
 import 'package:hirepro/screens/registerSuccess.dart';
+import 'package:hirepro/services/api.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
+
+// @pragma('vm:entry-point')
+// void callBackDispatcher() {
+//   Workmanager().executeTask((taskName, inputData) async {
+//     // final taskProvider = TaskProvider();
+//     // final bidsProvider = BidsProvider(); // Get the singleton instance
+//     print('hi');
+//     // final response = await bidsProvider.getBids(taskProvider.addedTaskId); // Use provider functions
+
+//     // final response = await api.fetchBids(http.Client());
+
+//     return Future.value(true);
+//   });
+// }
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Workmanager().initialize(callBackDispatcher,isInDebugMode: true);
   await Firebase.initializeApp();
   SharedPreferences preferences = await SharedPreferences.getInstance();
 
@@ -52,7 +71,8 @@ class HirePro extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => CategoryProvider()),
         ChangeNotifierProvider(create: (context) => TaskProvider()),
         ChangeNotifierProvider(create: (context) => FileUploadProvider()),
-        ChangeNotifierProvider(create: (context) => LocationProvider())
+        ChangeNotifierProvider(create: (context) => LocationProvider()),
+        ChangeNotifierProvider(create: (context) => BidsProvider())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
