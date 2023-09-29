@@ -18,13 +18,6 @@ class Service {
 
 
 
-
-
-
-
-
-
-
   static async getbids(serviceid) {
     // const query = 'SELECT * FROM "Bid" where "serviceId" = $1';
     const query = 'SELECT b.* ,s.contact,s.name,s.id  FROM "Bid" AS b inner join "ServiceProvider" AS s on s.id=b."serviceProviderId" where "serviceId" = $1';
@@ -38,7 +31,8 @@ class Service {
 
       }
       else {
-        console.log(result.rows[0]);
+
+
         return result.rows;
       }
 
