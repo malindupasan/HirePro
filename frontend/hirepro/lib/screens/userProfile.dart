@@ -39,7 +39,7 @@ class _UserProfileState extends State<UserProfile> {
             appBar: HireProAppBar(context, 'Profile'),
             resizeToAvoidBottomInset: false,
             body: SingleChildScrollView(
-              child: Container(
+              child: SizedBox(
                   height: 750,
                   child: Center(
                       child: Container(
@@ -97,8 +97,9 @@ class _UserProfileState extends State<UserProfile> {
                                             ),
                                           ),
                                           Text(
-                                              customer.customerData !=null?
-                                            customer.customerData!.name:'',
+                                            customer.customerData != null
+                                                ? customer.customerData!.name
+                                                : '',
                                             style: const TextStyle(
                                               fontSize: 30,
                                               overflow: TextOverflow.ellipsis,
@@ -144,9 +145,10 @@ class _UserProfileState extends State<UserProfile> {
                                               ProfileSummary(
                                                   '10', 'Total no of jobs'),
                                               ProfileSummary(
-                                                   customer.customerData !=null?
-                                                  customer.customerData!
-                                                      .loyalityPoints:'',
+                                                  customer.customerData != null
+                                                      ? customer.customerData!
+                                                          .loyalityPoints
+                                                      : '',
                                                   'Loyality points')
                                             ],
                                           )
