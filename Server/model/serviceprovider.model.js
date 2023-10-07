@@ -17,7 +17,7 @@ class ServiceProvider {
 
  
   static async findById(id) {
-    const query = 'SELECT id,contact,name,email,points,bank_details,category FROM "ServiceProvider" WHERE id = $1';
+    const query = 'SELECT id,intro,contact,name,email,points,bank_details,category FROM "ServiceProvider" WHERE id = $1';
     const values = [id];
 
    
