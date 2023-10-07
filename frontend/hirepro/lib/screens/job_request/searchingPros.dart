@@ -16,16 +16,15 @@ class SearchingPros extends StatefulWidget {
 }
 
 class _SearchingProsState extends State<SearchingPros> {
-  // final FlutterLocalNotificationsPlugin notificationPlugin =
-  //     FlutterLocalNotificationsPlugin();
- String id='';
+  
+  String id = '';
   @override
   void initState() {
-    
     super.initState();
 
-    // Notifications.initializeNotification(notificationPlugin);
-   id = Provider.of<TaskProvider>(context, listen: false).addedTaskId;
+  
+
+    id = Provider.of<TaskProvider>(context, listen: false).addedTaskId;
 
     Provider.of<BidsProvider>(context, listen: false).startTimer(id);
   }
@@ -41,7 +40,7 @@ class _SearchingProsState extends State<SearchingPros> {
         child: Column(
           children: [
             NewStepper(Colors.grey, Colors.grey, kMainYellow),
-            if (bidData.checkBids())
+            if (bidData.getFilteredBids(id).isNotEmpty)
               Text(
                 'Find the Perfect Pro for Your Task!',
                 style: kHeading1,
@@ -49,7 +48,7 @@ class _SearchingProsState extends State<SearchingPros> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                if (!bidData.checkBids())
+                if (bidData.filteredBids.isEmpty)
                   Column(
                     children: [
                       const Text(
@@ -74,7 +73,7 @@ class _SearchingProsState extends State<SearchingPros> {
                       )
                     ],
                   ),
-                if (bidData.checkBids())
+                if (bidData.filteredBids.isNotEmpty)
                   Column(
                     children: [
                       const SizedBox(
@@ -84,7 +83,7 @@ class _SearchingProsState extends State<SearchingPros> {
                         height: 550,
                         child: GridView.count(
                           crossAxisCount: 2,
-                          children: bidData.bids.map((bid) {
+                          children: bidData.getFilteredBids(id).map((bid) {
                             return GestureDetector(
                               onTap: () {
                                 Navigator.pushNamed(context, '/pro_profile');

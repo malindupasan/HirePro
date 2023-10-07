@@ -37,5 +37,4 @@ class Bids {
       // acceptTimestamp: json['accept_timestamp'],
     );
   }
-  
 }
