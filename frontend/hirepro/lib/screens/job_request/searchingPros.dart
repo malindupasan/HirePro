@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hirepro/constants.dart';
 import 'package:hirepro/providers/bids_provider.dart';
+import 'package:hirepro/providers/service_provider_provider.dart';
 import 'package:hirepro/providers/task_provider.dart';
 import 'package:hirepro/widgets/StarRating.dart';
 import 'package:hirepro/widgets/smallButton.dart';
@@ -16,13 +17,10 @@ class SearchingPros extends StatefulWidget {
 }
 
 class _SearchingProsState extends State<SearchingPros> {
-  
   String id = '';
   @override
   void initState() {
     super.initState();
-
-  
 
     id = Provider.of<TaskProvider>(context, listen: false).addedTaskId;
 
@@ -88,70 +86,79 @@ class _SearchingProsState extends State<SearchingPros> {
                               onTap: () {
                                 Navigator.pushNamed(context, '/pro_profile');
                               },
-                              child: Card(
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 6, vertical: 5),
-                                shape: RoundedRectangleBorder(
-                                    side: BorderSide(
-                                      color: kMainYellow,
-                                      width: 2.0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(context, '/pro_profile',
+                                      arguments: bid.serviceProId);
+                                },
+                                child: Card(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 6, vertical: 5),
+                                  shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                        color: kMainYellow,
+                                        width: 2.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 2),
+                                    alignment: Alignment.bottomCenter,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      image: const DecorationImage(
+                                        image: AssetImage('images/female1.jpg'),
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Container(
-                                  margin:
-                                      const EdgeInsets.symmetric(horizontal: 2),
-                                  alignment: Alignment.bottomCenter,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    image: const DecorationImage(
-                                      image: AssetImage('images/female1.jpg'),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Container(
-                                          width: double.infinity,
-                                          decoration: BoxDecoration(
-                                              color: Color.fromARGB(
-                                                  192, 255, 255, 255),
-                                              borderRadius:
-                                                  BorderRadius.circular(5)),
-                                          margin: const EdgeInsets.symmetric(
-                                              horizontal: 5, vertical: 5),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(3.0),
-                                            child: Text(
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.center,
-                                              bid.name.toString(),
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.black,
+                                    child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                                color: Color.fromARGB(
+                                                    192, 255, 255, 255),
+                                                borderRadius:
+                                                    BorderRadius.circular(5)),
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 5, vertical: 5),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(3.0),
+                                              child: Text(
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.center,
+                                                bid.name.toString(),
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.black,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        StarRating(4.4, 20),
-                                        Container(
-                                          margin: EdgeInsets.only(bottom: 10),
-                                          width: double.infinity,
-                                          color: Color.fromARGB(195, 0, 0, 0),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(4.0),
-                                            child: Text(
-                                              'Rs. ${bid.amount.toString()}',
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w900,
-                                                  color: kMainYellow),
-                                              textAlign: TextAlign.center,
+                                          StarRating(4.4, 20),
+                                          Container(
+                                            margin: EdgeInsets.only(bottom: 10),
+                                            width: double.infinity,
+                                            color: Color.fromARGB(195, 0, 0, 0),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(4.0),
+                                              child: Text(
+                                                'Rs. ${bid.amount.toString()}',
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w900,
+                                                    color: kMainYellow),
+                                                textAlign: TextAlign.center,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ]),
+                                        ]),
+                                  ),
                                 ),
                               ),
                             );

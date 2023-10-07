@@ -5,6 +5,7 @@ import 'package:hirepro/models/address.dart';
 import 'package:hirepro/models/bids.dart';
 import 'package:hirepro/models/customer.dart';
 import 'package:hirepro/env.dart';
+import 'package:hirepro/models/service_provider.dart';
 import 'package:hirepro/widgets/MyNavigationWidget.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -278,6 +279,28 @@ class Api {
       } catch (e) {
         print("Wrong credentials");
       }
+    }
+  }
+
+  //get service provider details
+  Future<ServiceProvider> getServiceProviderData(serviceProviderId) async {
+    final response = await http.post(
+      Uri.parse(url + 'getspdetails'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
+      },
+      body: jsonEncode(<String, String>{'serviceProviderId': serviceProviderId}),
+    );
+    try {
+      if (response.statusCode == 200) {
+        return await ServiceProvider.fromJson(jsonDecode(response.body));
+      } else {
+        throw Exception('Failed to load service provider');
+      }
+    } catch (e) {
+      print(e);
+      throw (e);
     }
   }
 }

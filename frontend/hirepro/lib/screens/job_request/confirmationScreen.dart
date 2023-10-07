@@ -8,7 +8,7 @@ import 'package:hirepro/widgets/MainCard.dart';
 import 'package:hirepro/widgets/smallButton.dart';
 import 'package:hirepro/widgets/stepper_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:workmanager/workmanager.dart';
+
 
 class ConfirmationScreen extends StatelessWidget {
   List<String> images = ['images/lawn1.jpg', 'images/lawn2.jpg'];
