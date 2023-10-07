@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hirepro/constants.dart';
+import 'package:hirepro/providers/bids_provider.dart';
 import 'package:hirepro/providers/task_provider.dart';
 import 'package:hirepro/screens/job_request/TaskAddScreen.dart';
 import 'package:hirepro/screens/job_request/jobRequest.dart';
@@ -134,7 +135,9 @@ class ConfirmationScreen extends StatelessWidget {
                                     listen: false);
                                 if (task.taskCategory == "Lawn Mowing") {
                                   await task.addLawnMowingTask();
-
+                                  Provider.of<BidsProvider>(context,
+                                          listen: false)
+                                      .reset();
                                   if (task.addedTaskId.isNotEmpty) {
                                     task.uploadFile();
                                   }
