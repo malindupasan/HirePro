@@ -23,7 +23,7 @@ router.post('/addaddress',CustomerController.addAddress)
 router.post('/saveotp',CustomerController.saveotp)
 router.post('/checkotp',CustomerController.checkotp)
 
-
+router.post('/getcompletedtasks',CustomerController.getcompletedtasks)
 
 
 module.exports = router;
