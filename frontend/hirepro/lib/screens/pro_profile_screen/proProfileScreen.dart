@@ -17,171 +17,170 @@ List<String> images = [
 ];
 
 class proProfileScreen extends StatelessWidget {
-  final List<Review> reviews = [
-    Review(
-      profilePicUrl: 'images/male1.jpg',
-      name: 'John Doe',
-      date: DateTime(2023, 7, 15),
-      rating: 4.5,
-      content:
-          "Wow! I just had the most amazing experience with my hairstylist from the handyman app! They have truly worked magic with my hair. I couldn't be happier with the result!🌟🌟🌟🌟🌟",
-    ),
-    Review(
-      profilePicUrl: 'images/male2.jpg',
-      name: 'Jane Smith',
-      date: DateTime(2023, 7, 20),
-      rating: 5.0,
-      content: 'Nulla vel magna et nisi euismod fermentum vel at leo.',
-    ),
-    Review(
-      profilePicUrl: 'images/male3.jpg',
-      name: 'Bob Johnson',
-      date: DateTime(2023, 7, 25),
-      rating: 3.0,
-      content: 'Vivamus et dolor nec felis malesuada varius.',
-    )
-  ];
-
   @override
   Widget build(BuildContext context) {
     dynamic id = ModalRoute.of(context)!.settings.arguments;
-    Provider.of<ServiceProviderProvider>(context, listen: false)
-        .getServiceProviderDetails(id);
-    return SafeArea(
-        child: Consumer<ServiceProviderProvider>(
-      builder: (context, serviceProData, child) => Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.all(10),
-                color: Color.fromARGB(255, 255, 244, 213),
-                child: ProfileMain(),
-              ),
-             const SizedBox(
-                height: 20,
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 30),
-                child: Text(
-                  serviceProData.serviceProviderData.intro,
-                  style:const TextStyle(
-                    fontSize: 16,
-                  ),
-                  textAlign: TextAlign.justify,
-                ),
-              ),
-              Container(
-                height: 150,
-                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+
+    return FutureBuilder<bool>(
+      future: Provider.of<ServiceProviderProvider>(context, listen: false)
+          .getServiceProviderDetails(id),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return LinearProgressIndicator(
+            minHeight: 30,
+          );
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          return Scaffold(
+              body: SafeArea(
+                  child: Consumer<ServiceProviderProvider>(
+            builder: (context, serviceProData, child) => Scaffold(
+              body: SingleChildScrollView(
+                child: Column(
                   children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      color: Color.fromARGB(255, 255, 244, 213),
+                      child: ProfileMain(),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 30),
+                      child: Text(
+                        serviceProData.serviceProviderData.intro,
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                        textAlign: TextAlign.justify,
+                      ),
+                    ),
+                    Container(
+                      height: 150,
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              'Overview',
-                              style: kHeading1,
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    'Overview',
+                                    style: kHeading1,
+                                  ),
+                                ),
+                                overviewRow(
+                                    FontAwesomeIcons.award, 'Hired 8 times'),
+                                overviewRow(
+                                    FontAwesomeIcons.locationDot, 'Colombo 03'),
+                                overviewRow(FontAwesomeIcons.clock,
+                                    '3 years in buisiness'),
+                              ],
                             ),
                           ),
-                          overviewRow(FontAwesomeIcons.award, 'Hired 8 times'),
-                          overviewRow(
-                              FontAwesomeIcons.locationDot, 'Colombo 03'),
-                          overviewRow(
-                              FontAwesomeIcons.clock, '3 years in buisiness'),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-              Text(
-                'Featured Projects',
-                style: kHeading1,
-              ),
-              Gallery(),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                child: Text(
-                  'Reviews',
-                  style: kHeading1,
-                ),
-              ),
-              Container(
-                height: 100,
-                margin: EdgeInsets.symmetric(horizontal: 30),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Excellent 4.5',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                              color: kMainYellow),
-                        ),
-                        StarRating(4.5, 30),
-                        Text('28 reviews')
-                      ],
+                    Text(
+                      'Featured Projects',
+                      style: kHeading1,
                     ),
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    Gallery(),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      child: Text(
+                        'Reviews',
+                        style: kHeading1,
+                      ),
+                    ),
+                    Container(
+                      height: 100,
+                      margin: EdgeInsets.symmetric(horizontal: 30),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          StarRatingSingle('5', 0.7),
-                          StarRatingSingle('4', 0.3),
-                          StarRatingSingle('3', 0.0),
-                          StarRatingSingle('2', 0.0),
-                          StarRatingSingle('1', 0.0),
-                        ])
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Excellent 4.5',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                    color: kMainYellow),
+                              ),
+                              StarRating(4.5, 30),
+                              Text('28 reviews')
+                            ],
+                          ),
+                          Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                StarRatingSingle('5', 0.7),
+                                StarRatingSingle('4', 0.3),
+                                StarRatingSingle('3', 0.0),
+                                StarRatingSingle('2', 0.0),
+                                StarRatingSingle('1', 0.0),
+                              ])
+                        ],
+                      ),
+                    ),
+                    if (serviceProData.serviceProviderData.reviews.isNotEmpty)
+                      Container(
+                        height: 200,
+                        margin: EdgeInsets.symmetric(horizontal: 5),
+                        child: RawScrollbar(
+                          thumbColor: Color.fromARGB(255, 122, 122, 122),
+                          radius: Radius.circular(5),
+                          thickness: 10,
+                          child: ListView.separated(
+                            padding: const EdgeInsets.all(8),
+                            itemCount: serviceProData
+                                .serviceProviderData.reviews.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final review = serviceProData
+                                  .serviceProviderData.reviews[index];
+                              return ReviewCard(review: review);
+                            },
+                            separatorBuilder:
+                                (BuildContext context, int index) =>
+                                    const Divider(),
+                          ),
+                        ),
+                      ),
+                    Container(
+                      margin:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SmallButton(
+                              'More Reviews',
+                              () {},
+                              const Color.fromARGB(255, 43, 43, 43),
+                              Colors.white),
+                          SmallButton('Back', () {
+                            Navigator.pop(context);
+                          }, kMainYellow, Colors.white),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),
-              Container(
-                height: 200,
-                margin: EdgeInsets.symmetric(horizontal: 5),
-                child: RawScrollbar(
-                  thumbColor: Color.fromARGB(255, 122, 122, 122),
-                  radius: Radius.circular(5),
-                  thickness: 10,
-                  child: ListView.separated(
-                    padding: const EdgeInsets.all(8),
-                    itemCount: reviews.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final review = reviews[index];
-                      return ReviewCard(review: review);
-                    },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(),
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SmallButton('More Reviews', () {},
-                        const Color.fromARGB(255, 43, 43, 43), Colors.white),
-                    SmallButton('Back', () {
-                      Navigator.pop(context);
-                    }, kMainYellow, Colors.white),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    ));
+            ),
+          )));
+        }
+      },
+    );
   }
 }
 
@@ -279,12 +278,28 @@ class ProfileMain extends StatelessWidget {
                   serviceProData.serviceProviderData.name,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  'Proffesional HairStylist',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.grey[800]),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (String category
+                        in serviceProData.serviceProviderData.category)
+                      Container(
+                        padding: EdgeInsets.all(3),
+                        margin: EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: Color.fromARGB(255, 244, 222, 222),
+                        ),
+                        child: Text(
+                          textAlign: TextAlign.left,
+                          category,
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black),
+                        ),
+                      ),
+                  ],
                 ),
                 StarRating(4.5, 25),
                 const SizedBox(
