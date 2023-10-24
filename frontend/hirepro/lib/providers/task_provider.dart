@@ -3,12 +3,15 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
+import 'package:hirepro/models/pending_task.dart';
 import 'package:hirepro/models/task.dart';
 import 'package:hirepro/services/api.dart';
 import 'package:http/http.dart';
 
 class TaskProvider extends ChangeNotifier {
-   static final TaskProvider _instance = TaskProvider._internal();
+  bool isLoading = false;
+  List<PendingTask> _pendingTasks = [];
+  static final TaskProvider _instance = TaskProvider._internal();
 
   // Private constructor
   TaskProvider._internal();
@@ -21,6 +24,8 @@ class TaskProvider extends ChangeNotifier {
   List<File> _selectedFiles = [];
   List<File> get files => _selectedFiles;
   String get addedTaskId => _addedTaskId;
+  List<PendingTask> get pendingTasks => _pendingTasks;
+
   Api api = Api();
   void initialize() {
     _task = Task(
@@ -98,7 +103,6 @@ class TaskProvider extends ChangeNotifier {
     _selectedFiles = [];
   }
 
-
   Future<void> uploadFile() async {
     if (_selectedFiles.isEmpty) {
       print('no file selected');
@@ -114,5 +118,15 @@ class TaskProvider extends ChangeNotifier {
     } catch (error) {
       print('Error uploading file: $error');
     }
+  }
+
+  Future<void> getPendingTasks() async {
+    isLoading = true;
+    notifyListeners();
+    final response = await api.getPendingTasks(Client());
+    _pendingTasks = response;
+    print(_pendingTasks.length);
+    isLoading = false;
+    notifyListeners();
   }
 }
