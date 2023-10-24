@@ -9,7 +9,7 @@ router.post('/getbids',ServiceController.getBids);
 
 router.post('/getspdetails',ServiceController.getServiceProviderDetails);
 
-router.get('/getpendingtaks',ServiceController.getPendingTasks)
+router.get('/getpendingtasks',ServiceController.getPendingTasks)
 
 // rout
 
