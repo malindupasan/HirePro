@@ -92,7 +92,7 @@ class Service {
   }
 
   static async completedTasks(customerid) {
-    console.log(customerid);
+    // console.log(customerid);
     const query = 'SELECT * FROM "Service" s  where status=$1 AND s.customerid=$2  ';
     const values = ["completed",customerid];
 
@@ -113,10 +113,32 @@ class Service {
       throw error;
     }
 
+
   }
 
 
 
+
+static async acceptTask(taskid){
+
+  const query = 'update "Service" set status=\'accepted\' where id=$1';
+  const values = [taskid];
+  try {
+    const result = await db.query(query, values);
+
+    if (result.rowCount === 0) {
+      console.log("No rows were updated.");
+      return false;  // No rows were updated
+    } else {
+      console.log("Update was successful.");
+      return true;   // Update was successful
+    }
+  } catch (error) {
+    // throw error;
+    console.log(error)
+  }
+
+}
 
 
 
