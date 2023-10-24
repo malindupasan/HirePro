@@ -24,6 +24,9 @@ class TaskProvider extends ChangeNotifier {
   List<File> _selectedFiles = [];
   List<File> get files => _selectedFiles;
   String get addedTaskId => _addedTaskId;
+  void setAddedTaskId(id){
+    _addedTaskId = id;
+  }
   List<PendingTask> get pendingTasks => _pendingTasks;
 
   Api api = Api();

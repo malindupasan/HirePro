@@ -28,6 +28,7 @@ import 'package:hirepro/screens/otpEnterScreen.dart';
 import 'package:hirepro/screens/signupScreen.dart';
 import 'package:hirepro/screens/pro_profile_screen/proProfileScreen.dart';
 import 'package:hirepro/screens/registerSuccess.dart';
+import 'package:hirepro/screens/waiting_for_bids_screen.dart';
 import 'package:hirepro/services/api.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -120,6 +121,7 @@ class HirePro extends StatelessWidget {
           '/rate': (context) => JobCompletedScreen(),
           '/set_location': (context) => SetLocationScreen(),
           '/searching_pros': (context) => SearchingPros(),
+          '/waiting_for_bids':(context) => WaitingForBidsScreen(),
         },
       ),
     );

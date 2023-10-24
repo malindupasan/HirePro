@@ -56,7 +56,7 @@ class AllBiddingsScreen extends StatelessWidget {
                                       ),
                                       Text(
                                         "#${pendingtasks.pendingTasks[index].id}",
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Colors.grey, fontSize: 10),
                                       ),
                                       Text(
@@ -67,11 +67,11 @@ class AllBiddingsScreen extends StatelessWidget {
                                       ),
                                       Row(
                                         children: [
-                                          Icon(
+                                          const Icon(
                                             FontAwesomeIcons.clock,
                                             size: 15,
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 20,
                                           ),
                                           Text(
@@ -113,10 +113,16 @@ class AllBiddingsScreen extends StatelessWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           ElevatedButton(
-                                              onPressed: () {},
+                                              onPressed: () async {
+                                             
+                                                Navigator.pushNamed(
+                                                    context, '/searching_pros',
+                                                    arguments: pendingtasks
+                                                        .pendingTasks[index]
+                                                        .id);
+                                              },
                                               child: Text("View")),
                                           OutlinedButton(
-                                            
                                               onPressed: () {},
                                               child: Text("Details")),
                                         ],
