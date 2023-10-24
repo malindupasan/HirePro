@@ -44,10 +44,10 @@ class Service {
 
   }
 
-  static async pendingTasks(cutomerid) {
+  static async pendingTasks(customerid) {
 
-    const query = 'SELECT * FROM "Service" s  where status=$1 && s.cutomerid=$2  ';
-    const values = ["pending",cutomerid];
+    const query = 'SELECT * FROM "Service" s  where status=$1 AND s.customerid=$2  ';
+    const values = ["pending",customerid];
 
     try {
       const result = await db.query(query, values);
