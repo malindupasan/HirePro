@@ -113,3 +113,22 @@ exports.getServiceProviderDetails=async (req, res, next) => {
         console.log(error);
     }
 }
+
+exports.getPendingTasks= async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+        const customerid=await CustomerServices.getIdFromToken(authHeader);
+        if(!customerid) {
+            throw new Error;
+        }
+
+        const successRes=await ServiceModel.pendingTasks(customerid);
+        console.log("hello");
+
+        res.status(200).json(successRes);
+        
+        
+    } catch (error) {
+        console.log(error);
+    }
+}

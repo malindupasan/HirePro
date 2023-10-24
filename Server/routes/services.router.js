@@ -9,6 +9,8 @@ router.post('/getbids',ServiceController.getBids);
 
 router.post('/getspdetails',ServiceController.getServiceProviderDetails);
 
-router.post('/getSpdetailsext',ServiceProviderController.getSpDetails)
+router.get('/getpendingtaks',ServiceController.getPendingTasks)
+
+
 
 module.exports = router;

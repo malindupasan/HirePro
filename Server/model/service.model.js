@@ -44,9 +44,34 @@ class Service {
 
   }
 
-  static async alltasks(serviceid) {
-    const query = 'SELECT * FROM "service" where "customerid" = $1 and';
-    const values = [serviceid];
+  static async pendingTasks(cutomerid) {
+
+    const query = 'SELECT * FROM "Service" s  where status=$1 && s.cutomerid=$2  ';
+    const values = ["pending",cutomerid];
+
+    try {
+      const result = await db.query(query, values);
+      
+      if (!result.rows) {
+        return "No pending taks";
+
+      }
+      else {
+        console.log("hey");
+        return result.rows;
+      }
+
+    }
+    catch (error) {
+      throw error;
+    }
+
+  }
+
+
+  static async alltasks(customerid) {
+    const query = 'SELECT * FROM "Service" where "customerid" = $1 and';
+    const values = [customerid];
 
     try {
       const result = await db.query(query, values);
@@ -66,21 +91,22 @@ class Service {
 
   }
 
-
-  static async alltasks(serviceid) {
-    const query = 'SELECT * FROM "service" where "customerid" = $1 and';
-    const values = [serviceid];
+  static async completedTasks(customerid) {
+    console.log(customerid);
+    const query = 'SELECT * FROM "Service" s  where status=$1 AND s.customerid=$2  ';
+    const values = ["completed",customerid];
 
     try {
       const result = await db.query(query, values);
-      if (result.rows[0].count <= 0) {
-        return "No bids found for service";
+      
+      if (!result.rows) {
+        return "No pending taks";
 
       }
       else {
-        return result.rows[0];
+        console.log("hey");
+        return result.rows;
       }
-
 
     }
     catch (error) {
@@ -88,6 +114,7 @@ class Service {
     }
 
   }
+
 
 
 
