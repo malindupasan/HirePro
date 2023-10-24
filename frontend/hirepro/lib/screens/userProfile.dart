@@ -24,10 +24,17 @@ class _UserProfileState extends State<UserProfile> {
   UserController user = UserController();
 
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<AddressProvider>(context, listen: false).getAllAddresses();
-
-      Provider.of<CustomerProvider>(context, listen: false).getCustomerData();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await Provider.of<AddressProvider>(context, listen: false)
+          .getAllAddresses();
+      if (context.mounted) {
+        await Provider.of<CustomerProvider>(context, listen: false)
+            .getCustomerData();
+      }
+      if (context.mounted) {
+        await Provider.of<CustomerProvider>(context, listen: false)
+            .getImageUrl();
+      }
     });
     super.initState();
   }
@@ -73,8 +80,8 @@ class _UserProfileState extends State<UserProfile> {
                                                   backgroundColor: kMainGrey,
                                                   backgroundImage:
                                                       customer.image.path != ''
-                                                          ? FileImage(
-                                                              customer.image)
+                                                          ? NetworkImage(
+                                                              customer.imageUrl)
                                                           : null,
                                                   child:
                                                       customer.image.path == ''

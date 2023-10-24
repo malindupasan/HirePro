@@ -16,12 +16,14 @@ class CustomerProvider extends ChangeNotifier {
   int _code = 0;
   String? _signupId;
   File _image = File('');
+  String _imageurl = '';
   ImageUpload imageUpload = ImageUpload();
   bool _editField = true;
   bool _isImageChanged = false;
 
   Customer? get customerData => _customer;
   int get verificationCode => _code;
+  String get imageUrl => _imageurl;
   String get signupId => _signupId!;
   File get image => _image;
   bool get editField => _editField;
@@ -120,10 +122,13 @@ class CustomerProvider extends ChangeNotifier {
 
   Future<String> getImageUrl() async {
     try {
-      final firebase_storage.Reference ref =
-          firebase_storage.FirebaseStorage.instance.ref().child('customer_profile_images/${_customer!.id}.png');
+      final firebase_storage.Reference ref = firebase_storage
+          .FirebaseStorage.instance
+          .ref()
+          .child('customer_profile_images/${_customer!.id}.png');
       final String downloadURL = await ref.getDownloadURL();
       _image = File(downloadURL);
+      _imageurl = downloadURL;
       notifyListeners();
       return downloadURL;
     } catch (e) {
