@@ -11,6 +11,6 @@ router.post('/getspdetails',ServiceController.getServiceProviderDetails);
 
 router.get('/getpendingtaks',ServiceController.getPendingTasks)
 
-
+// rout
 
 module.exports = router;
