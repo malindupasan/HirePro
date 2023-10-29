@@ -119,6 +119,30 @@ class Service {
 
 
 
+static async acceptTask(taskid,bidid,customerid) {
+
+  const query = 'update "Service" set status=\'accepted\' where id=$1';
+  const query2='update "Bid" set accept_customerid=s1,accept_timestamp=$2 where id=$3'
+  const currentTimestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const values2=[customerid,currentTimestamp,bidid];
+  const values = [taskid];
+  try {
+    const result = await db.query(query, values);
+    const result2 = await db.query(query2, values2);
+    if (result.rowCount === 0) {
+      console.log("No rows were updated.");
+      return false;  // No rows were updated
+    } else {
+      console.log("Update was successful.");
+      return true;   // Update was successful
+    }
+  } catch (error) {
+    // throw error;
+    console.log(error)
+  }
+
+}
+
 static async acceptTask(taskid){
 
   const query = 'update "Service" set status=\'accepted\' where id=$1';
@@ -139,6 +163,57 @@ static async acceptTask(taskid){
   }
 
 }
+
+static async getStatus(taskid){
+
+  const query = 'select status from "Service" where id=$1';
+  const values = [taskid];
+
+  try {
+    const result = await db.query(query, values);
+    if (result.rowCount === 0) {
+      console.log("No rows were updated.");
+      return false;  // No rows were updated
+    } else {
+      console.log("Update was successful.");
+      return result.rows[0];   // Update was successful
+    }
+
+  } catch (error) {
+    console.log(error)
+  }
+
+
+
+}
+
+static async getOngoingAndAcceptedTasks(){
+
+  const query = 'select * from "Service" where status=\'ongoing\' or status=\'accepted\'';
+  // const values = [taskid];
+
+  try {
+    const result = await db.query(query);
+    if (result.rowCount === 0) {
+      console.log("No rows were updated.");
+      return false;  // No rows were updated
+    } else {
+      console.log("Update was successful.");
+      return result.rows[0];   // Update was successful
+    }
+
+  } catch (error) {
+    console.log(error)
+  }
+
+
+
+}
+
+
+
+
+
 
 
 
