@@ -13,4 +13,6 @@ router.get('/getpendingtasks',ServiceController.getPendingTasks)
 
 router.post('/acceptbid',ServiceController.acceptBid)
 
+
+router.post('/getOngoingandAcceptedTasks',ServiceController.getAcceptedandOngoingtaks)
 module.exports = router;

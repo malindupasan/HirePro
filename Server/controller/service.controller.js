@@ -136,7 +136,7 @@ exports.getPendingTasks= async (req, res, next) => {
 exports.acceptBid= async (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
-        const {serviceid} = req.body;
+        const {serviceid,bidid} = req.body;
         // console.log(serviceid)
         const customerid=await CustomerServices.getIdFromToken(authHeader);
         if(!customerid) {
@@ -152,4 +152,60 @@ exports.acceptBid= async (req, res, next) => {
     } catch (error) {
         console.log(error);
     }
+}
+
+exports.getServiceStatus = async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+        const {serviceid} = req.body;
+        // console.log(serviceid)
+        const customerid=await CustomerServices.getIdFromToken(authHeader);
+        if(!customerid) {
+            throw new Error;
+        }
+        // console.log(serviceid)
+
+        const successRes=await ServiceModel.getStatus(serviceid);
+        
+        if(successRes)
+        res.status(200).json(successRes);
+
+        else{
+            res.status(404)
+        }
+        
+        
+    } catch (error) {
+        console.log(error);
+    }
+
+
+}
+
+exports.getAcceptedandOngoingtaks = async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+        // const {serviceid} = req.body;
+        // console.log(serviceid)
+        const customerid=await CustomerServices.getIdFromToken(authHeader);
+        if(!customerid) {
+            throw new Error;
+        }
+        // console.log(serviceid)
+
+        const successRes=await ServiceModel.getOngoingAndAcceptedTasks();
+        
+        if(successRes)
+        res.status(200).json(successRes);
+
+        else{
+            res.status(404)
+        }
+        
+        
+    } catch (error) {
+        console.log(error);
+    }
+
+
 }
