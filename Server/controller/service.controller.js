@@ -132,3 +132,24 @@ exports.getPendingTasks= async (req, res, next) => {
         console.log(error);
     }
 }
+
+exports.acceptBid= async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+        const {serviceid} = req.body;
+        // console.log(serviceid)
+        const customerid=await CustomerServices.getIdFromToken(authHeader);
+        if(!customerid) {
+            throw new Error;
+        }
+        // console.log(serviceid)
+        const successRes=await ServiceModel.acceptTask(serviceid);
+        
+
+        res.status(200).json(successRes);
+        
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
