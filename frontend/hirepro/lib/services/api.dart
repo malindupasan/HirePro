@@ -306,7 +306,7 @@ class Api {
     }
   }
 
-    Future<List<PendingTask>> getPendingTasks(http.Client client) async {
+  Future<List<PendingTask>> getPendingTasks(http.Client client) async {
     final response = await client.get(
       Uri.parse(url + 'getpendingtasks'),
       headers: <String, String>{
@@ -315,13 +315,36 @@ class Api {
       },
     );
 
-   
     return compute(parsePendingTasks, response.body);
   }
 
   List<PendingTask> parsePendingTasks(String responseBody) {
     final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
 
-    return parsed.map<PendingTask>((json) => PendingTask.fromJson(json)).toList();
+    return parsed
+        .map<PendingTask>((json) => PendingTask.fromJson(json))
+        .toList();
+  }
+
+  //----------accept bid--------------------------------
+  Future<http.Response> acceptbid(serviceid) async {
+    final response = await http.post(
+      Uri.parse(url + 'acceptbid'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
+      },
+      body: jsonEncode(<String, String>{
+        'serviceid': serviceid,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      // return Customer.fromJson(jsonDecode(response.body));
+      print("bid accpeted");
+      return response;
+    } else {
+      throw Exception('Cannot proceed');
+    }
   }
 }

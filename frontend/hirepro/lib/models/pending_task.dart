@@ -1,7 +1,7 @@
 class PendingTask {
   String id;
   String? area;
-  String description;
+  String? description;
   String? postedtime;
   String estmin;
   String estmax;

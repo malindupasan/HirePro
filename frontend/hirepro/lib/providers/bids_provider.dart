@@ -10,9 +10,7 @@ class BidsProvider extends ChangeNotifier {
   Notifications notification = Notifications();
 
   Timer? _timer;
-  // Private constructor
-
-  // Factory constructor to access the singleton instance
+  final Map<dynamic, Timer> _timers = {};
 
   List<Bids> _bids = [];
   List<Bids> filteredBids = [];
@@ -81,14 +79,41 @@ class BidsProvider extends ChangeNotifier {
     return false;
   }
 
+  // void startTimer(id) {
+  //   const duration = Duration(seconds: 4);
+  //   _timer = Timer.periodic(duration, (timer) async {
+  //     await getBids(id);
+  //   });
+  // }
+
+  // void stopTimer() {
+  //   _timer?.cancel();
+  // }
+
   void startTimer(id) {
     const duration = Duration(seconds: 4);
-    _timer = Timer.periodic(duration, (timer) async {
+
+    // Cancel the existing timer if it already exists for the same id
+
+    _timers[id] = Timer.periodic(duration, (timer) async {
+      print('Timer started ${id}');
       await getBids(id);
     });
   }
 
-  void stopTimer() {
-    _timer?.cancel();
+  void stopTimer(id) {
+    _timers[id]?.cancel();
+    print('Timer stopped ${id}');
+    _timers.remove(id);
+  }
+
+  Future<bool> acceptBid(serviceId) async {
+    http.Response response = await api.acceptbid(serviceId);
+    stopTimer(serviceId);
+    if (response.statusCode == 200) {
+      notifyListeners();
+      return true;
+    }
+    return false;
   }
 }

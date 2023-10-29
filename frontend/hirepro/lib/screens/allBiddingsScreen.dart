@@ -114,12 +114,13 @@ class AllBiddingsScreen extends StatelessWidget {
                                         children: [
                                           ElevatedButton(
                                               onPressed: () async {
-                                             
                                                 Navigator.pushNamed(
                                                     context, '/searching_pros',
-                                                    arguments: pendingtasks
-                                                        .pendingTasks[index]
-                                                        .id);
+                                                    arguments: 
+                                                      pendingtasks
+                                                          .pendingTasks[index]
+                                                          .id
+                                                    );
                                               },
                                               child: Text("View")),
                                           OutlinedButton(

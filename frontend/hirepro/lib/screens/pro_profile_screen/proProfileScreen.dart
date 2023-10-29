@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hirepro/constants.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:hirepro/providers/bids_provider.dart';
 import 'package:hirepro/providers/service_provider_provider.dart';
 import 'package:hirepro/screens/pro_profile_screen/reviews.dart';
 import 'package:hirepro/widgets/PercentageBar.dart';
@@ -41,7 +42,7 @@ class proProfileScreen extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.all(10),
                       color: Color.fromARGB(255, 255, 244, 213),
-                      child: ProfileMain(),
+                      child: ProfileMain(id),
                     ),
                     const SizedBox(
                       height: 20,
@@ -232,10 +233,9 @@ class Gallery extends StatelessWidget {
 }
 
 class ProfileMain extends StatelessWidget {
-  const ProfileMain({
-    super.key,
-  });
+  String id;
 
+  ProfileMain(this.id);
   @override
   Widget build(BuildContext context) {
     return Consumer<ServiceProviderProvider>(
@@ -304,7 +304,30 @@ class ProfileMain extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                SmallButton('Accept', () {}, kMainYellow, Colors.white)
+                SmallButton('Accept', () async {
+                  bool status =
+                      await Provider.of<BidsProvider>(context, listen: false)
+                          .acceptBid(this.id);
+                  if (status) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            backgroundColor: Color.fromARGB(255, 42, 201, 74),
+                            content: Text('Bid accepted successfully!')),
+                      );
+                      Navigator.pop(context);
+                    }
+                  } else {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            backgroundColor: Color.fromARGB(255, 227, 123, 112),
+                            content: Text("Coudn't accept task")),
+                      );
+                      Navigator.pop(context);
+                    }
+                  }
+                }, kMainYellow, Colors.white)
               ],
             ),
           )
