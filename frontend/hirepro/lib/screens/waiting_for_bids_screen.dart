@@ -152,9 +152,8 @@ class WaitingForBidsScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SmallButton('Categories', () {
-                                Navigator.popUntil(
-                                    context, ModalRoute.withName('/category'));
+                              SmallButton('Back', () {
+                                Navigator.pop(context);
                               }, kMainYellow, Colors.white),
                               SmallButton('Cancel', () {
                                 showDialog<String>(

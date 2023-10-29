@@ -7,6 +7,7 @@ import 'package:hirepro/screens/pro_profile_screen/reviews.dart';
 import 'package:hirepro/widgets/PercentageBar.dart';
 import 'package:hirepro/widgets/ReviewCard.dart';
 import 'package:hirepro/widgets/StarRating.dart';
+import 'package:hirepro/widgets/loading.dart';
 import 'package:hirepro/widgets/smallButton.dart';
 import 'package:provider/provider.dart';
 
@@ -26,9 +27,7 @@ class proProfileScreen extends StatelessWidget {
           .getServiceProviderDetails(id),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return LinearProgressIndicator(
-            minHeight: 30,
-          );
+          return Loading();
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
