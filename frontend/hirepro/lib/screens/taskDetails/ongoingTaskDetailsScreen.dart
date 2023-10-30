@@ -1,10 +1,8 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hirepro/constants.dart';
 import 'package:hirepro/providers/task_provider.dart';
 import 'package:hirepro/widgets/HireProAppBar.dart';
 import 'package:hirepro/widgets/MainButton.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
 class OngoingTaskDetailsScreen extends StatelessWidget {

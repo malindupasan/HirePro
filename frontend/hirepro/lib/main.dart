@@ -30,6 +30,8 @@ import 'package:hirepro/screens/signupScreen.dart';
 import 'package:hirepro/screens/pro_profile_screen/proProfileScreen.dart';
 import 'package:hirepro/screens/registerSuccess.dart';
 import 'package:hirepro/screens/taskDetails/serviceProviderArrivingScreen.dart';
+import 'package:hirepro/screens/taskDetails/taskCompletedScreen.dart';
+import 'package:hirepro/screens/taskDetails/workInProgressScreen.dart';
 import 'package:hirepro/screens/waiting_for_bids_screen.dart';
 import 'package:hirepro/services/api.dart';
 import 'package:provider/provider.dart';
@@ -124,6 +126,8 @@ class HirePro extends StatelessWidget {
           '/waiting_for_bids': (context) => WaitingForBidsScreen(),
           '/ongoing_task_details': (context) => OngoingTaskDetailsScreen(),
           '/arrival_screen': (context) => ServiceProviderArrivalScreen(),
+          '/work_in_progress': (context) => WorkInProgressScreen(),
+          '/job_completed': (context) => TaskCompletedScreen()
         },
       ),
     );

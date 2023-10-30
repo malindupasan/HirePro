@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ffi';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart' as http;
 
 class GoogleMaps extends StatefulWidget {
   const GoogleMaps({Key? key}) : super(key: key);
@@ -31,13 +30,15 @@ class _GoogleMapsState extends State<GoogleMaps> {
   PolylinePoints polylinePoints = PolylinePoints();
 
   Future<void> getCurrentPosition() async {
-    await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high)
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
-      setState(() => _currentPosition = position,);
-      sourceLocation = LatLng(_currentPosition.latitude, _currentPosition.longitude);
+      setState(() {
+        _currentPosition = position;
+      });
+      sourceLocation =
+          LatLng(_currentPosition.latitude, _currentPosition.longitude);
     }).catchError((e) {
-      debugPrint(e);
+      debugPrint(e.toString());
     });
   }
 
@@ -55,7 +56,9 @@ class _GoogleMapsState extends State<GoogleMaps> {
       accuracy: LocationAccuracy.high,
       distanceFilter: 10,
     );
-    _positionStream = Geolocator.getPositionStream(locationSettings: locationSettings).listen((Position position) {
+    _positionStream =
+        Geolocator.getPositionStream(locationSettings: locationSettings)
+            .listen((Position position) {
       setState(() {
         _currentPosition = position;
         sourceLocation = LatLng(position.latitude, position.longitude);
@@ -63,7 +66,6 @@ class _GoogleMapsState extends State<GoogleMaps> {
       drawPolyline();
       fetchStats();
     });
-
   }
 
   @override
@@ -72,9 +74,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
     super.dispose();
   }
 
-
   void drawPolyline() async {
-
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       'AIzaSyDNOO9bzzNn34HNXZY1xT5IVvOlV37zFuE',
       PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
@@ -89,6 +89,25 @@ class _GoogleMapsState extends State<GoogleMaps> {
       });
       setState(() {});
     }
+  }
+
+  LatLngBounds calculateLatLngBounds(List<LatLng> coordinates) {
+    double minLat = double.infinity;
+    double minLng = double.infinity;
+    double maxLat = -double.infinity;
+    double maxLng = -double.infinity;
+
+    for (LatLng coordinate in coordinates) {
+      if (coordinate.latitude < minLat) minLat = coordinate.latitude;
+      if (coordinate.latitude > maxLat) maxLat = coordinate.latitude;
+      if (coordinate.longitude < minLng) minLng = coordinate.longitude;
+      if (coordinate.longitude > maxLng) maxLng = coordinate.longitude;
+    }
+
+    return LatLngBounds(
+      southwest: LatLng(minLat, minLng),
+      northeast: LatLng(maxLat, maxLng),
+    );
   }
 
   Future<void> fetchStats() async {
@@ -109,7 +128,8 @@ class _GoogleMapsState extends State<GoogleMaps> {
       final distanceText = data["rows"][0]["elements"][0]["distance"]["text"];
       setState(() {
         duration = durationText;
-        final double distanceMiles = double.parse(distanceText.replaceAll(" mi", ""));
+        final double distanceMiles =
+            double.parse(distanceText.replaceAll(" mi", ""));
         distance = distanceMiles * 1.60934;
       });
     } else {
@@ -119,59 +139,90 @@ class _GoogleMapsState extends State<GoogleMaps> {
     }
   }
 
+  void _fitBoundsToPolyline(GoogleMapController controller) {
+    if (polylineCoordinates.isNotEmpty) {
+      LatLngBounds bounds = calculateLatLngBounds(polylineCoordinates);
+      controller.animateCamera(
+        CameraUpdate.newLatLngBounds(bounds, 50), // Adjust padding as needed
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 450,
-      child: Column(
-        children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Arriving in : " + duration, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                  SizedBox(height: 5,),
-                  Text("Distance " + distance.toStringAsFixed(3) + " KM", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                  SizedBox(height: 5,),
-                ],
-            ),
-          ),
-          Container(
-            height: 400,
-            child: GoogleMap(
-              initialCameraPosition: CameraPosition(
-                target: LatLng(6.8943, 79.8685),
-                zoom: 13.5,
+        height: 550,
+        child: Column(children: [
+          Column(
+            children: <Widget>[
+              // Google Map
+              Container(
+                height: 500,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color.fromARGB(255, 202, 202, 202),
+                      offset: Offset(0, 1),
+                      blurRadius: 6,
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15.0),
+                  child: GoogleMap(
+                    initialCameraPosition: CameraPosition(
+                      target: sourceLocation,
+                      zoom: 15.5,
+                    ),
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller.complete(controller);
+                      _fitBoundsToPolyline(controller);
+                    },
+                    markers: <Marker>[
+                      Marker(
+                        markerId: MarkerId('sourcePin'),
+                        position: sourceLocation,
+                        icon: BitmapDescriptor.defaultMarkerWithHue(120),
+                      ),
+                      Marker(
+                        markerId: MarkerId('destinationPin'),
+                        position: destinationLocation,
+                        icon: BitmapDescriptor.defaultMarker,
+                      ),
+                    ].toSet(),
+                    polylines: <Polyline>[
+                      Polyline(
+                        polylineId: PolylineId('polyline'),
+                        color: Colors.blue,
+                        points: polylineCoordinates,
+                        width: 5,
+                      ),
+                    ].toSet(),
+                  ),
+                ),
               ),
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
-              markers: <Marker>[
-                Marker(
-                  markerId: MarkerId('sourcePin'),
-                  position: sourceLocation,
-                  icon: BitmapDescriptor.defaultMarkerWithHue(120),
+              // Information below the map
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Arriving in: " + duration,
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "Distance: " + distance.toStringAsFixed(3) + " KM",
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
-                Marker(
-                  markerId: MarkerId('destinationPin'),
-                  position: destinationLocation,
-                  icon: BitmapDescriptor.defaultMarker,
-                ),
-              ].toSet(),
-              polylines: <Polyline>[
-                Polyline(
-                  polylineId: PolylineId('polyline'),
-                  color: Colors.blue,
-                  points: polylineCoordinates,
-                  width: 5,
-                ),
-              ].toSet(),
-            ),
+              ),
+            ],
           )
-        ],
-      )
-    );
+        ]));
   }
 }

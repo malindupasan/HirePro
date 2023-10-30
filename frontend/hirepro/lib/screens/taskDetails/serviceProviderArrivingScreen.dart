@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hirepro/constants.dart';
 import 'package:hirepro/providers/location_provider.dart';
 import 'package:hirepro/services/googleMaps.dart';
 import 'package:hirepro/widgets/HireProAppBar.dart';
@@ -24,8 +25,40 @@ class ServiceProviderArrivalScreen extends StatelessWidget {
             appBar: HireProAppBar(context, "Arrival in progress"),
             body: SingleChildScrollView(
               child: Consumer<LocationProvider>(
-                  builder: (context, location, child) =>
-                      (Container(height: 500, child: GoogleMaps()))),
+                  builder: (context, location, child) => Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          (Container(child: GoogleMaps())),
+                          Container(
+                            height: 130,
+                            decoration: BoxDecoration(
+                                color:
+                                    const Color.fromARGB(255, 253, 241, 197)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                FilledButton.icon(
+                                    onPressed: () {},
+                                    icon: Icon(Icons.call),
+                                    label: Text("Contact")),
+                                FilledButton.icon(
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, '/work_in_progress');
+                                    },
+                                    icon: Icon(Icons.message),
+                                    label: Text("Message")),
+                                SizedBox(
+                                  width: 10,
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      )),
             ),
           );
         }
