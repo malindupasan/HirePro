@@ -9,13 +9,21 @@ exports.addCustomerLawningTask = async (req, res, next) => {
         const authHeader = req.headers.authorization;
 
 
-        const id = await CustomerServices.getIdFromToken(authHeader);
-        const customer = id;
+
+        const customerid = await CustomerServices.getIdFromToken(authHeader);
+        console.log(customerid)
+
+        if(!customerid){
+            console.log(customerid)
+            res.send(404).json({message:"No access"});
+        }
+
+        
         // console.log("hi");
         const { area, description, postedtime, estmin, estmax, location, latitude, longitude, date } = req.body;
         // console.log(" "+location+" "+latitude+" "+longitude+" "+date);
         // console.log(description);
-        const result = await LawnmovingModel.addtask({ area, description, postedtime, estmin, estmax, location, latitude, longitude, date, customer });
+        const result = await LawnmovingModel.addtask({ area, description, postedtime, estmin, estmax, location, latitude, longitude, date, customerid });
         if (!result) {
             throw new Error("cannot add task");
         }

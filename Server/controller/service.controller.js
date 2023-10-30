@@ -143,7 +143,7 @@ exports.acceptBid= async (req, res, next) => {
             throw new Error;
         }
         // console.log(serviceid)
-        const successRes=await ServiceModel.acceptTask(serviceid);
+        const successRes=await ServiceModel.acceptTask(serviceid,bidid);
         
 
         res.status(200).json(successRes);
@@ -193,7 +193,9 @@ exports.getAcceptedandOngoingtaks = async (req, res, next) => {
         }
         // console.log(serviceid)
 
-        const successRes=await ServiceModel.getOngoingAndAcceptedTasks();
+        const successRes=await ServiceModel.getOngoingAndAcceptedTasks(customerid);
+
+        console.log(successRes)
         
         if(successRes)
         res.status(200).json(successRes);

@@ -12,12 +12,12 @@ class Lawnmoving extends Service {
 
   static async addtask(taskData) {
    try { 
-    const { area ,description,postedtime,estmin,estmax,location,latitude,longitude,date, customer} = taskData;
+    const { area ,description,postedtime,estmin,estmax,location,latitude,longitude,date, customerid} = taskData;
 
     // console.log("des"+description);
     const status="pending";
     const query0='INSERT INTO "Service" ( description,location,estmin,estmax,date,status,customerid,posted_timestamp,latitude,longitude) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *';
-    const values0=[description,location,estmin,estmax,date,status,customer,postedtime,latitude,longitude]
+    const values0=[description,location,estmin,estmax,date,status,customerid,postedtime,latitude,longitude]
 
     const query1 = 'INSERT INTO "LawnMoving" (id, "areaInSquareMeter") VALUES ($1, $2) RETURNING *';
     // const values1 = [id,area];

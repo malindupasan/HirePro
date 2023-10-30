@@ -119,36 +119,36 @@ class Service {
 
 
 
-static async acceptTask(taskid,bidid,customerid) {
+static async acceptTask(serviceid,bidid,customerid) {
 
   const query = 'update "Service" set status=\'accepted\' where id=$1';
-  const query2='update "Bid" set accept_customerid=s1,accept_timestamp=$2 where id=$3'
-  const currentTimestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
-  const values2=[customerid,currentTimestamp,bidid];
-  const values = [taskid];
+  const query2='update "Bid" set accept_customerid=$1,accept_timestamp=$2 where id=$3'
+
+  const currentTimestamp = new Date();
+  currentTimestamp.setHours(currentTimestamp.getHours() + 5); // Add 5 hours
+  currentTimestamp.setMinutes(currentTimestamp.getMinutes() + 30); // Add 30 minutes
+  
+  const formattedTimestamp = currentTimestamp.toISOString().slice(0, 19).replace('T', ' ');
+    const values2=[customerid,formattedTimestamp,bidid];
+  const values = [serviceid];
+
+
+  const date=new Date();
+console.log(date);
+
   try {
-    const result = await db.query(query, values);
+
     const result2 = await db.query(query2, values2);
-    if (result.rowCount === 0) {
-      console.log("No rows were updated.");
-      return false;  // No rows were updated
-    } else {
-      console.log("Update was successful.");
-      return true;   // Update was successful
-    }
-  } catch (error) {
-    // throw error;
-    console.log(error)
-  }
 
-}
 
-static async acceptTask(taskid){
-
-  const query = 'update "Service" set status=\'accepted\' where id=$1';
-  const values = [taskid];
-  try {
     const result = await db.query(query, values);
+    console.log("second query didnt work");
+
+
+    // if(result2.rowCount==0){
+    //   console.log("second query didnt work");
+    // }
+
 
     if (result.rowCount === 0) {
       console.log("No rows were updated.");
@@ -163,6 +163,27 @@ static async acceptTask(taskid){
   }
 
 }
+
+// static async acceptTask(taskid){
+
+//   const query = 'update "Service" set status=\'accepted\' where id=$1';
+//   const values = [taskid];
+//   try {
+//     const result = await db.query(query, values);
+
+//     if (result.rowCount === 0) {
+//       console.log("No rows were updated.");
+//       return false;  // No rows were updated
+//     } else {
+//       console.log("Update was successful.");
+//       return true;   // Update was successful
+//     }
+//   } catch (error) {
+//     // throw error;
+//     console.log(error)
+//   }
+
+// }
 
 static async getStatus(taskid){
 
@@ -187,20 +208,75 @@ static async getStatus(taskid){
 
 }
 
-static async getOngoingAndAcceptedTasks(){
+static async getOngoingAndAcceptedTasks(customerid){
 
-  const query = 'select * from "Service" where status=\'ongoing\' or status=\'accepted\'';
-  // const values = [taskid];
+  const query = 'select * from "Service" where (status=\'ongoing\' or status=\'accepted\') AND "customerid"=$1 ';
+  // const query = `SELECT * FROM "Service" WHERE (status='ongoing' OR status='accepted') AND "customerid"=$1`;
+
+  // const query1 = 'SELECT "Service".*, bid.amount FROM "Service" LEFT JOIN "Bid" ON "Service"."id" = bid."serviceid" WHERE ("Service".status=\'ongoing\' OR "Service".status=\'accepted\') AND "Service"."customerid"=$1';
+
+  const query3 = `
+    SELECT "Service".*, bid.amount 
+    FROM "Service"
+    LEFT JOIN "Bid" AS bid ON "Service"."id" = bid."serviceId"
+    WHERE ("Service".status='ongoing' OR "Service".status='accepted') AND "Service"."customerid"=$1;
+`;
+
+const query1 = `
+    SELECT "Service".*, bid.amount, sp.name AS "providerName"
+    FROM "Service"
+    LEFT JOIN "Bid" AS bid ON "Service"."id" = bid."serviceId"
+    LEFT JOIN "ServiceProvider" AS sp ON bid."serviceProviderId" = sp."id"
+    WHERE ("Service".status='ongoing' OR "Service".status='accepted') AND "Service"."customerid"=$1;
+`;
+
+  const values = [customerid];
 
   try {
-    const result = await db.query(query);
+    const result = await db.query(query1,values);
     if (result.rowCount === 0) {
       console.log("No rows were updated.");
       return false;  // No rows were updated
     } else {
       console.log("Update was successful.");
-      return result.rows[0];   // Update was successful
+      return result.rows;   // Update was successful
     }
+
+  } catch (error) {
+    console.log(error)
+  }
+
+
+
+}
+static async getCategory(serviceid){
+
+  const query1 = 'select * from "HouseCleaningTasks" where id=$1';
+  const query2 = 'select * from "HairDressing" where id=$1';
+  const query3 = 'select * from "LawnMoving" where id=$1';
+
+  const values = [taskid];
+
+  try {
+    const result = await db.query(query1,values);
+    if (result.rowCount > 0) {
+      return "House Cleaning";  
+    } 
+    const result1 = await db.query(query2,values);
+    if (result1.rowCount > 0) {
+      return "Hair Dressing";  
+    } 
+
+    const result2 = await db.query(query3,values);
+    if (result2.rowCount > 0) {
+      return "Lawn Moving";  
+    } 
+
+
+  return "Genaral";
+
+
+
 
   } catch (error) {
     console.log(error)
