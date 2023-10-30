@@ -77,7 +77,7 @@ class AllBiddingsScreen extends StatelessWidget {
                                           Text(
                                             (pendingtasks
                                                 .pendingTasks[index].date!
-                                                .split('T')
+                                                 .split('T')
                                                 .last
                                                 .split('.')
                                                 .first

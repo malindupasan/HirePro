@@ -10,8 +10,9 @@ class TaskCardOngoing extends StatefulWidget {
   late double price;
   late String image;
   late double progress;
+  late String status;
   TaskCardOngoing(this.serviceProvider, this.jobType, this.price, this.image,
-      this.progress);
+      this.progress, this.status);
 
   @override
   State<TaskCardOngoing> createState() => _TaskCardOngoingState();
@@ -21,86 +22,103 @@ class _TaskCardOngoingState extends State<TaskCardOngoing> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(5),
-      height: 150,
+      padding: const EdgeInsets.all(20),
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: kMainGrey,
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.grey,
-              blurRadius: 3.0,
-              spreadRadius: 1.0,
-              offset: Offset(2.0, 2.0),
-            ),
-          ]),
-      child: Row(children: [
-        Expanded(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white, // Use a white background
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3), // Slight shadow
+            blurRadius: 10,
+            spreadRadius: 2,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Expanded(
             flex: 3,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.jobType,
-                      style: const TextStyle(
-                          fontSize: 22, fontWeight: FontWeight.bold),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.jobType,
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Row(
-                      children: [
-                        const Icon(
-                          FontAwesomeIcons.buildingUser,
-                          size: 15,
+                  ),
+                  const SizedBox(height: 10), // Add some spacing
+                  Row(
+                    children: [
+                      const Icon(
+                        FontAwesomeIcons.buildingUser,
+                        size: 15,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        widget.serviceProvider,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          widget.serviceProvider,
-                          style: const TextStyle(
-                            overflow: TextOverflow.ellipsis,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10), // Add some spacing
+                  Text(
+                    widget.status,
+                    style: TextStyle(
+                      color: Colors.green, // Use green for status
+                      fontSize: 16,
                     ),
-                    const Text(
-                      'Service provider',
-                      style: TextStyle(color: Colors.grey),
+                  ),
+                  const SizedBox(height: 10), // Add some spacing
+                  Text(
+                    'Rs.${widget.price.toStringAsFixed(0)}', // Format price
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: kMainYellow,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Text(
-                      'Rs.' + widget.price.toString().split('.')[0],
-                      style: TextStyle(
-                          fontSize: 25,
-                          color: kMainYellow,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    LinearPercentIndicator(
-                      barRadius: Radius.circular(10),
-                      width: 140.0,
-                      lineHeight: 14.0,
-                      percent: widget.progress,
-                      backgroundColor: Colors.grey[300],
-                      progressColor: Colors.amberAccent,
-                    ),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          'View More',
-                        ),
-                        SizedBox(width: 10),
-                        Icon(FontAwesomeIcons.arrowRight, size: 12)
-                      ],
-                    )
-                  ]),
-            )),
-        Expanded(flex: 2, child: Image.asset(widget.image))
-      ]),
+                  ),
+                  const SizedBox(height: 10), // Add some spacing
+                  LinearPercentIndicator(
+                    barRadius: const Radius.circular(10),
+                    width: 140.0,
+                    lineHeight: 14.0,
+                    percent: widget.progress,
+                    backgroundColor: Colors.grey[200], // Lighter background
+                    progressColor: Colors.amberAccent,
+                  ),
+                  const SizedBox(height: 10), // Add some spacing
+                  Row(
+                    children: [
+                      const Text('View More'),
+                      const SizedBox(width: 10),
+                      const Icon(FontAwesomeIcons.arrowRight, size: 12),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
+                widget.image,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

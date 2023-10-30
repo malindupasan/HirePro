@@ -7,6 +7,7 @@ import 'package:hirepro/models/customer.dart';
 import 'package:hirepro/env.dart';
 import 'package:hirepro/models/pending_task.dart';
 import 'package:hirepro/models/service_provider.dart';
+import 'package:hirepro/models/task.dart';
 import 'package:hirepro/widgets/MyNavigationWidget.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -238,7 +239,7 @@ class Api {
     );
     if (response.statusCode == 200) {
       print('Data received');
-      print(response.body);
+      // print(response.body);
     }
 
     return compute(parseBids, response.body);
@@ -347,4 +348,28 @@ class Api {
       throw Exception('Cannot proceed');
     }
   }
+  //-------------get ongoing tasks --------------------------------
+   Future<List<Task>> fetchTasks(http.Client client) async {
+    final response = await client.post(
+      Uri.parse(url + 'getOngoingandAcceptedTasks'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
+      },
+      
+    );
+    if (response.statusCode == 200) {
+      print('Ongoing tasks received');
+      // print(response.body);
+    }
+
+    return compute(parseTasks, response.body);
+  }
+
+  List<Task> parseTasks(String responseBody) {
+    final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+
+    return parsed.map<Task>((json) => Task.fromJson(json)).toList();
+  }
+
 }

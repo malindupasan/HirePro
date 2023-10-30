@@ -24,10 +24,12 @@ class TaskProvider extends ChangeNotifier {
   List<File> _selectedFiles = [];
   List<File> get files => _selectedFiles;
   String get addedTaskId => _addedTaskId;
-  void setAddedTaskId(id){
+   List<Task> _ongoingTasks = [];
+  List<PendingTask> get pendingTasks => _pendingTasks;
+ List<Task> get ongoingTasks => _ongoingTasks;
+  void setAddedTaskId(id) {
     _addedTaskId = id;
   }
-  List<PendingTask> get pendingTasks => _pendingTasks;
 
   Api api = Api();
   void initialize() {
@@ -128,6 +130,16 @@ class TaskProvider extends ChangeNotifier {
     notifyListeners();
     final response = await api.getPendingTasks(Client());
     _pendingTasks = response;
+    print(_pendingTasks.length);
+    isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> getOngoingTasks() async {
+    isLoading = true;
+    notifyListeners();
+    final response = await api.fetchTasks(Client());
+    _ongoingTasks = response;
     print(_pendingTasks.length);
     isLoading = false;
     notifyListeners();

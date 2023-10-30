@@ -8,6 +8,8 @@ class Task {
   String? date;
   String latitude;
   String longitude;
+  String? percentage;
+  String? status;
   Task(
       {this.area,
       required this.description,
@@ -17,5 +19,22 @@ class Task {
       required this.location,
       this.date,
       required this.latitude,
-      required this.longitude});
+      required this.longitude,
+      this.percentage,
+      this.status});
+  factory Task.fromJson(Map<String, dynamic> json) {
+    return Task(
+      area: json['area'],
+      description: json['description'],
+      postedtime: json['postedtime'],
+      estmin: json['estmin'].toString(),
+      estmax: json['estmax'].toString(),
+      location: json['location'],
+      date: json['date'],
+      latitude: json['latitude'],
+      longitude: json['longitude'],
+      percentage: json['percentage'] ?? '0',
+      status: json['status'],
+    );
+  }
 }
