@@ -21,11 +21,19 @@ class Service {
   static async getbids(serviceid) {
     // const query = 'SELECT * FROM "Bid" where "serviceId" = $1';
     const query = 'SELECT b.* ,s.contact,s.intro,s.name,s.id as spid  FROM "Bid" AS b inner join "ServiceProvider" AS s on s.id=b."serviceProviderId" where "serviceId" = $1';
+    const query1 = `
+    SELECT b.*, s.contact, s.intro, s.name, s.id as spid, serv.category
+    FROM "Bid" AS b
+    INNER JOIN "ServiceProvider" AS s ON s.id = b."serviceProviderId"
+    INNER JOIN "Service" AS serv ON serv.id = b."serviceId"
+    WHERE serv.id = $1;
+`;
+
 
     const values = [serviceid];
 
     try {
-      const result = await db.query(query, values);
+      const result = await db.query(query1, values);
       if (result.length == 0) {
         return "No bids found for service";
 
@@ -196,7 +204,7 @@ static async getOngoingAndAcceptedTasks(){
   FROM "Service"
   LEFT JOIN "Bid" AS bid ON "Service"."id" = bid."serviceId"
   LEFT JOIN "ServiceProvider" AS sp ON bid."serviceProviderId" = sp."id"
-  WHERE ("Service".status='ongoing' OR "Service".status='accepted') AND "Service"."customerid"=$1;
+  WHERE ("Service".status='arrived' OR "Service".status='started' OR "Service".status='accepted') AND "Service"."customerid"=$1;
 `;
   try {
     const result = await db.query(query);
