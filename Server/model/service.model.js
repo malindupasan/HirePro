@@ -195,7 +195,7 @@ static async getStatus(taskid){
 
 }
 
-static async getOngoingAndAcceptedTasks(){
+static async getOngoingAndAcceptedTasks(customerid){
 
   // const query = 'select * from "Service" where status=\'ongoing\' or status=\'accepted\'';
   // const values = [taskid];
@@ -206,14 +206,16 @@ static async getOngoingAndAcceptedTasks(){
   LEFT JOIN "ServiceProvider" AS sp ON bid."serviceProviderId" = sp."id"
   WHERE ("Service".status='arrived' OR "Service".status='started' OR "Service".status='accepted') AND "Service"."customerid"=$1;
 `;
+
+const values=[customerid]
   try {
-    const result = await db.query(query);
+    const result = await db.query(query,values);
     if (result.rowCount === 0) {
       console.log("No rows were updated.");
       return false;  // No rows were updated
     } else {
       console.log("Update was successful.");
-      return result.rows[0];   // Update was successful
+      return result.rows;   // Update was successful
     }
 
   } catch (error) {
@@ -223,7 +225,35 @@ static async getOngoingAndAcceptedTasks(){
 
 
 }
+static async getCompletedTasks(customerid){
 
+  // const query = 'select * from "Service" where status=\'ongoing\' or status=\'accepted\'';
+  // const values = [taskid];
+  const query = `
+  SELECT "Service".*, bid.amount, sp.name AS "providerName"
+  FROM "Service"
+  LEFT JOIN "Bid" AS bid ON "Service"."id" = bid."serviceId"
+  LEFT JOIN "ServiceProvider" AS sp ON bid."serviceProviderId" = sp."id"
+  WHERE ("Service".status='completed' ) AND "Service"."customerid"=$1;
+`;
+const values=[customerid]
+  try {
+    const result = await db.query(query,values);
+    if (result.rowCount === 0) {
+      console.log("No rows were updated.");
+      return false;  // No rows were updated
+    } else {
+      console.log("Update was successful.");
+      return result.rows;   // Update was successful
+    }
+
+  } catch (error) {
+    console.log(error)
+  }
+
+
+
+}
 
 
 
