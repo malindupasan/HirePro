@@ -11,8 +11,9 @@ class TaskCardOngoing extends StatefulWidget {
   late String image;
   late double progress;
   late String status;
+  late String jobid;
   TaskCardOngoing(this.serviceProvider, this.jobType, this.price, this.image,
-      this.progress, this.status);
+      this.progress, this.status, this.jobid);
 
   @override
   State<TaskCardOngoing> createState() => _TaskCardOngoingState();
@@ -52,6 +53,13 @@ class _TaskCardOngoingState extends State<TaskCardOngoing> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  Text(
+                    "Serivce ID: ${widget.jobid}",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
                   const SizedBox(height: 10), // Add some spacing
                   Row(
                     children: [
@@ -69,10 +77,11 @@ class _TaskCardOngoingState extends State<TaskCardOngoing> {
                       ),
                     ],
                   ),
+
                   const SizedBox(height: 10), // Add some spacing
                   Text(
                     widget.status,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.green, // Use green for status
                       fontSize: 16,
                     ),
@@ -96,13 +105,13 @@ class _TaskCardOngoingState extends State<TaskCardOngoing> {
                     progressColor: Colors.amberAccent,
                   ),
                   const SizedBox(height: 10), // Add some spacing
-                  Row(
-                    children: [
-                      const Text('View More'),
-                      const SizedBox(width: 10),
-                      const Icon(FontAwesomeIcons.arrowRight, size: 12),
-                    ],
-                  ),
+                  // Row(
+                  //   children: [
+                  //     const Text('View More'),
+                  //     const SizedBox(width: 10),
+                  //     const Icon(FontAwesomeIcons.arrowRight, size: 12),
+                  //   ],
+                  // ),
                 ],
               ),
             ),

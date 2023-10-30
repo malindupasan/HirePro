@@ -30,7 +30,8 @@ class _OngoingScreenState extends State<OngoingScreen> {
                       for (Task task in data.ongoingTasks)
                         GestureDetector(
                           onTap: () {
-                            // Navigator.pushNamed(context, '/rate');
+                            Navigator.pushNamed(
+                                context, '/ongoing_task_details');
                           },
                           child: TaskCardOngoing(
                               'John Doe',
@@ -38,7 +39,8 @@ class _OngoingScreenState extends State<OngoingScreen> {
                               5000,
                               'images/plumber.png',
                               double.parse(task.percentage!),
-                              task.status!.toUpperCase()),
+                              task.status!.toUpperCase(),
+                              task.id!),
                         ),
                     ],
                   ),

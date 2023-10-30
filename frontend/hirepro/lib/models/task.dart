@@ -1,4 +1,5 @@
 class Task {
+  String? id;
   String? area;
   String description;
   String? postedtime;
@@ -11,7 +12,7 @@ class Task {
   String? percentage;
   String? status;
   Task(
-      {this.area,
+      {this.id,this.area,
       required this.description,
       this.postedtime,
       required this.estmax,
@@ -24,6 +25,7 @@ class Task {
       this.status});
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
+      id: json['id'],
       area: json['area'],
       description: json['description'],
       postedtime: json['postedtime'],
