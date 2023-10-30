@@ -21,11 +21,17 @@ List<String> images = [
 class proProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    dynamic id = ModalRoute.of(context)!.settings.arguments;
+    dynamic serviceId, serviceProId;
+    final arguments =
+        ModalRoute.of(context)?.settings.arguments as List<dynamic>?;
+    if (arguments != null && arguments.length == 2) {
+      serviceId = arguments[0];
+      serviceProId = arguments[1];
+    }
 
     return FutureBuilder<bool>(
       future: Provider.of<ServiceProviderProvider>(context, listen: false)
-          .getServiceProviderDetails(id),
+          .getServiceProviderDetails(serviceProId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Loading();
@@ -42,7 +48,7 @@ class proProfileScreen extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.all(10),
                       color: Color.fromARGB(255, 255, 244, 213),
-                      child: ProfileMain(id),
+                      child: ProfileMain(serviceId),
                     ),
                     const SizedBox(
                       height: 20,
@@ -315,7 +321,8 @@ class ProfileMain extends StatelessWidget {
                             backgroundColor: Color.fromARGB(255, 42, 201, 74),
                             content: Text('Bid accepted successfully!')),
                       );
-                      Navigator.pop(context);
+                      Navigator.popUntil(
+                          context, ModalRoute.withName('/ongoing'));
                     }
                   } else {
                     if (context.mounted) {

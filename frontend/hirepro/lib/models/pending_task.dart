@@ -9,6 +9,7 @@ class PendingTask {
   String? date;
   String latitude;
   String longitude;
+  String? category;
   PendingTask(
       {required this.id,
       this.area,
@@ -19,7 +20,7 @@ class PendingTask {
       required this.location,
       this.date,
       required this.latitude,
-      required this.longitude});
+      required this.longitude,this.category});
   factory PendingTask.fromJson(Map<String, dynamic> json) {
     return PendingTask(
       id: json['id'],
@@ -32,6 +33,7 @@ class PendingTask {
       postedtime: json['posted_timestamp'],
       location: json['location'],
       date: json['date'],
+      category: json['category'],
     );
   }
 }

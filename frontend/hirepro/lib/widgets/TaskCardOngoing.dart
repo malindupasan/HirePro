@@ -68,11 +68,13 @@ class _TaskCardOngoingState extends State<TaskCardOngoing> {
                         size: 15,
                       ),
                       const SizedBox(width: 10),
-                      Text(
-                        widget.serviceProvider,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
+                      Expanded(
+                        child: Text(
+                          widget.serviceProvider,
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                              overflow: TextOverflow.ellipsis),
                         ),
                       ),
                     ],

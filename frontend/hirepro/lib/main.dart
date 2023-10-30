@@ -12,6 +12,7 @@ import 'package:hirepro/providers/task_provider.dart';
 import 'package:hirepro/screens/addAddressScreen.dart';
 import 'package:hirepro/screens/biddingScreen.dart';
 import 'package:hirepro/screens/categoryScreen.dart';
+import 'package:hirepro/screens/chatScreen.dart';
 import 'package:hirepro/screens/editProfile/changePassword.dart';
 import 'package:hirepro/screens/editProfile/emailcodereqScreen.dart';
 import 'package:hirepro/screens/emailCodeVerifyScreen.dart';
@@ -127,7 +128,10 @@ class HirePro extends StatelessWidget {
           '/ongoing_task_details': (context) => OngoingTaskDetailsScreen(),
           '/arrival_screen': (context) => ServiceProviderArrivalScreen(),
           '/work_in_progress': (context) => WorkInProgressScreen(),
-          '/job_completed': (context) => TaskCompletedScreen()
+          '/job_completed': (context) => TaskCompletedScreen(),
+          '/bidding_screen': (context) => BiddingPage(),
+          '/waiting_for_bids_screen': (context) => WaitingForBidsScreen(),
+          '/chat_screen': (context) => ChatScreen()
         },
       ),
     );

@@ -7,6 +7,7 @@ class Bids {
   final String amount;
   final String contact;
   final String name;
+  final String? category;
   // final String acceptCustomerId;
   // final String acceptTimestamp;
 
@@ -19,6 +20,7 @@ class Bids {
     required this.amount,
     required this.contact,
     required this.name,
+     this.category
     // required this.acceptCustomerId,
     // required this.acceptTimestamp
   });
@@ -33,6 +35,7 @@ class Bids {
       name: json['name'],
       timeStamp: json['timestamp'],
       additionalInfo: json['additionalInfo'],
+      category: json['category']
       // acceptCustomerId: json['accept_customerid'],
       // acceptTimestamp: json['accept_timestamp'],
     );

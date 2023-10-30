@@ -48,8 +48,9 @@ class AllBiddingsScreen extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text(
-                                        'Lawn Mowing',
+                                      Text(
+                                        pendingtasks
+                                            .pendingTasks[index].category!,
                                         style: TextStyle(
                                             fontSize: 22,
                                             fontWeight: FontWeight.bold),
@@ -77,7 +78,7 @@ class AllBiddingsScreen extends StatelessWidget {
                                           Text(
                                             (pendingtasks
                                                 .pendingTasks[index].date!
-                                                 .split('T')
+                                                .split('T')
                                                 .last
                                                 .split('.')
                                                 .first
@@ -114,13 +115,11 @@ class AllBiddingsScreen extends StatelessWidget {
                                         children: [
                                           ElevatedButton(
                                               onPressed: () async {
-                                                Navigator.pushNamed(
-                                                    context, '/searching_pros',
-                                                    arguments: 
-                                                      pendingtasks
-                                                          .pendingTasks[index]
-                                                          .id
-                                                    );
+                                                Navigator.pushNamed(context,
+                                                    '/waiting_for_bids_screen',
+                                                    arguments: pendingtasks
+                                                        .pendingTasks[index]
+                                                        .id);
                                               },
                                               child: Text("View")),
                                           OutlinedButton(
@@ -131,10 +130,11 @@ class AllBiddingsScreen extends StatelessWidget {
                                     ]),
                               )),
                               Container(
+                                height: 300,
                                 width: 150,
                                 padding: const EdgeInsets.all(0),
                                 child: Image.asset(
-                                  'images/gardening.jpeg',
+                                  'images/${pendingtasks.pendingTasks[index].category}.jpeg',
                                   fit: BoxFit.cover,
                                 ),
                               )

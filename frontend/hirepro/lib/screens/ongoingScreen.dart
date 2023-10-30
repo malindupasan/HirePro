@@ -34,9 +34,9 @@ class _OngoingScreenState extends State<OngoingScreen> {
                                 context, '/ongoing_task_details');
                           },
                           child: TaskCardOngoing(
-                              'John Doe',
-                              'Plumbing',
-                              5000,
+                              task.serviceProvider!,
+                              task.category!,
+                              double.parse(task.amount!),
                               'images/plumber.png',
                               double.parse(task.percentage!),
                               task.status!.toUpperCase(),

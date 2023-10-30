@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hirepro/constants.dart';
 import 'package:hirepro/providers/location_provider.dart';
 import 'package:hirepro/services/googleMaps.dart';
 import 'package:hirepro/widgets/HireProAppBar.dart';
@@ -41,13 +39,16 @@ class ServiceProviderArrivalScreen extends StatelessWidget {
                                   width: 10,
                                 ),
                                 FilledButton.icon(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, '/work_in_progress');
+                                    },
                                     icon: Icon(Icons.call),
                                     label: Text("Contact")),
                                 FilledButton.icon(
                                     onPressed: () {
                                       Navigator.pushNamed(
-                                          context, '/work_in_progress');
+                                          context, '/chat_screen');
                                     },
                                     icon: Icon(Icons.message),
                                     label: Text("Message")),

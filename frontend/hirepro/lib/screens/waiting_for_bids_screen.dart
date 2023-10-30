@@ -71,7 +71,7 @@ class WaitingForBidsScreen extends StatelessWidget {
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.pushNamed(context, '/pro_profile',
-                                      arguments: bid.serviceProId);
+                                      arguments: [bid.serviceId,bid.serviceProId]);
                                 },
                                 child: Card(
                                   margin: const EdgeInsets.symmetric(

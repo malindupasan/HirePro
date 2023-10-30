@@ -22,7 +22,7 @@ class OngoingTaskDetailsScreen extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SizedBox(
+                      const      SizedBox(
                               height: 10,
                             ),
                             Text(

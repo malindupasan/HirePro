@@ -348,15 +348,15 @@ class Api {
       throw Exception('Cannot proceed');
     }
   }
+
   //-------------get ongoing tasks --------------------------------
-   Future<List<Task>> fetchTasks(http.Client client) async {
-    final response = await client.post(
+  Future<List<Task>> fetchTasks(http.Client client) async {
+    final response = await client.get(
       Uri.parse(url + 'getOngoingandAcceptedTasks'),
       headers: <String, String>{
         'Content-Type': 'application/json',
         HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
       },
-      
     );
     if (response.statusCode == 200) {
       print('Ongoing tasks received');
@@ -371,5 +371,4 @@ class Api {
 
     return parsed.map<Task>((json) => Task.fromJson(json)).toList();
   }
-
 }

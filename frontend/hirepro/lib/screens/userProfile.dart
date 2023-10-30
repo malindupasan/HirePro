@@ -11,7 +11,7 @@ import 'package:hirepro/widgets/HireProAppBar.dart';
 import 'package:hirepro/widgets/MainButton.dart';
 import 'package:provider/provider.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:hirepro/widgets/loading.dart';
+
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});

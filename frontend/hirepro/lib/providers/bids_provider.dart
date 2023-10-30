@@ -9,7 +9,7 @@ import 'package:hirepro/services/api.dart';
 class BidsProvider extends ChangeNotifier {
   Notifications notification = Notifications();
 
-  Timer? _timer;
+  // Timer? _timer;
   final Map<dynamic, Timer> _timers = {};
 
   List<Bids> _bids = [];
@@ -94,6 +94,9 @@ class BidsProvider extends ChangeNotifier {
     const duration = Duration(seconds: 4);
 
     // Cancel the existing timer if it already exists for the same id
+    if (_timers.containsKey(id) && _timers[id] != null) {
+      _timers[id]!.cancel();
+    }
 
     _timers[id] = Timer.periodic(duration, (timer) async {
       print('Timer started ${id}');
@@ -102,14 +105,19 @@ class BidsProvider extends ChangeNotifier {
   }
 
   void stopTimer(id) {
-    _timers[id]?.cancel();
-    print('Timer stopped ${id}');
-    _timers.remove(id);
+    print(id);
+    // Check if the timer exists for the given ID before stopping it
+    if (_timers.containsKey(id) && _timers[id] != null) {
+      _timers[id]!.cancel();
+      print('Timer stopped ${id}');
+      _timers.remove(id);
+    }
   }
 
   Future<bool> acceptBid(serviceId) async {
     http.Response response = await api.acceptbid(serviceId);
-    stopTimer(serviceId);
+    stopTimer(
+        serviceId); // Ensure that there's a timer running with this ID before calling this
     if (response.statusCode == 200) {
       notifyListeners();
       return true;
