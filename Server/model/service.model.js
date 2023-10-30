@@ -222,7 +222,7 @@ static async getOngoingAndAcceptedTasks(customerid){
   // const query = 'select * from "Service" where status=\'ongoing\' or status=\'accepted\'';
   // const values = [taskid];
   const query = `
-  SELECT "Service".*, bid.amount, sp.name AS "providerName"
+  SELECT "Service".*, bid.amount, sp.name AS "providerName" ,sp.id as "spid"
   FROM "Service"
   LEFT JOIN "Bid" AS bid ON "Service"."id" = bid."serviceId"
   LEFT JOIN "ServiceProvider" AS sp ON bid."serviceProviderId" = sp."id"
@@ -242,7 +242,7 @@ const values=[customerid]
 
   } catch (error) {
     console.log(error)
-  }
+  }//dd
 
 
 
