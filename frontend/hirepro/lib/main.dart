@@ -7,6 +7,7 @@ import 'package:hirepro/providers/category_provider.dart';
 import 'package:hirepro/providers/customer_provider.dart';
 import 'package:hirepro/providers/file_upload_provider.dart';
 import 'package:hirepro/providers/location_provider.dart';
+import 'package:hirepro/providers/service_provider_provider.dart';
 import 'package:hirepro/providers/task_provider.dart';
 import 'package:hirepro/screens/addAddressScreen.dart';
 import 'package:hirepro/screens/biddingScreen.dart';
@@ -27,6 +28,7 @@ import 'package:hirepro/screens/otpEnterScreen.dart';
 import 'package:hirepro/screens/signupScreen.dart';
 import 'package:hirepro/screens/pro_profile_screen/proProfileScreen.dart';
 import 'package:hirepro/screens/registerSuccess.dart';
+import 'package:hirepro/screens/waiting_for_bids_screen.dart';
 import 'package:hirepro/services/api.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -72,7 +74,8 @@ class HirePro extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => TaskProvider()),
         ChangeNotifierProvider(create: (context) => FileUploadProvider()),
         ChangeNotifierProvider(create: (context) => LocationProvider()),
-        ChangeNotifierProvider(create: (context) => BidsProvider())
+        ChangeNotifierProvider(create: (context) => BidsProvider()),
+          ChangeNotifierProvider(create: (context) => ServiceProviderProvider())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -118,6 +121,7 @@ class HirePro extends StatelessWidget {
           '/rate': (context) => JobCompletedScreen(),
           '/set_location': (context) => SetLocationScreen(),
           '/searching_pros': (context) => SearchingPros(),
+          '/waiting_for_bids':(context) => WaitingForBidsScreen(),
         },
       ),
     );

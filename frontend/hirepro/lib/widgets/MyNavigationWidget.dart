@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hirepro/constants.dart';
+import 'package:hirepro/providers/task_provider.dart';
 import 'package:hirepro/screens/allBiddingsScreen.dart';
 import 'package:hirepro/screens/homeScreen.dart';
 import 'package:hirepro/screens/myTasks.dart';
 import 'package:hirepro/screens/userProfile.dart';
+import 'package:provider/provider.dart';
 
 class MyNavigationWidget extends StatefulWidget {
   final token;
@@ -61,6 +63,9 @@ class _MyNavigationWidgetState extends State<MyNavigationWidget> {
 
   void _onItemTapped(int index) {
     setState(() {
+      if (index == 2) {
+        Provider.of<TaskProvider>(context, listen: false).getPendingTasks();
+      }
       _selectedIndex = index;
     });
   }

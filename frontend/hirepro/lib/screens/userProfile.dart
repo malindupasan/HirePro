@@ -11,6 +11,7 @@ import 'package:hirepro/widgets/HireProAppBar.dart';
 import 'package:hirepro/widgets/MainButton.dart';
 import 'package:provider/provider.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:hirepro/widgets/loading.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -24,16 +25,24 @@ class _UserProfileState extends State<UserProfile> {
   UserController user = UserController();
 
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<AddressProvider>(context, listen: false).getAllAddresses();
-
-      Provider.of<CustomerProvider>(context, listen: false).getCustomerData();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await Provider.of<AddressProvider>(context, listen: false)
+          .getAllAddresses();
+      if (context.mounted) {
+        await Provider.of<CustomerProvider>(context, listen: false)
+            .getCustomerData();
+      }
+      if (context.mounted) {
+        await Provider.of<CustomerProvider>(context, listen: false)
+            .getImageUrl();
+      }
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+   
     return SafeArea(
         child: Scaffold(
             appBar: HireProAppBar(context, 'Profile'),
@@ -47,6 +56,7 @@ class _UserProfileState extends State<UserProfile> {
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
+                                
                                 Expanded(
                                     flex: 5,
                                     child: Consumer<CustomerProvider>(
@@ -73,8 +83,8 @@ class _UserProfileState extends State<UserProfile> {
                                                   backgroundColor: kMainGrey,
                                                   backgroundImage:
                                                       customer.image.path != ''
-                                                          ? FileImage(
-                                                              customer.image)
+                                                          ? NetworkImage(
+                                                              customer.imageUrl)
                                                           : null,
                                                   child:
                                                       customer.image.path == ''

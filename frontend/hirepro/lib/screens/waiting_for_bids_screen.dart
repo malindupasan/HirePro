@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hirepro/constants.dart';
 import 'package:hirepro/providers/bids_provider.dart';
-import 'package:hirepro/providers/service_provider_provider.dart';
 import 'package:hirepro/providers/task_provider.dart';
 import 'package:hirepro/widgets/StarRating.dart';
 import 'package:hirepro/widgets/smallButton.dart';
@@ -9,27 +8,10 @@ import 'package:hirepro/widgets/stepper_bar.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
-class SearchingPros extends StatefulWidget {
-  const SearchingPros({super.key});
-
-  @override
-  State<SearchingPros> createState() => _SearchingProsState();
-}
-
-class _SearchingProsState extends State<SearchingPros> {
-  String id = '';
-  @override
-  void initState() {
-    super.initState();
-
-    id = Provider.of<TaskProvider>(context, listen: false).addedTaskId;
-
-    Provider.of<BidsProvider>(context, listen: false).startTimer(id);
-  }
-
+class WaitingForBidsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
-    //  String id = Provider.of<TaskProvider>(context, listen: false).addedTaskId;
-    // Provider.of<BidsProvider>(context, listen: false).getFilteredBids(id);
+    var id = ModalRoute.of(context)!.settings.arguments;
+    // Provider.of<TaskProvider>(context, listen: false).setAddedTaskId(id);
     return Scaffold(
         body: SafeArea(
             child: Consumer<BidsProvider>(

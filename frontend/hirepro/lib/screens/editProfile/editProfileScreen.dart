@@ -59,7 +59,7 @@ class EditProfileScreen extends StatelessWidget {
                                       radius: 72,
                                       backgroundColor: kMainGrey,
                                       foregroundImage: customer.image.path != ''
-                                          ? FileImage(customer.image)
+                                          ? NetworkImage(customer.imageUrl)
                                           : null,
                                       child: Text(
                                         user.getInitials(

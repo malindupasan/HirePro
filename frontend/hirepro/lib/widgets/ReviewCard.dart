@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hirepro/constants.dart';
-import 'package:hirepro/screens/pro_profile_screen/reviews.dart';
+import 'package:hirepro/models/service_provider.dart';
+
 import 'package:hirepro/services/dateTimeFormatted.dart';
 import 'package:hirepro/widgets/StarRating.dart';
 
@@ -38,7 +38,7 @@ class ReviewCard extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               radius: 30,
-                              backgroundImage: AssetImage(review.profilePicUrl),
+                              backgroundImage: AssetImage('images/female1.jpg'),
                             ),
                             Container(
                               margin: EdgeInsets.symmetric(horizontal: 10),
@@ -47,6 +47,7 @@ class ReviewCard extends StatelessWidget {
                                 children: [
                                   Text(
                                     review.name,
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -63,14 +64,14 @@ class ReviewCard extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            StarRating(review.rating, 20),
-                            Text(review.rating.toString()),
+                            StarRating(review.starRate, 20),
+                            Text(review.starRate.toString()),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  Text(review.content),
+                  Text(review.comment),
                 ],
               ),
             ),
