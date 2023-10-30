@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const moment = require('moment-timezone');
 
 
 class Service {
@@ -60,13 +61,34 @@ class Service {
     try {
       const result = await db.query(query, values);
       
+
+
+
       if (!result.rows) {
         return "No pending taks";
 
       }
+
+      
       else {
+
+        const adjustedServices = result.rows.map(service => {
+          if (service.date) { // assuming 'date' is the column name in your table
+              service.date = moment.tz(service.date, "Asia/Colombo").tz(moment.tz.guess()).format();
+          }
+          return service;
+      });
+
+
+      const finaldata = adjustedServices.map(service => {
+        if (service.posted_timestamp) { // assuming 'date' is the column name in your table
+            service.posted_timestamp = moment.tz(service.date, "Asia/Colombo").tz(moment.tz.guess()).format();
+        }
+        return service;
+    });
+
         console.log("hey");
-        return result.rows;
+        return finaldata;
       }
 
     }
