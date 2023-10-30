@@ -189,9 +189,15 @@ static async getStatus(taskid){
 
 static async getOngoingAndAcceptedTasks(){
 
-  const query = 'select * from "Service" where status=\'ongoing\' or status=\'accepted\'';
+  // const query = 'select * from "Service" where status=\'ongoing\' or status=\'accepted\'';
   // const values = [taskid];
-
+  const query = `
+  SELECT "Service".*, bid.amount, sp.name AS "providerName"
+  FROM "Service"
+  LEFT JOIN "Bid" AS bid ON "Service"."id" = bid."serviceId"
+  LEFT JOIN "ServiceProvider" AS sp ON bid."serviceProviderId" = sp."id"
+  WHERE ("Service".status='ongoing' OR "Service".status='accepted') AND "Service"."customerid"=$1;
+`;
   try {
     const result = await db.query(query);
     if (result.rowCount === 0) {
