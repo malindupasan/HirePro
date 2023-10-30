@@ -163,7 +163,7 @@ exports.getServiceStatus = async (req, res, next) => {
         if(!customerid) {
             throw new Error;
         }
-        // console.log(serviceid)
+        console.log(serviceid)
 
         const successRes=await ServiceModel.getStatus(serviceid);
         

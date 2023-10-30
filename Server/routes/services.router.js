@@ -14,6 +14,8 @@ router.get('/getpendingtasks',ServiceController.getPendingTasks)
 router.post('/acceptbid',ServiceController.acceptBid)
 
 
+router.post('/getservicestatus',ServiceController.getServiceStatus)
+
 router.get('/getOngoingandAcceptedTasks',ServiceController.getAcceptedandOngoingtaks)
 
 router.get('/getCompletedTasks',ServiceController.getCompletedTasks)
