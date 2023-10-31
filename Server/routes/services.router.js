@@ -20,4 +20,9 @@ router.get('/getOngoingandAcceptedTasks',ServiceController.getAcceptedandOngoing
 
 router.get('/getCompletedTasks',ServiceController.getCompletedTasks)
 
+router.get('/getscheduledtasks',ServiceController.getSheduledTasks)
+
+router.post('/getsingletaskdetails',ServiceController.getSingleTaskDetails)
+
+
 module.exports = router;
