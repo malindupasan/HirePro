@@ -5,6 +5,7 @@ const ServiceProviderController = require('../controller/serviceProvider.control
 router.post('/spdetailswithraings',ServiceProviderController.getSpDetails)
 
 router.post('/getSpdetailsext',ServiceProviderController.getSpDetails)
+router.post('/getsplocation',ServiceProviderController.getSpLoc)
 
 
 module.exports = router;

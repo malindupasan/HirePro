@@ -100,13 +100,41 @@ class Service {
 
 
   static async alltasks(customerid) {
-    const query = 'SELECT * FROM "Service" where "customerid" = $1 and';
+    const query = 'SELECT * FROM "Service" where "customerid" = $1 ';
     const values = [customerid];
 
     try {
       const result = await db.query(query, values);
       if (result.rows[0].count <= 0) {
         return "No bids found for service";
+
+      }
+      else {
+        return result.rows[0];
+      }
+
+
+    }
+    catch (error) {
+      throw error;
+    }
+
+  }
+
+  static async getSingleTaskDetails(customerid,taskid) {
+    const query = 'SELECT s.* FROM "Service" s where "customerid" = $1 and id=$2  ';
+
+    const qry='SELECT "ServiceProvider"."name" , "Service".*  FROM  "Service" INNER JOIN  "Bid" ON "Service"."id" = "Bid"."serviceId" INNER JOIN  "ServiceProvider" ON "Bid"."serviceProviderId" = "ServiceProvider"."id" WHERE "Service"."id" = $1 and "Service".customerid=$2';
+
+
+    const values = [taskid,customerid];
+
+    try {
+      
+      const result = await db.query(qry, values);
+      // console.log(result)
+      if (!result.rows) {
+        return "No task found";
 
       }
       else {
@@ -173,26 +201,26 @@ static async acceptTask(taskid,bidid,customerid) {
 
 }
 
-static async acceptTask(taskid){
+// static async acceptTask(taskid){
 
-  const query = 'update "Service" set status=\'accepted\' where id=$1';
-  const values = [taskid];
-  try {
-    const result = await db.query(query, values);
+//   const query = 'update "Service" set status=\'accepted\' where id=$1';
+//   const values = [taskid];
+//   try {
+//     const result = await db.query(query, values);
 
-    if (result.rowCount === 0) {
-      console.log("No rows were updated.");
-      return false;  // No rows were updated
-    } else {
-      console.log("Update was successful.");
-      return true;   // Update was successful
-    }
-  } catch (error) {
-    // throw error;
-    console.log(error)
-  }
+//     if (result.rowCount === 0) {
+//       console.log("No rows were updated.");
+//       return false;  // No rows were updated
+//     } else {
+//       console.log("Update was successful.");
+//       return true;   // Update was successful
+//     }
+//   } catch (error) {
+//     // throw error;
+//     console.log(error)
+//   }
 
-}
+// }
 
 static async getStatus(taskid){
 
@@ -277,6 +305,38 @@ const values=[customerid]
 
 }
 
+
+
+static async getSheduledTasks(customerid){
+
+  // const query = 'select * from "Service" where status=\'ongoing\' or status=\'accepted\'';
+  // const values = [taskid];
+  const query = `
+  SELECT "Service".*,"Service".date + INTERVAL '5 hours 30 minutes' AS "date2",bid.amount, sp.name AS "providerName"
+  FROM "Service"
+  LEFT JOIN "Bid" AS bid ON "Service"."id" = bid."serviceId"
+  LEFT JOIN "ServiceProvider" AS sp ON bid."serviceProviderId" = sp."id"
+  WHERE  "Service"."customerid"=$1 AND posted_timestamp  > NOW() + INTERVAL '1 hour';
+`;
+
+const values=[customerid]
+  try {
+    const result = await db.query(query,values);
+    if (result.rowCount === 0) {
+      console.log("No rows were updated.");
+      return false;  // No rows were updated
+    } else {
+      console.log("Update was successful.");
+      return result.rows;   // Update was successful
+    }
+
+  } catch (error) {
+    console.log(error)
+  }
+
+
+
+}
 
 
 
