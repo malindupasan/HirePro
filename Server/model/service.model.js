@@ -132,7 +132,7 @@ class Service {
     try {
       
       const result = await db.query(qry, values);
-      console.log(result)
+      // console.log(result)
       if (!result.rows) {
         return "No task found";
 
