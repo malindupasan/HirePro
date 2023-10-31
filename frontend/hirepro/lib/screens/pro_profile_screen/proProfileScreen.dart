@@ -4,6 +4,7 @@ import 'package:hirepro/constants.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:hirepro/providers/bids_provider.dart';
 import 'package:hirepro/providers/service_provider_provider.dart';
+import 'package:hirepro/providers/task_provider.dart';
 import 'package:hirepro/screens/pro_profile_screen/reviews.dart';
 import 'package:hirepro/widgets/PercentageBar.dart';
 import 'package:hirepro/widgets/ReviewCard.dart';
@@ -313,7 +314,11 @@ class ProfileMain extends StatelessWidget {
                 SmallButton('Accept', () async {
                   bool status =
                       await Provider.of<BidsProvider>(context, listen: false)
-                          .acceptBid(this.id);
+                          .acceptBid(id);
+                  if (context.mounted) {
+                    Provider.of<TaskProvider>(context, listen: false)
+                        .startStatusTimer(id);
+                  }
                   if (status) {
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -321,8 +326,8 @@ class ProfileMain extends StatelessWidget {
                             backgroundColor: Color.fromARGB(255, 42, 201, 74),
                             content: Text('Bid accepted successfully!')),
                       );
-                      Navigator.popUntil(
-                          context, ModalRoute.withName('/ongoing'));
+
+                      Navigator.pop(context);
                     }
                   } else {
                     if (context.mounted) {

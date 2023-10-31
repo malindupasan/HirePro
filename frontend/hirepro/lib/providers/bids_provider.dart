@@ -116,6 +116,7 @@ class BidsProvider extends ChangeNotifier {
 
   Future<bool> acceptBid(serviceId) async {
     http.Response response = await api.acceptbid(serviceId);
+    
     stopTimer(
         serviceId); // Ensure that there's a timer running with this ID before calling this
     if (response.statusCode == 200) {

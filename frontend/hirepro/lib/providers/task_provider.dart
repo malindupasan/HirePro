@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
@@ -6,10 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:hirepro/models/pending_task.dart';
 import 'package:hirepro/models/task.dart';
 import 'package:hirepro/services/api.dart';
+import 'package:hirepro/services/notifications.dart';
 import 'package:http/http.dart';
 
 class TaskProvider extends ChangeNotifier {
+  Notifications notification = Notifications();
   bool isLoading = false;
+  // String _status = 'accepted';
   List<PendingTask> _pendingTasks = [];
   static final TaskProvider _instance = TaskProvider._internal();
 
@@ -20,13 +24,15 @@ class TaskProvider extends ChangeNotifier {
   factory TaskProvider() => _instance;
   late Task _task;
   late String _addedTaskId;
+  final Map<dynamic, Timer> _statustimers = {};
 
   List<File> _selectedFiles = [];
   List<File> get files => _selectedFiles;
   String get addedTaskId => _addedTaskId;
-   List<Task> _ongoingTasks = [];
+  List<Task> _ongoingTasks = [];
   List<PendingTask> get pendingTasks => _pendingTasks;
- List<Task> get ongoingTasks => _ongoingTasks;
+  List<Task> get ongoingTasks => _ongoingTasks;
+  // String get status => _status;
   void setAddedTaskId(id) {
     _addedTaskId = id;
   }
@@ -115,10 +121,13 @@ class TaskProvider extends ChangeNotifier {
     }
 
     try {
+      var index = 0;
       for (var file in _selectedFiles) {
-        final storageRef = firebase_storage.FirebaseStorage.instance.ref().child(
-            'task_images/${taskCategory}_${addedTaskId}_${file.hashCode}.png');
+        final storageRef = firebase_storage.FirebaseStorage.instance
+            .ref()
+            .child('task_images/${addedTaskId}/${index}.png');
         await storageRef.putFile(file);
+        index++;
       }
     } catch (error) {
       print('Error uploading file: $error');
@@ -143,5 +152,44 @@ class TaskProvider extends ChangeNotifier {
     print(_pendingTasks.length);
     isLoading = false;
     notifyListeners();
+  }
+
+  Future<void> getStatus(serviceid) async {
+    Notifications.initializeNotification();
+    final response = await api.getServiceStatus(serviceid);
+    print(response['status']);
+    // _status = response['status'];
+
+    if (response['status'] == 'started') {
+      notification.showNotification(
+          title: 'HirePro',
+          body: '[Service provider has started the task #${serviceid}!');
+      stopStatusTimer(serviceid);
+    }
+    notifyListeners();
+  }
+
+  void startStatusTimer(id) {
+    const duration = Duration(seconds: 5);
+
+    // Cancel the existing timer if it already exists for the same id
+    if (_statustimers.containsKey(id) && _statustimers[id] != null) {
+      _statustimers[id]!.cancel();
+    }
+
+    _statustimers[id] = Timer.periodic(duration, (timer) async {
+      print('Status Timer started ${id}');
+      await getStatus(id);
+    });
+  }
+
+  void stopStatusTimer(id) {
+    print(id);
+    // Check if the timer exists for the given ID before stopping it
+    if (_statustimers.containsKey(id) && _statustimers[id] != null) {
+      _statustimers[id]!.cancel();
+      print('Status Timer stopped ${id}');
+      _statustimers.remove(id);
+    }
   }
 }

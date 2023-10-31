@@ -41,10 +41,20 @@ class _OngoingScreenState extends State<OngoingScreen> {
                                 .initializeData(task.id, task.spid, userid);
                             Provider.of<ChatProvider>(context, listen: false)
                                 .setServiceProviderName(task.serviceProvider);
-                            Navigator.pushNamed(
-                              context,
-                              '/ongoing_task_details',
-                            );
+                          
+
+                            if (task.status == "accepted") {
+                              Navigator.pushNamed(
+                                context,
+                                '/ongoing_task_details',
+                              );
+                            }
+                            if (task.status == "started") {
+                              Navigator.pushNamed(
+                                context,
+                                '/arrival_screen',
+                              );
+                            }
                           },
                           child: TaskCardOngoing(
                               task.serviceProvider!,

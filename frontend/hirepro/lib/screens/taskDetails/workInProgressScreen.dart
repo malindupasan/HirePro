@@ -32,7 +32,7 @@ class WorkInProgressScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Great news! Your handyman has begun the task",
+                  "Great news! Your handyman has begun the task.",
                   style: kHeading1.copyWith(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -40,7 +40,7 @@ class WorkInProgressScreen extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(
+                const SizedBox(
                     height:
                         30), // Reduce some spacings to minimize content height
                 Container(
@@ -56,7 +56,7 @@ class WorkInProgressScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 30), // Reduce some spacings
+                const SizedBox(height: 30), // Reduce some spacings
                 // Text(
                 //   "Your job is now in motion! ensuring everything gets done right",
                 //   style: kHeading1.copyWith(
@@ -65,10 +65,33 @@ class WorkInProgressScreen extends StatelessWidget {
                 //   ),
                 //   textAlign: TextAlign.center,
                 // ),
-                SizedBox(height: 30), // Reduce some spacings
+                const SizedBox(height: 30), // Reduce some spacings
                 MainButton('Continue', () {
                   Navigator.pushNamed(context, '/job_completed');
-                })
+                }),
+                Text(
+                  "Any problem?",
+                  style: kHeading1.copyWith(color: kMainYellow),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/complaint');
+                        },
+                        icon: Icon(Icons.report),
+                        label: Text('Report')),
+                    const SizedBox(
+                      width: 50,
+                    ),
+                    ElevatedButton(
+                        onPressed: () {}, child: Icon(Icons.sos_rounded))
+                  ],
+                )
               ],
             ),
           ),

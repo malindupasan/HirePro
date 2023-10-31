@@ -43,10 +43,10 @@ class ServiceProviderArrivalScreen extends StatelessWidget {
                                 ),
                                 FilledButton.icon(
                                     onPressed: () async {
-                                      // Navigator.pushNamed(
-                                      //     context, '/work_in_progress');
-                                      await FlutterPhoneDirectCaller.callNumber(
-                                          '0769140040');
+                                      Navigator.pushNamed(
+                                          context, '/work_in_progress');
+                                      // await FlutterPhoneDirectCaller.callNumber(
+                                      //     '0769140040');
                                     },
                                     icon: Icon(Icons.call),
                                     label: Text("Contact")),

@@ -141,7 +141,7 @@ class _UserProfileState extends State<UserProfile> {
                                             rating: 3.35,
                                             itemBuilder: (context, index) =>
                                                 const Icon(
-                                              Icons.star,
+                                              Icons.star, 
                                               color: Colors.amber,
                                             ),
                                             itemCount: 5,

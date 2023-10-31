@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hirepro/constants.dart';
+import 'package:hirepro/services/stripeService.dart';
 import 'package:hirepro/widgets/SmallArrowButton.dart';
 import 'package:hirepro/widgets/TermsAndPolicy.dart';
 import 'package:hirepro/widgets/check_icon_large.dart';
 
 class TaskCompletedScreen extends StatelessWidget {
+  StripeService stripeService = StripeService();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -41,7 +43,9 @@ class TaskCompletedScreen extends StatelessWidget {
                           EdgeInsets.symmetric(horizontal: 40, vertical: 30),
                       child: SmallArrowButton(kMainYellow, Icons.arrow_forward,
                           () {
-                        Navigator.pushNamed(context, '/');
+                        print("clicked");
+                        stripeService.makePayment();
+                       
                       }),
                     ),
                   ]),

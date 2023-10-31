@@ -371,4 +371,24 @@ class Api {
 
     return parsed.map<Task>((json) => Task.fromJson(json)).toList();
   }
+  // -----------------get service status ----------------
+
+  Future<Map<String, dynamic>> getServiceStatus(String serviceId) async {
+    final response = await http.post(
+      Uri.parse(url + 'getservicestatus'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
+      },
+      body: jsonEncode(<String, String>{'serviceid': serviceId}),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      print(
+          'Failed to load service provider. Status Code: ${response.statusCode}');
+      throw Exception('Failed to load service provider');
+    }
+  }
 }
