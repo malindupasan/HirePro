@@ -70,6 +70,27 @@ exports.getAllTasks = async (req, res, next) => {
     }
 }
 
+
+exports.getSingleTaskDetails=async (req, res) => {
+    try {
+        const authHeader = req.headers.authorization;
+        const customerid=await CustomerServices.getIdFromToken(authHeader);
+        const {taskid}=req.body
+        if(!customerid) {
+            throw new Error;
+        }
+
+        const successRes=await ServiceModel.getSingleTaskDetails(customerid,taskid);
+        res.status(200).json(successRes);
+
+        
+    } catch (error) {
+        console.log(error);
+    }
+
+
+}
+
 exports.getTaskbyId= async (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
@@ -80,10 +101,11 @@ exports.getTaskbyId= async (req, res, next) => {
         }
 
         const successRes=await ServiceModel.alltasks(customerid);
-        
+                res.status(200).json(successRes);
+
         
     } catch (error) {
-        
+        console.log(error);
     }
 }
 
@@ -237,3 +259,33 @@ exports.getCompletedTasks = async (req, res, next) => {
 
 
 }
+
+
+exports.getSheduledTasks = async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+        // const {serviceid} = req.body;
+        // console.log(serviceid)
+        const customerid=await CustomerServices.getIdFromToken(authHeader);
+        if(!customerid) {
+            throw new Error;
+        }
+        // console.log(serviceid)
+
+        const successRes=await ServiceModel.getSheduledTasks(customerid);
+        
+        if(successRes)
+        res.status(200).json(successRes);
+
+        else{
+            res.status(404)
+        }
+        
+        
+    } catch (error) {
+        console.log(error);
+    }
+
+
+}
+
