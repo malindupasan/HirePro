@@ -34,3 +34,30 @@ exports.getSpDetails=async (req, res, next) => {
 
 
 }
+
+exports.getSpLoc=async (req, res, next) => {
+
+    try {
+        const authHeader = req.headers.authorization;
+        const {serviceid}=req.body;
+
+        const customerid = await CustomerServices.getIdFromToken(authHeader);
+        if(!customerid){
+            res.send(404).json({message:"No access"});
+            return
+        }
+      
+        const result=await ServiceProviderModel.getSpLocation(serviceid)
+
+        // console.log(result)
+    
+        res.status(200).json(result);
+
+     
+    } catch (error) {
+        console.error(error);
+    }
+
+
+}
+

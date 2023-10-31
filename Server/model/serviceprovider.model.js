@@ -47,6 +47,21 @@ class ServiceProvider {
     }
 
   }
+  static async getSpLocation(id) {
+
+    const query = 'select * from "ProviderCurrentLocation" where serviceid=$1 ';
+    const values = [id];
+
+    try {
+      const result = await db.query(query, values);
+      //   console.log(result.rows[0]);
+      return result.rows[0];
+    } catch (error) {
+      console.log(error);
+      
+    }
+
+  }
 
 
 
