@@ -14,6 +14,7 @@ class Task {
   String? amount;
   String? category;
   String? serviceProvider;
+  String? spid;
   Task(
       {this.id,
       this.area,
@@ -29,7 +30,7 @@ class Task {
       this.status,
       this.amount,
       this.category,
-      this.serviceProvider});
+      this.serviceProvider,this.spid});
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
         id: json['id'],
@@ -46,6 +47,6 @@ class Task {
         status: json['status'],
         amount: json['amount'] == null ? '0' : json['amount'].toString(),
         category: json['category'] ?? '',
-        serviceProvider: json['providerName'] ?? '');
+        serviceProvider: json['providerName'] ?? '',spid: json['spid']);
   }
 }

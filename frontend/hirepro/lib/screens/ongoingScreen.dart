@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hirepro/models/task.dart';
+import 'package:hirepro/providers/chat_provider.dart';
+import 'package:hirepro/providers/customer_provider.dart';
 import 'package:hirepro/providers/task_provider.dart';
 import 'package:hirepro/widgets/HireProAppBar.dart';
 import 'package:hirepro/widgets/TaskCardOngoing.dart';
@@ -30,14 +32,25 @@ class _OngoingScreenState extends State<OngoingScreen> {
                       for (Task task in data.ongoingTasks)
                         GestureDetector(
                           onTap: () {
+                            String userid = Provider.of<CustomerProvider>(
+                                    context,
+                                    listen: false)
+                                .customerData!
+                                .id;
+                            Provider.of<ChatProvider>(context, listen: false)
+                                .initializeData(task.id, task.spid, userid);
+                            Provider.of<ChatProvider>(context, listen: false)
+                                .setServiceProviderName(task.serviceProvider);
                             Navigator.pushNamed(
-                                context, '/ongoing_task_details');
+                              context,
+                              '/ongoing_task_details',
+                            );
                           },
                           child: TaskCardOngoing(
                               task.serviceProvider!,
                               task.category!,
                               double.parse(task.amount!),
-                              'images/plumber.png',
+                              'images/${task.category}.png',
                               double.parse(task.percentage!),
                               task.status!.toUpperCase(),
                               task.id!),

@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hirepro/constants.dart';
 import 'package:flutter/services.dart';
+import 'package:hirepro/providers/chat_provider.dart';
 import 'package:hirepro/services/chatServices.dart';
+import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -15,14 +16,19 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final ChatService _chatService = ChatService();
   // receiverId --> CustomerId
-  final receiverId = '1';
-  final taskId = '2';
-  final currentUserId = '23';
+
+  late final receiverId;
+  late final taskId;
+  late final currentUserId;
 
   @override
   void initState() {
     super.initState();
     // Scroll to the bottom when the widget first loads
+    receiverId =
+        Provider.of<ChatProvider>(context, listen: false).serviceProviderId;
+    taskId = Provider.of<ChatProvider>(context, listen: false).serviceId;
+    currentUserId = Provider.of<ChatProvider>(context, listen: false).userId;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
@@ -131,7 +137,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "Kriss Benwat",
+                        Provider.of<ChatProvider>(context, listen: false)
+                            .serviceProName,
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),

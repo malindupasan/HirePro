@@ -4,6 +4,7 @@ import 'package:hirepro/constants.dart';
 import 'package:hirepro/providers/address_provider.dart';
 import 'package:hirepro/providers/bids_provider.dart';
 import 'package:hirepro/providers/category_provider.dart';
+import 'package:hirepro/providers/chat_provider.dart';
 import 'package:hirepro/providers/customer_provider.dart';
 import 'package:hirepro/providers/file_upload_provider.dart';
 import 'package:hirepro/providers/location_provider.dart';
@@ -78,7 +79,8 @@ class HirePro extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => FileUploadProvider()),
         ChangeNotifierProvider(create: (context) => LocationProvider()),
         ChangeNotifierProvider(create: (context) => BidsProvider()),
-        ChangeNotifierProvider(create: (context) => ServiceProviderProvider())
+        ChangeNotifierProvider(create: (context) => ServiceProviderProvider(),),
+        ChangeNotifierProvider(create: (context)=>ChatProvider())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

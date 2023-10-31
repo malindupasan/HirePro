@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:hirepro/providers/chat_provider.dart';
+import 'package:hirepro/providers/customer_provider.dart';
 import 'package:hirepro/providers/location_provider.dart';
 import 'package:hirepro/services/googleMaps.dart';
 import 'package:hirepro/widgets/HireProAppBar.dart';
@@ -39,16 +42,20 @@ class ServiceProviderArrivalScreen extends StatelessWidget {
                                   width: 10,
                                 ),
                                 FilledButton.icon(
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, '/work_in_progress');
+                                    onPressed: () async {
+                                      // Navigator.pushNamed(
+                                      //     context, '/work_in_progress');
+                                      await FlutterPhoneDirectCaller.callNumber(
+                                          '0769140040');
                                     },
                                     icon: Icon(Icons.call),
                                     label: Text("Contact")),
                                 FilledButton.icon(
                                     onPressed: () {
                                       Navigator.pushNamed(
-                                          context, '/chat_screen');
+                                        context,
+                                        '/chat_screen',
+                                      );
                                     },
                                     icon: Icon(Icons.message),
                                     label: Text("Message")),
