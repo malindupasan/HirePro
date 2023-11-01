@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hirepro/constants.dart';
+import 'package:hirepro/models/bids.dart';
 import 'package:hirepro/providers/bids_provider.dart';
+import 'package:hirepro/providers/service_provider_provider.dart';
 import 'package:hirepro/providers/task_provider.dart';
 import 'package:hirepro/widgets/StarRating.dart';
 import 'package:hirepro/widgets/smallButton.dart';
@@ -8,11 +10,17 @@ import 'package:hirepro/widgets/stepper_bar.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
-class WaitingForBidsScreen extends StatelessWidget {
+class WaitingForBidsScreen extends StatefulWidget {
+  @override
+  State<WaitingForBidsScreen> createState() => _WaitingForBidsScreenState();
+}
+
+class _WaitingForBidsScreenState extends State<WaitingForBidsScreen> {
+  late String image;
   Widget build(BuildContext context) {
     var id = ModalRoute.of(context)!.settings.arguments;
-    // Provider.of<TaskProvider>(context, listen: false).setAddedTaskId(id);
-    return Scaffold(
+    // List<Bids>bids=  Provider.of<BidsProvider>(context, listen: false).getFilteredBids(id);
+  return Scaffold(
         body: SafeArea(
             child: Consumer<BidsProvider>(
       builder: (context, bidData, child) => Padding(
@@ -71,7 +79,11 @@ class WaitingForBidsScreen extends StatelessWidget {
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.pushNamed(context, '/pro_profile',
-                                      arguments: [bid.serviceId,bid.serviceProId]);
+                                      arguments: [
+                                        bid.serviceId,
+                                        bid.serviceProId
+                                        
+                                      ]);
                                 },
                                 child: Card(
                                   margin: const EdgeInsets.symmetric(
@@ -89,7 +101,7 @@ class WaitingForBidsScreen extends StatelessWidget {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10.0),
                                       image: const DecorationImage(
-                                        image: AssetImage('images/female1.jpg'),
+                                        image: AssetImage('images/male1.jpg'),
                                         fit: BoxFit.cover,
                                       ),
                                     ),

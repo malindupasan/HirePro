@@ -8,7 +8,6 @@ import 'package:hirepro/screens/userProfile.dart';
 import 'package:hirepro/widgets/MyNavigationWidget.dart';
 import 'package:provider/provider.dart';
 
-
 class ParentScreen extends StatefulWidget {
   final token;
   ParentScreen({required this.token});

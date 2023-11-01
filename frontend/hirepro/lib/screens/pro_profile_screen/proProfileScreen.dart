@@ -269,7 +269,7 @@ class ProfileMain extends StatelessWidget {
             ),
             child: ClipOval(
               child: Image.asset(
-                'images/female1.jpg',
+                'images/male1.jpg',
                 fit: BoxFit.cover,
               ),
             ),
@@ -327,7 +327,11 @@ class ProfileMain extends StatelessWidget {
                             content: Text('Bid accepted successfully!')),
                       );
 
+                      // Navigator.popUntil(
+                      //     context, ModalRoute.withName('/parent'));
                       Navigator.pop(context);
+                      Navigator.pop(context);
+                  
                     }
                   } else {
                     if (context.mounted) {
