@@ -19,7 +19,7 @@ class _BiddingPageState extends State<BiddingPage> {
       child: Scaffold(
         body: Consumer<BidsProvider>(
           builder: (context, bidData, child) => Container(
-            margin:const  EdgeInsets.symmetric(horizontal: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

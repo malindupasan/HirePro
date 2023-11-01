@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hirepro/constants.dart';
 import 'package:hirepro/providers/bids_provider.dart';
-import 'package:hirepro/providers/service_provider_provider.dart';
 import 'package:hirepro/providers/task_provider.dart';
 import 'package:hirepro/widgets/StarRating.dart';
+import 'package:hirepro/widgets/MediumButton.dart';
 import 'package:hirepro/widgets/smallButton.dart';
 import 'package:hirepro/widgets/stepper_bar.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -68,7 +68,11 @@ class _SearchingProsState extends State<SearchingPros> {
                       ),
                       Container(
                         margin: const EdgeInsets.only(top: 20),
-                      )
+                      ),
+                      MediumButton('Categories', () {
+                        Navigator.popUntil(
+                            context, ModalRoute.withName('/category'));
+                      }, kMainYellow, Colors.white)
                     ],
                   ),
                 if (bidData.filteredBids.isNotEmpty)

@@ -6,6 +6,8 @@ class LocationProvider extends ChangeNotifier {
   late double _latitude;
   late double _longitude;
   String location = '';
+  double get latitude=>_latitude;
+   double get longitude=>_longitude;
   String get currentLocation => location;
   Future<void> getCurrentLocation() async {
     LocationPermission permission = await Geolocator.requestPermission();

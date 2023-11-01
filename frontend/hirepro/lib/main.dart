@@ -1,9 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hirepro/constants.dart';
+import 'package:hirepro/env.dart';
 import 'package:hirepro/providers/address_provider.dart';
 import 'package:hirepro/providers/bids_provider.dart';
 import 'package:hirepro/providers/category_provider.dart';
+import 'package:hirepro/providers/chat_provider.dart';
 import 'package:hirepro/providers/customer_provider.dart';
 import 'package:hirepro/providers/file_upload_provider.dart';
 import 'package:hirepro/providers/location_provider.dart';
@@ -12,6 +15,8 @@ import 'package:hirepro/providers/task_provider.dart';
 import 'package:hirepro/screens/addAddressScreen.dart';
 import 'package:hirepro/screens/biddingScreen.dart';
 import 'package:hirepro/screens/categoryScreen.dart';
+import 'package:hirepro/screens/chatScreen.dart';
+import 'package:hirepro/screens/complaintForm.dart';
 import 'package:hirepro/screens/editProfile/changePassword.dart';
 import 'package:hirepro/screens/editProfile/emailcodereqScreen.dart';
 import 'package:hirepro/screens/emailCodeVerifyScreen.dart';
@@ -24,16 +29,18 @@ import 'package:hirepro/screens/job_request/setLocationScreen.dart';
 import 'package:hirepro/screens/loginScreen.dart';
 import 'package:hirepro/screens/myTasks.dart';
 import 'package:hirepro/screens/ongoingScreen.dart';
+import 'package:hirepro/screens/taskDetails/ongoingTaskDetailsScreen.dart';
 import 'package:hirepro/screens/otpEnterScreen.dart';
 import 'package:hirepro/screens/signupScreen.dart';
 import 'package:hirepro/screens/pro_profile_screen/proProfileScreen.dart';
 import 'package:hirepro/screens/registerSuccess.dart';
+import 'package:hirepro/screens/taskDetails/serviceProviderArrivingScreen.dart';
+import 'package:hirepro/screens/taskDetails/taskCompletedScreen.dart';
+import 'package:hirepro/screens/taskDetails/workInProgressScreen.dart';
 import 'package:hirepro/screens/waiting_for_bids_screen.dart';
 import 'package:hirepro/services/api.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-
 
 // @pragma('vm:entry-point')
 // void callBackDispatcher() {
@@ -53,6 +60,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Workmanager().initialize(callBackDispatcher,isInDebugMode: true);
   await Firebase.initializeApp();
+
+  Stripe.publishableKey = stripePublishableKey;
+  await Stripe.instance.applySettings();
   SharedPreferences preferences = await SharedPreferences.getInstance();
 
   runApp(HirePro(
@@ -75,7 +85,10 @@ class HirePro extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => FileUploadProvider()),
         ChangeNotifierProvider(create: (context) => LocationProvider()),
         ChangeNotifierProvider(create: (context) => BidsProvider()),
-          ChangeNotifierProvider(create: (context) => ServiceProviderProvider())
+        ChangeNotifierProvider(
+          create: (context) => ServiceProviderProvider(),
+        ),
+        ChangeNotifierProvider(create: (context) => ChatProvider())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -121,7 +134,15 @@ class HirePro extends StatelessWidget {
           '/rate': (context) => JobCompletedScreen(),
           '/set_location': (context) => SetLocationScreen(),
           '/searching_pros': (context) => SearchingPros(),
-          '/waiting_for_bids':(context) => WaitingForBidsScreen(),
+          '/waiting_for_bids': (context) => WaitingForBidsScreen(),
+          '/ongoing_task_details': (context) => OngoingTaskDetailsScreen(),
+          '/arrival_screen': (context) => ServiceProviderArrivalScreen(),
+          '/work_in_progress': (context) => WorkInProgressScreen(),
+          '/job_completed': (context) => TaskCompletedScreen(),
+          '/bidding_screen': (context) => BiddingPage(),
+          '/waiting_for_bids_screen': (context) => WaitingForBidsScreen(),
+          '/chat_screen': (context) => ChatScreen(),
+          '/complaint': (context) => ComplaintForm(),
         },
       ),
     );

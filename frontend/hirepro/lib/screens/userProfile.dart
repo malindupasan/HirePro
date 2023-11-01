@@ -11,7 +11,7 @@ import 'package:hirepro/widgets/HireProAppBar.dart';
 import 'package:hirepro/widgets/MainButton.dart';
 import 'package:provider/provider.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:hirepro/widgets/loading.dart';
+
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -141,7 +141,7 @@ class _UserProfileState extends State<UserProfile> {
                                             rating: 3.35,
                                             itemBuilder: (context, index) =>
                                                 const Icon(
-                                              Icons.star,
+                                              Icons.star, 
                                               color: Colors.amber,
                                             ),
                                             itemCount: 5,

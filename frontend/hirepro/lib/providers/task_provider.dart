@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
@@ -6,10 +7,18 @@ import 'package:flutter/material.dart';
 import 'package:hirepro/models/pending_task.dart';
 import 'package:hirepro/models/task.dart';
 import 'package:hirepro/services/api.dart';
+import 'package:hirepro/services/notifications.dart';
 import 'package:http/http.dart';
 
 class TaskProvider extends ChangeNotifier {
+  Notifications notification = Notifications();
+  int index = 0;
   bool isLoading = false;
+  String _splat = '';
+  String _splon = '';
+  String get splat => _splat;
+  String get splon => _splon;
+  // String _status = 'accepted';
   List<PendingTask> _pendingTasks = [];
   static final TaskProvider _instance = TaskProvider._internal();
 
@@ -20,14 +29,19 @@ class TaskProvider extends ChangeNotifier {
   factory TaskProvider() => _instance;
   late Task _task;
   late String _addedTaskId;
+  final Map<dynamic, Timer> _statustimers = {};
+  final Map<dynamic, Timer> _locationtimers = {};
 
   List<File> _selectedFiles = [];
   List<File> get files => _selectedFiles;
   String get addedTaskId => _addedTaskId;
-  void setAddedTaskId(id){
+  List<Task> _ongoingTasks = [];
+  List<PendingTask> get pendingTasks => _pendingTasks;
+  List<Task> get ongoingTasks => _ongoingTasks;
+  // String get status => _status;
+  void setAddedTaskId(id) {
     _addedTaskId = id;
   }
-  List<PendingTask> get pendingTasks => _pendingTasks;
 
   Api api = Api();
   void initialize() {
@@ -113,10 +127,13 @@ class TaskProvider extends ChangeNotifier {
     }
 
     try {
+      var index = 0;
       for (var file in _selectedFiles) {
-        final storageRef = firebase_storage.FirebaseStorage.instance.ref().child(
-            'task_images/${taskCategory}_${addedTaskId}_${file.hashCode}.png');
+        final storageRef = firebase_storage.FirebaseStorage.instance
+            .ref()
+            .child('task_images/${addedTaskId}/${index}.png');
         await storageRef.putFile(file);
+        index++;
       }
     } catch (error) {
       print('Error uploading file: $error');
@@ -132,4 +149,106 @@ class TaskProvider extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
   }
+
+  Future<void> getOngoingTasks() async {
+    isLoading = true;
+    notifyListeners();
+    final response = await api.fetchTasks(Client());
+    _ongoingTasks = response;
+    print(_pendingTasks.length);
+    isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> getStatus(serviceid) async {
+    index++;
+    Notifications.initializeNotification();
+    final response = await api.getServiceStatus(serviceid);
+    taskData.status = response['status'];
+    print(response['status']);
+    notifyListeners();
+    // _status = response['status'];
+
+    if (response['status'] == 'started') {
+      await getSpLocation(serviceid);
+
+      if (index == 1) {
+        notification.showNotification(
+            title: 'HirePro',
+            body: 'Service provider has started the task #$serviceid!');
+      }
+    }
+    if (response['status'] == 'arrived') {
+      index = 0;
+      if (index == 1) {
+        notification.showNotification(
+            title: 'HirePro',
+            body: 'Service provider has arrived #$serviceid!');
+      }
+    }
+    if (response['status'] == 'completed') {
+      notification.showNotification(
+          title: 'HirePro', body: 'Service provider has finished the task');
+      stopStatusTimer(serviceid);
+    }
+    notifyListeners();
+  }
+
+  void startStatusTimer(id) {
+    const duration = Duration(seconds: 5);
+
+    // Cancel the existing timer if it already exists for the same id
+    if (_statustimers.containsKey(id) && _statustimers[id] != null) {
+      _statustimers[id]!.cancel();
+    }
+
+    _statustimers[id] = Timer.periodic(duration, (timer) async {
+      print('Status Timer started ${id}');
+      await getStatus(id);
+    });
+  }
+
+  void stopStatusTimer(id) {
+    print(id);
+    // Check if the timer exists for the given ID before stopping it
+    if (_statustimers.containsKey(id) && _statustimers[id] != null) {
+      _statustimers[id]!.cancel();
+      print('Status Timer stopped ${id}');
+      _statustimers.remove(id);
+    }
+  }
+
+// ------------sp location ----------------
+  Future<void> getSpLocation(serviceid) async {
+    final response = await api.getSpLocation(serviceid);
+    print(response['latitude']);
+    _splat = response['latitude'];
+    _splon = response['longitude'];
+    // _status = response['status'];
+    notifyListeners();
+  }
+
+  // void startLocTimer(id) {
+  //   const duration = Duration(seconds: 5);
+
+  //   // Cancel the existing timer if it already exists for the same id
+  //   if (_locationtimers.containsKey(id) && _locationtimers[id] != null) {
+  //     _locationtimers[id]!.cancel();
+  //   }
+
+  //   _locationtimers[id] = Timer.periodic(duration, (timer) async {
+  //     print('Loction Timer started ${id}');
+  //     await getSpLocation(id);
+  //   });
+  // }
+
+  // void stopLocTimer(id) {
+  //   print(id);
+  //   // Check if the timer exists for the given ID before stopping it
+  //   if (_locationtimers.containsKey(id) && _locationtimers[id] != null) {
+  //     _locationtimers[id]!.cancel();
+  //     print('Location Timer stopped ${id}');
+  //     _locationtimers.remove(id);
+  //   }
+  // }
 }

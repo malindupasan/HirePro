@@ -1,79 +1,69 @@
 import 'package:flutter/material.dart';
 import 'package:hirepro/models/service_provider.dart';
-
 import 'package:hirepro/services/dateTimeFormatted.dart';
 import 'package:hirepro/widgets/StarRating.dart';
 
 class ReviewCard extends StatelessWidget {
-  const ReviewCard({
-    super.key,
-    required this.review,
-  });
-
   final Review review;
+
+  ReviewCard({Key? key, required this.review}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.white,
+    return Card(
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
       ),
-      margin: EdgeInsets.symmetric(horizontal: 10),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundImage: AssetImage('images/female1.jpg'),
-                            ),
-                            Container(
-                              margin: EdgeInsets.symmetric(horizontal: 10),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    review.name,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  DateTimeFormatted(review.date),
-                                ],
-                              ),
-                            ),
-                          ],
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundImage: AssetImage('images/female1.jpg'),
+                    ),
+                    const SizedBox(width: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          review.name,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
                         ),
+                        DateTimeFormatted(review.date),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Text(
+                      review.starRate.toString(),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
                       ),
-                      Expanded(
-                        flex: 2,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            StarRating(review.starRate, 20),
-                            Text(review.starRate.toString()),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Text(review.comment),
-                ],
-              ),
+                    ),
+                    StarRating(review.starRate, 20),
+                    const SizedBox(width: 8),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Text(
+              review.comment,
+              style: TextStyle(fontSize: 16),
             ),
           ],
         ),

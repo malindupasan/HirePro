@@ -71,6 +71,9 @@ dependencies:
   flutter_local_notifications: ^15.1.1
   workmanager: ^0.5.1
   flutter_datetime_picker: ^1.5.1
+  flutter_polyline_points: ^2.0.0
+  flutter_phone_direct_caller: ^2.1.1
+  flutter_stripe: ^9.5.0+1
  
   
 

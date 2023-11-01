@@ -7,6 +7,7 @@ import 'package:hirepro/models/customer.dart';
 import 'package:hirepro/env.dart';
 import 'package:hirepro/models/pending_task.dart';
 import 'package:hirepro/models/service_provider.dart';
+import 'package:hirepro/models/task.dart';
 import 'package:hirepro/widgets/MyNavigationWidget.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -238,7 +239,7 @@ class Api {
     );
     if (response.statusCode == 200) {
       print('Data received');
-      print(response.body);
+      // print(response.body);
     }
 
     return compute(parseBids, response.body);
@@ -306,7 +307,7 @@ class Api {
     }
   }
 
-    Future<List<PendingTask>> getPendingTasks(http.Client client) async {
+  Future<List<PendingTask>> getPendingTasks(http.Client client) async {
     final response = await client.get(
       Uri.parse(url + 'getpendingtasks'),
       headers: <String, String>{
@@ -315,13 +316,99 @@ class Api {
       },
     );
 
-   
     return compute(parsePendingTasks, response.body);
   }
 
   List<PendingTask> parsePendingTasks(String responseBody) {
     final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
 
-    return parsed.map<PendingTask>((json) => PendingTask.fromJson(json)).toList();
+    return parsed
+        .map<PendingTask>((json) => PendingTask.fromJson(json))
+        .toList();
+  }
+
+  //----------accept bid--------------------------------
+  Future<http.Response> acceptbid(serviceid) async {
+    final response = await http.post(
+      Uri.parse(url + 'acceptbid'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
+      },
+      body: jsonEncode(<String, String>{
+        'serviceid': serviceid,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      // return Customer.fromJson(jsonDecode(response.body));
+      print("bid accpeted");
+      return response;
+    } else {
+      throw Exception('Cannot proceed');
+    }
+  }
+
+  //-------------get ongoing tasks --------------------------------
+  Future<List<Task>> fetchTasks(http.Client client) async {
+    final response = await client.get(
+      Uri.parse(url + 'getOngoingandAcceptedTasks'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
+      },
+    );
+    if (response.statusCode == 200) {
+      print('Ongoing tasks received');
+      // print(response.body);
+    }
+
+    return compute(parseTasks, response.body);
+  }
+
+  List<Task> parseTasks(String responseBody) {
+    final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+
+    return parsed.map<Task>((json) => Task.fromJson(json)).toList();
+  }
+  // -----------------get service status ----------------
+
+  Future<Map<String, dynamic>> getServiceStatus(String serviceId) async {
+    final response = await http.post(
+      Uri.parse(url + 'getservicestatus'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
+      },
+      body: jsonEncode(<String, String>{'serviceid': serviceId}),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      print(
+          'Failed to load service provider. Status Code: ${response.statusCode}');
+      throw Exception('Failed to load service provider');
+    }
+  }
+
+  // -------------------get sp location--------------------------------------
+  Future<Map<String, dynamic>> getSpLocation(String serviceId) async {
+    final response = await http.post(
+      Uri.parse(url + 'getsplocation'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
+      },
+      body: jsonEncode(<String, String>{'serviceid': serviceId}),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      print(
+          'Failed to load service provider. Status Code: ${response.statusCode}');
+      throw Exception('Failed to load service provider');
+    }
   }
 }

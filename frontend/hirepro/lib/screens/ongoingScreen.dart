@@ -1,31 +1,83 @@
 import 'package:flutter/material.dart';
+import 'package:hirepro/models/task.dart';
+import 'package:hirepro/providers/chat_provider.dart';
+import 'package:hirepro/providers/customer_provider.dart';
+import 'package:hirepro/providers/task_provider.dart';
 import 'package:hirepro/widgets/HireProAppBar.dart';
 import 'package:hirepro/widgets/TaskCardOngoing.dart';
+import 'package:provider/provider.dart';
 
-class OngoingScreen extends StatelessWidget {
- 
+class OngoingScreen extends StatefulWidget {
+  @override
+  State<OngoingScreen> createState() => _OngoingScreenState();
+}
+
+class _OngoingScreenState extends State<OngoingScreen> {
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      Provider.of<TaskProvider>(context, listen: false).getOngoingTasks();
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: HireProAppBar(context, "Ongoing Tasks"),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/rate');
-                },
-                child: TaskCardOngoing(
-                    'John Doe', 'Plumbing', 5000, 'images/plumber.png', 1),
-              ),
-              TaskCardOngoing(
-                  'Sam Wilson', 'Gardening', 3200, 'images/gardener.png', 0.7),
-              TaskCardOngoing(
-                  'Emily Clerk', 'Cleaning', 5000, 'images/cleaning.png', 0.2),
-            ],
-          ),
-        ),
+        body: Consumer<TaskProvider>(
+            builder: (context, data, child) => SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      for (Task task in data.ongoingTasks)
+                        GestureDetector(
+                          onTap: () async{
+                            String userid = Provider.of<CustomerProvider>(
+                                    context,
+                                    listen: false)
+                                .customerData!
+                                .id;
+                            Provider.of<ChatProvider>(context, listen: false)
+                                .initializeData(task.id, task.spid, userid);
+                            Provider.of<ChatProvider>(context, listen: false)
+                                .setServiceProviderName(task.serviceProvider);
+                          
+
+                            if (task.status == "accepted") {
+                              Navigator.pushNamed(
+                                context,
+                                '/ongoing_task_details',
+                                arguments: task.amount
+                              );
+                            }
+                            if (task.status == "started") {
+
+                              Navigator.pushNamed(
+                                context,
+                                '/arrival_screen',
+                                arguments: task.amount
+                              );
+                            }
+                            if (task.status == "arrived") {
+                              Navigator.pushNamed(
+                                context,
+                                '/work_in_progress',
+                                arguments: task.amount
+                              );
+                            }
+                          },
+                          child: TaskCardOngoing(
+                              task.serviceProvider!,
+                              task.category!,
+                              double.parse(task.amount!),
+                              'images/${task.category}.png',
+                              double.parse(task.percentage!),
+                              task.status!.toUpperCase(),
+                              task.id!),
+                        ),
+                    ],
+                  ),
+                )),
       ),
     );
   }

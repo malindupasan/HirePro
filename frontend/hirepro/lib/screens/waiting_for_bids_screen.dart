@@ -71,7 +71,7 @@ class WaitingForBidsScreen extends StatelessWidget {
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.pushNamed(context, '/pro_profile',
-                                      arguments: bid.serviceProId);
+                                      arguments: [bid.serviceId,bid.serviceProId]);
                                 },
                                 child: Card(
                                   margin: const EdgeInsets.symmetric(
@@ -152,9 +152,8 @@ class WaitingForBidsScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SmallButton('Categories', () {
-                                Navigator.popUntil(
-                                    context, ModalRoute.withName('/category'));
+                              SmallButton('Back', () {
+                                Navigator.pop(context);
                               }, kMainYellow, Colors.white),
                               SmallButton('Cancel', () {
                                 showDialog<String>(
