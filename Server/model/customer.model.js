@@ -25,12 +25,13 @@ class Customer {
 
     try {
       const res1=await db.query(query1, values1);
-      if(res1){
+      if(res1.rowCount>0){
+        console.log(res1.rows[0])
         return "EMAILEXISTS!";
       }
 
       const res2=await db.query(query2,values2);
-      if(res2){
+      if(res2.rowCount>0){
         return "PHONEEXISTS";
       }
 
