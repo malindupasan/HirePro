@@ -9,7 +9,6 @@ import 'package:hirepro/widgets/smallButton.dart';
 import 'package:hirepro/widgets/stepper_bar.dart';
 import 'package:provider/provider.dart';
 
-
 class ConfirmationScreen extends StatelessWidget {
   List<String> images = ['images/lawn1.jpg', 'images/lawn2.jpg'];
   JobRequest jobStatus = JobRequest();
@@ -85,8 +84,8 @@ class ConfirmationScreen extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                ContentSection('Goods Provided',
-                                    formbool.toString().split('.')[1]),
+                                // ContentSection('Goods Provided',
+                                //     formbool.toString().split('.')[1]),
                                 ContentSection('Estimate (Rs.)',
                                     '${task.taskData.estmin} - ${task.taskData.estmax}'),
                                 ContentSection('Images', ''),
@@ -201,12 +200,14 @@ class ContentSection extends StatelessWidget {
                   SizedBox(
                     width: 20,
                   ),
-                  Text(
-                    data,
-                    style: Knormal1,
-                    textAlign: TextAlign.left,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  Expanded(
+                    child: Text(
+                      data,
+                      style: Knormal1,
+                      textAlign: TextAlign.left,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),

@@ -102,8 +102,7 @@ class AllBiddingsScreen extends StatelessWidget {
                                                   .split('T')
                                                   .last
                                                   .split('.')
-                                                  .first
-                                                  .substring(0, 5)),
+                                                  .first),
                                               style: TextStyle(
                                                 color: Colors.grey[600],
                                               ),

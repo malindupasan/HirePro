@@ -8,6 +8,7 @@ import 'package:hirepro/env.dart';
 import 'package:hirepro/models/pending_task.dart';
 import 'package:hirepro/models/service_provider.dart';
 import 'package:hirepro/models/task.dart';
+import 'package:hirepro/screens/parentScreen.dart';
 import 'package:hirepro/widgets/MyNavigationWidget.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -275,7 +276,7 @@ class Api {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => MyNavigationWidget(token: myToken)));
+                  builder: (context) => ParentScreen(token: myToken)));
           // Navigator.pushNamed(context, '/category');
         }
       } catch (e) {

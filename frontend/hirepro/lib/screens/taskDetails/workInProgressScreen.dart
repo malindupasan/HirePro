@@ -66,7 +66,7 @@ class WorkInProgressScreen extends StatelessWidget {
                 //   textAlign: TextAlign.center,
                 // ),
                 const SizedBox(height: 30), // Reduce some spacings
-              
+
                 Text(
                   "Any problem?",
                   style: kHeading1.copyWith(color: kMainYellow),
@@ -90,11 +90,21 @@ class WorkInProgressScreen extends StatelessWidget {
                         onPressed: () {}, child: Icon(Icons.sos_rounded))
                   ],
                 ),
-                SizedBox(height: 50,),
-                if(data.taskData.status=="completed")
-                  MainButton('Continue', () {
-                  Navigator.pushNamed(context, '/job_completed');
-                }),
+                SizedBox(
+                  height: 50,
+                ),
+                if (data.taskData.status == "completed")
+                  Column(
+                    children: [
+                      Text(
+                          'Service provider has finished the task! Click to continue'),
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/job_completed');
+                          },
+                          child: Text("Continue")),
+                    ],
+                  )
               ],
             ),
           ),
