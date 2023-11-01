@@ -11,6 +11,7 @@ import 'package:hirepro/providers/customer_provider.dart';
 import 'package:hirepro/providers/file_upload_provider.dart';
 import 'package:hirepro/providers/location_provider.dart';
 import 'package:hirepro/providers/navigation_provider.dart';
+import 'package:hirepro/providers/polyline_provider.dart';
 import 'package:hirepro/providers/service_provider_provider.dart';
 import 'package:hirepro/providers/task_provider.dart';
 import 'package:hirepro/screens/addAddressScreen.dart';
@@ -90,7 +91,8 @@ class HirePro extends StatelessWidget {
           create: (context) => ServiceProviderProvider(),
         ),
         ChangeNotifierProvider(create: (context) => ChatProvider()),
-        ChangeNotifierProvider(create: (context) => NavigationProvider())
+        ChangeNotifierProvider(create: (context) => NavigationProvider()),
+        ChangeNotifierProvider(create: (context) =>PolylineProvider())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -146,6 +148,7 @@ class HirePro extends StatelessWidget {
           '/waiting_for_bids_screen': (context) => WaitingForBidsScreen(),
           '/chat_screen': (context) => ChatScreen(),
           '/complaint': (context) => ComplaintForm(),
+          '/rating':(context) => JobCompletedScreen()
         },
       ),
     );

@@ -14,7 +14,7 @@ class ServiceProviderArrivalScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    dynamic amount = ModalRoute.of(context)!.settings.arguments;
+    dynamic id = ModalRoute.of(context)!.settings.arguments;
     return FutureBuilder<void>(
       future: Provider.of<LocationProvider>(context, listen: false)
           .getCurrentLocation(),
@@ -82,7 +82,7 @@ class ServiceProviderArrivalScreen extends StatelessWidget {
                                               ElevatedButton(
                                                   onPressed: () {
                                                     Navigator.pushNamed(context,
-                                                        '/work_in_progress');
+                                                        '/work_in_progress',arguments: id);
                                                   },
                                                   child: Text("Continue")),
                                             ],

@@ -11,11 +11,20 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TaskCompletedScreen extends StatelessWidget {
-  StripeService stripeService = StripeService();
   @override
   Widget build(BuildContext context) {
+    dynamic id = ModalRoute.of(context)!.settings.arguments;
+    StripeService stripeService = StripeService(
+        onSuccess: () {
+          Navigator.pushNamed(context, '/rating', arguments: id);
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: Color.fromARGB(255, 42, 201, 74),
+              content: Text('Payment success!')));
+        },
+        onFailure: () {});
     return SafeArea(
         child: Scaffold(
+
             // bottomNavigationBar: MyNavigationWidget(token: sesstionToken),
             resizeToAvoidBottomInset: false,
             body: Consumer<TaskProvider>(

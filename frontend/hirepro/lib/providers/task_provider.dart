@@ -218,6 +218,13 @@ class TaskProvider extends ChangeNotifier {
     }
   }
 
+  Future<Task> getTaskDetails(id) async {
+    Task taskdatasingle = await api.getSingleTaskData(id);
+    notifyListeners();
+    return taskdatasingle;
+    
+  }
+
 // ------------sp location ----------------
   Future<void> getSpLocation(serviceid) async {
     final response = await api.getSpLocation(serviceid);

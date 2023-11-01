@@ -6,6 +6,12 @@ import 'package:http/http.dart' as http;
 
 class StripeService {
   Map<String, dynamic>? paymentIntent;
+  final Function onSuccess;
+  final Function onFailure;
+
+  // Constructor to accept success and failure callbacks
+  StripeService({required this.onSuccess, required this.onFailure});
+
   void makePayment(amount) async {
     try {
       print("dd");
@@ -24,6 +30,7 @@ class StripeService {
     } catch (e) {
       print("dd");
       print(e);
+      onFailure(e.toString());
     }
   }
 
@@ -31,11 +38,13 @@ class StripeService {
     try {
       await Stripe.instance.presentPaymentSheet();
       print('done');
+      onSuccess();
     } catch (e) {
       if (e is StripeException) {
         print(e.error.message);
       }
       print('failed');
+      onFailure(e.toString());
     }
   }
 

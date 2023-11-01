@@ -412,4 +412,43 @@ class Api {
       throw Exception('Failed to load service provider');
     }
   }
+
+  Future<Task> getSingleTaskData(serviceProviderId) async {
+    final response = await http.post(
+      Uri.parse(url + 'getsingletaskdetails'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
+      },
+      body:
+          jsonEncode(<String, String>{'serviceProviderId': serviceProviderId}),
+    );
+    try {
+      if (response.statusCode == 200) {
+        return await Task.fromJson(jsonDecode(response.body));
+      } else {
+        throw Exception('Failed to load task');
+      }
+    } catch (e) {
+      print(e);
+      throw (e);
+    }
+  }
+
+//-----------------rating----------------------
+  Future<http.Response> rate(serviceproid, starrate) async {
+    final response = await http.post(
+      Uri.parse(url + 'addreview'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
+      },
+      body: jsonEncode(<String, String>{
+        'serviceid': serviceproid,
+        'comment':"good and neat service",
+        'serviceproviderid':serviceproid
+      }),
+    );
+    return response;
+  }
 }

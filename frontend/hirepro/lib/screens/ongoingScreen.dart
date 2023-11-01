@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hirepro/env.dart';
 import 'package:hirepro/models/task.dart';
 import 'package:hirepro/providers/chat_provider.dart';
 import 'package:hirepro/providers/customer_provider.dart';
@@ -31,7 +32,8 @@ class _OngoingScreenState extends State<OngoingScreen> {
                     children: [
                       for (Task task in data.ongoingTasks)
                         GestureDetector(
-                          onTap: () async{
+                          onTap: () async {
+                            taskAmount = int.parse(task.amount!);
                             String userid = Provider.of<CustomerProvider>(
                                     context,
                                     listen: false)
@@ -41,29 +43,19 @@ class _OngoingScreenState extends State<OngoingScreen> {
                                 .initializeData(task.id, task.spid, userid);
                             Provider.of<ChatProvider>(context, listen: false)
                                 .setServiceProviderName(task.serviceProvider);
-                          
 
                             if (task.status == "accepted") {
                               Navigator.pushNamed(
-                                context,
-                                '/ongoing_task_details',
-                                arguments: task.amount
-                              );
+                                  context, '/ongoing_task_details',
+                                  arguments: task.id);
                             }
                             if (task.status == "started") {
-
-                              Navigator.pushNamed(
-                                context,
-                                '/arrival_screen',
-                                arguments: task.amount
-                              );
+                              Navigator.pushNamed(context, '/arrival_screen',
+                                  arguments: task.id);
                             }
                             if (task.status == "arrived") {
-                              Navigator.pushNamed(
-                                context,
-                                '/work_in_progress',
-                                arguments: task.amount
-                              );
+                              Navigator.pushNamed(context, '/work_in_progress',
+                                  arguments: task.id);
                             }
                           },
                           child: TaskCardOngoing(

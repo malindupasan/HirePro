@@ -20,7 +20,7 @@ class _WaitingForBidsScreenState extends State<WaitingForBidsScreen> {
   Widget build(BuildContext context) {
     var id = ModalRoute.of(context)!.settings.arguments;
     // List<Bids>bids=  Provider.of<BidsProvider>(context, listen: false).getFilteredBids(id);
-  return Scaffold(
+    return Scaffold(
         body: SafeArea(
             child: Consumer<BidsProvider>(
       builder: (context, bidData, child) => Padding(
@@ -82,7 +82,6 @@ class _WaitingForBidsScreenState extends State<WaitingForBidsScreen> {
                                       arguments: [
                                         bid.serviceId,
                                         bid.serviceProId
-                                        
                                       ]);
                                 },
                                 child: Card(

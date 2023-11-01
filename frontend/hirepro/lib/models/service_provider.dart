@@ -42,7 +42,7 @@ class ServiceProvider {
 class Review {
   final String id;
   final String comment;
-  final double starRate;
+  final String starRate;
   final String customerId;
   final String serviceProviderId;
   final DateTime date;
@@ -62,7 +62,7 @@ class Review {
     return Review(
       id: json['id'] ?? '',
       comment: json['comment'] ?? '',
-      starRate: json['starRate'] ?? 0.0,
+      starRate: json['starRate'].toString() ?? '0',
       customerId: json['customerid'] ?? '',
       serviceProviderId: json['serviceproviderid'] ?? '',
       date: DateTime.tryParse(json['date'] ?? '') ?? DateTime.now(),
