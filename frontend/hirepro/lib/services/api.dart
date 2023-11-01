@@ -391,4 +391,24 @@ class Api {
       throw Exception('Failed to load service provider');
     }
   }
+
+  // -------------------get sp location--------------------------------------
+  Future<Map<String, dynamic>> getSpLocation(String serviceId) async {
+    final response = await http.post(
+      Uri.parse(url + 'getsplocation'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
+      },
+      body: jsonEncode(<String, String>{'serviceid': serviceId}),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      print(
+          'Failed to load service provider. Status Code: ${response.statusCode}');
+      throw Exception('Failed to load service provider');
+    }
+  }
 }

@@ -10,6 +10,7 @@ class OngoingTaskDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    dynamic amount = ModalRoute.of(context)!.settings.arguments;
     return Scaffold(
       body: SafeArea(
         child: Scaffold(
@@ -37,9 +38,19 @@ class OngoingTaskDetailsScreen extends StatelessWidget {
                               "Waiting the task to be started...",
                               style: kHeading1,
                             ),
-                            MainButton('Continue', () {
-                              Navigator.pushNamed(context, '/arrival_screen');
-                            })
+                            if (data.taskData.status == 'started')
+                              Column(
+                                children: [
+                                  Text(
+                                      'Service provider has departed! click continue'),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context, '/arrival_screen');
+                                      },
+                                      child: Text("Continue"))
+                                ],
+                              )
                           ],
                         ),
                       ),

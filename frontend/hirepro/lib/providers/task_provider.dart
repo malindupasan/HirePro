@@ -12,7 +12,12 @@ import 'package:http/http.dart';
 
 class TaskProvider extends ChangeNotifier {
   Notifications notification = Notifications();
+  int index = 0;
   bool isLoading = false;
+  String _splat = '';
+  String _splon = '';
+  String get splat => _splat;
+  String get splon => _splon;
   // String _status = 'accepted';
   List<PendingTask> _pendingTasks = [];
   static final TaskProvider _instance = TaskProvider._internal();
@@ -25,6 +30,7 @@ class TaskProvider extends ChangeNotifier {
   late Task _task;
   late String _addedTaskId;
   final Map<dynamic, Timer> _statustimers = {};
+  final Map<dynamic, Timer> _locationtimers = {};
 
   List<File> _selectedFiles = [];
   List<File> get files => _selectedFiles;
@@ -155,15 +161,34 @@ class TaskProvider extends ChangeNotifier {
   }
 
   Future<void> getStatus(serviceid) async {
+    index++;
     Notifications.initializeNotification();
     final response = await api.getServiceStatus(serviceid);
+    taskData.status = response['status'];
     print(response['status']);
+    notifyListeners();
     // _status = response['status'];
 
     if (response['status'] == 'started') {
+      await getSpLocation(serviceid);
+
+      if (index == 1) {
+        notification.showNotification(
+            title: 'HirePro',
+            body: 'Service provider has started the task #$serviceid!');
+      }
+    }
+    if (response['status'] == 'arrived') {
+      index = 0;
+      if (index == 1) {
+        notification.showNotification(
+            title: 'HirePro',
+            body: 'Service provider has arrived #$serviceid!');
+      }
+    }
+    if (response['status'] == 'completed') {
       notification.showNotification(
-          title: 'HirePro',
-          body: '[Service provider has started the task #${serviceid}!');
+          title: 'HirePro', body: 'Service provider has finished the task');
       stopStatusTimer(serviceid);
     }
     notifyListeners();
@@ -192,4 +217,38 @@ class TaskProvider extends ChangeNotifier {
       _statustimers.remove(id);
     }
   }
+
+// ------------sp location ----------------
+  Future<void> getSpLocation(serviceid) async {
+    final response = await api.getSpLocation(serviceid);
+    print(response['latitude']);
+    _splat = response['latitude'];
+    _splon = response['longitude'];
+    // _status = response['status'];
+    notifyListeners();
+  }
+
+  // void startLocTimer(id) {
+  //   const duration = Duration(seconds: 5);
+
+  //   // Cancel the existing timer if it already exists for the same id
+  //   if (_locationtimers.containsKey(id) && _locationtimers[id] != null) {
+  //     _locationtimers[id]!.cancel();
+  //   }
+
+  //   _locationtimers[id] = Timer.periodic(duration, (timer) async {
+  //     print('Loction Timer started ${id}');
+  //     await getSpLocation(id);
+  //   });
+  // }
+
+  // void stopLocTimer(id) {
+  //   print(id);
+  //   // Check if the timer exists for the given ID before stopping it
+  //   if (_locationtimers.containsKey(id) && _locationtimers[id] != null) {
+  //     _locationtimers[id]!.cancel();
+  //     print('Location Timer stopped ${id}');
+  //     _locationtimers.remove(id);
+  //   }
+  // }
 }

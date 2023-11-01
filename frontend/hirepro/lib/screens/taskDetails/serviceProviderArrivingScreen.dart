@@ -3,6 +3,7 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:hirepro/providers/chat_provider.dart';
 import 'package:hirepro/providers/customer_provider.dart';
 import 'package:hirepro/providers/location_provider.dart';
+import 'package:hirepro/providers/task_provider.dart';
 import 'package:hirepro/services/googleMaps.dart';
 import 'package:hirepro/widgets/HireProAppBar.dart';
 import 'package:hirepro/widgets/loading.dart';
@@ -13,6 +14,7 @@ class ServiceProviderArrivalScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    dynamic amount = ModalRoute.of(context)!.settings.arguments;
     return FutureBuilder<void>(
       future: Provider.of<LocationProvider>(context, listen: false)
           .getCurrentLocation(),
@@ -31,7 +33,7 @@ class ServiceProviderArrivalScreen extends StatelessWidget {
                         children: [
                           (Container(child: GoogleMaps())),
                           Container(
-                            height: 130,
+                            height: 100,
                             decoration: BoxDecoration(
                                 color:
                                     const Color.fromARGB(255, 253, 241, 197)),
@@ -43,10 +45,10 @@ class ServiceProviderArrivalScreen extends StatelessWidget {
                                 ),
                                 FilledButton.icon(
                                     onPressed: () async {
-                                      Navigator.pushNamed(
-                                          context, '/work_in_progress');
-                                      // await FlutterPhoneDirectCaller.callNumber(
-                                      //     '0769140040');
+                                      // Navigator.pushNamed(
+                                      //     context, '/work_in_progress');
+                                      await FlutterPhoneDirectCaller.callNumber(
+                                          '0769140040');
                                     },
                                     icon: Icon(Icons.call),
                                     label: Text("Contact")),
@@ -61,10 +63,33 @@ class ServiceProviderArrivalScreen extends StatelessWidget {
                                     label: Text("Message")),
                                 SizedBox(
                                   width: 10,
-                                )
+                                ),
                               ],
                             ),
-                          )
+                          ),
+                          Consumer<TaskProvider>(
+                              builder: (context, value, child) => Column(
+                                    children: [
+                                      if (value.taskData.status! == 'arrived')
+                                        Container(
+                                          width: double.infinity,
+                                          color: const Color.fromARGB(
+                                              255, 253, 241, 197),
+                                          child: Column(
+                                            children: [
+                                              const Text(
+                                                  "Service Provider has arrived! Click continue"),
+                                              ElevatedButton(
+                                                  onPressed: () {
+                                                    Navigator.pushNamed(context,
+                                                        '/work_in_progress');
+                                                  },
+                                                  child: Text("Continue")),
+                                            ],
+                                          ),
+                                        ),
+                                    ],
+                                  ))
                         ],
                       )),
             ),

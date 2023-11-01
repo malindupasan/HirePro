@@ -6,10 +6,10 @@ import 'package:http/http.dart' as http;
 
 class StripeService {
   Map<String, dynamic>? paymentIntent;
-  void makePayment() async {
+  void makePayment(amount) async {
     try {
       print("dd");
-      paymentIntent = await createPaymentIntent();
+      paymentIntent = await createPaymentIntent(amount);
       var gpay = const PaymentSheetGooglePay(
           merchantCountryCode: "US", currencyCode: "USD", testEnv: true);
 
@@ -39,9 +39,9 @@ class StripeService {
     }
   }
 
-  createPaymentIntent() async {
+  createPaymentIntent(amount) async {
     try {
-      Map<String, dynamic> body = {"amount": "1000", "currency": "USD"};
+      Map<String, dynamic> body = {"amount":"$amount", "currency": "USD"};
       http.Response response = await http.post(
           Uri.parse('https://api.stripe.com/v1/payment_intents'),
           body: body,

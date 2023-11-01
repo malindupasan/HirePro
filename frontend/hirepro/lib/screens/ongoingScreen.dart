@@ -31,7 +31,7 @@ class _OngoingScreenState extends State<OngoingScreen> {
                     children: [
                       for (Task task in data.ongoingTasks)
                         GestureDetector(
-                          onTap: () {
+                          onTap: () async{
                             String userid = Provider.of<CustomerProvider>(
                                     context,
                                     listen: false)
@@ -47,12 +47,22 @@ class _OngoingScreenState extends State<OngoingScreen> {
                               Navigator.pushNamed(
                                 context,
                                 '/ongoing_task_details',
+                                arguments: task.amount
                               );
                             }
                             if (task.status == "started") {
+
                               Navigator.pushNamed(
                                 context,
                                 '/arrival_screen',
+                                arguments: task.amount
+                              );
+                            }
+                            if (task.status == "arrived") {
+                              Navigator.pushNamed(
+                                context,
+                                '/work_in_progress',
+                                arguments: task.amount
                               );
                             }
                           },
