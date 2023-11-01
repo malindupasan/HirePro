@@ -49,7 +49,7 @@ class ServiceProvider {
   }
   static async getSpLocation(id) {
 
-    const query = 'select * from "ProviderCurrentLocation" where serviceid=$1 ';
+    const query = 'select * from "providerCurrentLocation" where serviceid=$1 ';
     const values = [id];
 
     try {
