@@ -48,7 +48,7 @@ class Rating {
   
 
   static async getReviews(serviceProviderId) {
-    const query = 'SELECT r.*, c.name FROM  "Rating" r inner join customer c on r.customerid =c.id where r.serviceproviderid=$1';
+    const query = 'SELECT r.*, c.name FROM  "Rating" r inner join "Customer" c on r.customerid =c.id where r.serviceproviderid=$1';
     const values = [serviceProviderId];
 
     try {

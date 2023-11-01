@@ -16,10 +16,10 @@ class Customer {
 
     //check email exists
 
-    const query1='select * from customer where email=$1';
+    const query1='select * from "Customer" where email=$1';
     const values1=[email];
 
-    const query2='select * from customer where contact=$1';
+    const query2='select * from "Customer" where contact=$1';
     const values2=[contact];
 
 
@@ -43,7 +43,7 @@ class Customer {
     const salt = await bcrypt.genSalt(10);
     const hashed_pw = await bcrypt.hash(password_hash, salt);
 
-    const query = 'INSERT INTO customer (contact, name, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING *';
+    const query = 'INSERT INTO "Customer" (contact, name, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING *';
     const values = [contact, name, email, hashed_pw];
 
     try {
@@ -59,7 +59,7 @@ class Customer {
 
 
 
-    const query = 'UPDATE customer set name=$1 where id=$2 RETURNING  *';
+    const query = 'UPDATE "Customer" set name=$1 where id=$2 RETURNING  *';
     const values = [name, id];
 
     try {
@@ -77,7 +77,7 @@ class Customer {
     const salt = await bcrypt.genSalt(10);
     const hashed_pw = await bcrypt.hash(password, salt);
 
-    const query = 'UPDATE customer set password_hash=$1 where id=$2 RETURNING  *';
+    const query = 'UPDATE "Customer" set password_hash=$1 where id=$2 RETURNING  *';
     const values = [hashed_pw, id];
 
     try {
@@ -102,7 +102,7 @@ class Customer {
   }
 
   static async findByEmail(email) {
-    const query = 'SELECT * FROM customer WHERE email = $1';
+    const query = 'SELECT * FROM "Customer" WHERE email = $1';
     const values = [email];
 
     try {
@@ -115,7 +115,7 @@ class Customer {
     }
   }
   static async findById(id) {
-    const query = 'SELECT id,contact,name,email,loyalty_points,password_hash FROM customer WHERE id = $1';
+    const query = 'SELECT id,contact,name,email,loyalty_points,password_hash FROM "Customer" WHERE id = $1';
     const values = [id];
 
     try {
