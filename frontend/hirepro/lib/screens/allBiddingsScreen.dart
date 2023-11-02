@@ -137,13 +137,30 @@ class AllBiddingsScreen extends StatelessWidget {
                                                 onPressed: () async {
                                                   Navigator.pushNamed(context,
                                                       '/waiting_for_bids_screen',
-                                                      arguments: pendingtasks
-                                                          .pendingTasks[index]
-                                                          .id);
+                                                      arguments: {
+                                                        'id': pendingtasks
+                                                            .pendingTasks[index]
+                                                            .id,
+                                                        'date': pendingtasks
+                                                            .pendingTasks[index]
+                                                            .date,
+                                                        'location': pendingtasks
+                                                            .pendingTasks[index]
+                                                            .location,
+                                                        'estmax': pendingtasks
+                                                            .pendingTasks[index]
+                                                            .estmax,
+                                                        'estmin': pendingtasks
+                                                            .pendingTasks[index]
+                                                            .estmin
+                                                      });
                                                 },
                                                 child: Text("View")),
                                             OutlinedButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  Navigator.pushNamed(
+                                                      context, '/details');
+                                                },
                                                 child: Text("Details")),
                                           ],
                                         ),

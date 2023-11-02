@@ -15,6 +15,7 @@ import 'package:hirepro/providers/polyline_provider.dart';
 import 'package:hirepro/providers/service_provider_provider.dart';
 import 'package:hirepro/providers/task_provider.dart';
 import 'package:hirepro/screens/addAddressScreen.dart';
+import 'package:hirepro/screens/bidDetailsScreen.dart';
 import 'package:hirepro/screens/biddingScreen.dart';
 import 'package:hirepro/screens/categoryScreen.dart';
 import 'package:hirepro/screens/chatScreen.dart';
@@ -92,7 +93,7 @@ class HirePro extends StatelessWidget {
         ),
         ChangeNotifierProvider(create: (context) => ChatProvider()),
         ChangeNotifierProvider(create: (context) => NavigationProvider()),
-        ChangeNotifierProvider(create: (context) =>PolylineProvider())
+        ChangeNotifierProvider(create: (context) => PolylineProvider())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -119,7 +120,7 @@ class HirePro extends StatelessWidget {
           // '/home': (context) => MyNavigationWidget(
           //       token: token,
           //     ),
-          '/parent':(context)=>ParentScreen(token: sesstionToken),
+          '/parent': (context) => ParentScreen(token: sesstionToken),
           '/category': (context) => CategoryScreen(),
           '/ongoing': (context) => OngoingScreen(),
           // '/profile': (context) => MyHomePage(),
@@ -148,7 +149,8 @@ class HirePro extends StatelessWidget {
           '/waiting_for_bids_screen': (context) => WaitingForBidsScreen(),
           '/chat_screen': (context) => ChatScreen(),
           '/complaint': (context) => ComplaintForm(),
-          '/rating':(context) => JobCompletedScreen()
+          '/rating': (context) => JobCompletedScreen(),
+          '/details': (context) => BidDetailsScreen()
         },
       ),
     );
