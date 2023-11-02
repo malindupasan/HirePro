@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:hirepro/constants.dart';
+import 'package:hirepro/env.dart';
 import 'package:hirepro/providers/task_provider.dart';
 import 'package:hirepro/services/stripeService.dart';
+import 'package:hirepro/widgets/MyNavigationWidget.dart';
 import 'package:hirepro/widgets/SmallArrowButton.dart';
 import 'package:hirepro/widgets/TermsAndPolicy.dart';
 import 'package:hirepro/widgets/check_icon_large.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TaskCompletedScreen extends StatelessWidget {
-  StripeService stripeService = StripeService();
   @override
   Widget build(BuildContext context) {
+    dynamic id = ModalRoute.of(context)!.settings.arguments;
+    StripeService stripeService = StripeService(
+        onSuccess: () {
+          Navigator.pushNamed(context, '/rating', arguments: id);
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: Color.fromARGB(255, 42, 201, 74),
+              content: Text('Payment success!')));
+        },
+        onFailure: () {});
     return SafeArea(
         child: Scaffold(
+
+            // bottomNavigationBar: MyNavigationWidget(token: sesstionToken),
             resizeToAvoidBottomInset: false,
             body: Consumer<TaskProvider>(
               builder: (context, value, child) => Center(

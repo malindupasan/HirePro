@@ -8,6 +8,7 @@ import 'package:hirepro/env.dart';
 import 'package:hirepro/models/pending_task.dart';
 import 'package:hirepro/models/service_provider.dart';
 import 'package:hirepro/models/task.dart';
+import 'package:hirepro/screens/parentScreen.dart';
 import 'package:hirepro/widgets/MyNavigationWidget.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -275,7 +276,7 @@ class Api {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => MyNavigationWidget(token: myToken)));
+                  builder: (context) => ParentScreen(token: myToken)));
           // Navigator.pushNamed(context, '/category');
         }
       } catch (e) {
@@ -410,5 +411,44 @@ class Api {
           'Failed to load service provider. Status Code: ${response.statusCode}');
       throw Exception('Failed to load service provider');
     }
+  }
+
+  Future<Task> getSingleTaskData(serviceProviderId) async {
+    final response = await http.post(
+      Uri.parse(url + 'getsingletaskdetails'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
+      },
+      body:
+          jsonEncode(<String, String>{'serviceProviderId': serviceProviderId}),
+    );
+    try {
+      if (response.statusCode == 200) {
+        return await Task.fromJson(jsonDecode(response.body));
+      } else {
+        throw Exception('Failed to load task');
+      }
+    } catch (e) {
+      print(e);
+      throw (e);
+    }
+  }
+
+//-----------------rating----------------------
+  Future<http.Response> rate(serviceproid, starrate) async {
+    final response = await http.post(
+      Uri.parse(url + 'addreview'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $sesstionToken',
+      },
+      body: jsonEncode(<String, String>{
+        'serviceid': serviceproid,
+        'comment':"good and neat service",
+        'serviceproviderid':serviceproid
+      }),
+    );
+    return response;
   }
 }

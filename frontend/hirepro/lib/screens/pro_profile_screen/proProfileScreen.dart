@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hirepro/constants.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:hirepro/models/bids.dart';
 import 'package:hirepro/providers/bids_provider.dart';
 import 'package:hirepro/providers/service_provider_provider.dart';
 import 'package:hirepro/providers/task_provider.dart';
-import 'package:hirepro/screens/pro_profile_screen/reviews.dart';
 import 'package:hirepro/widgets/PercentageBar.dart';
 import 'package:hirepro/widgets/ReviewCard.dart';
 import 'package:hirepro/widgets/StarRating.dart';
@@ -269,7 +269,7 @@ class ProfileMain extends StatelessWidget {
             ),
             child: ClipOval(
               child: Image.asset(
-                'images/female1.jpg',
+                'images/male1.jpg',
                 fit: BoxFit.cover,
               ),
             ),
@@ -321,12 +321,17 @@ class ProfileMain extends StatelessWidget {
                   }
                   if (status) {
                     if (context.mounted) {
+                      Provider.of<BidsProvider>(context, listen: false)
+                          .getFilteredBids(id);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                             backgroundColor: Color.fromARGB(255, 42, 201, 74),
                             content: Text('Bid accepted successfully!')),
                       );
 
+                      // Navigator.popUntil(
+                      //     context, ModalRoute.withName('/parent'));
+                      Navigator.pop(context);
                       Navigator.pop(context);
                     }
                   } else {

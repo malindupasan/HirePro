@@ -125,7 +125,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                                       )),
                                 ],
                               ),
-                           const   SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               if (isClicked)
@@ -133,7 +133,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                                     address.pinAddress, null, (p0) => null),
                               if (!isClicked)
                                 Container(
-                                  margin:const EdgeInsets.symmetric(
+                                  margin: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 10),
                                   width: double.infinity,
                                   child: DecoratedBox(
@@ -141,16 +141,16 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                                         borderRadius: BorderRadius.circular(10),
                                         border: Border.all(color: Colors.grey)),
                                     child: DropdownButton<Address>(
-                                    
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 10),
                                       dropdownColor: Colors.grey[100],
                                       borderRadius: BorderRadius.circular(10),
-                                      
                                       icon: Icon(
                                         Icons.arrow_drop_down_circle,
                                         color: Colors.grey[500],
                                       ),
+                                      isExpanded:
+                                          true, // This is the key property to make icon align to the right
                                       value: address.selectedAddress,
                                       onChanged: (newValue) {
                                         address
@@ -173,7 +173,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                             ],
                           ),
                         ),
-                       
+
                         if (category == 'Lawn Mowing')
                           Column(
                             children: [
@@ -199,10 +199,10 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
 
                           return null;
                         }),
-                        FormLabel('Goods Provided'),
-                        RadioExample(
-                          character: _character,
-                        ),
+                        // FormLabel('Goods Provided'),
+                        // RadioExample(
+                        //   character: _character,
+                        // ),
                         FormLabel('Enter Price Estimate'),
                         Row(
                           children: [

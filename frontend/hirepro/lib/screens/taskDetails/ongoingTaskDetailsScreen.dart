@@ -10,7 +10,7 @@ class OngoingTaskDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    dynamic amount = ModalRoute.of(context)!.settings.arguments;
+    dynamic id = ModalRoute.of(context)!.settings.arguments;
     return Scaffold(
       body: SafeArea(
         child: Scaffold(
@@ -46,7 +46,7 @@ class OngoingTaskDetailsScreen extends StatelessWidget {
                                   ElevatedButton(
                                       onPressed: () {
                                         Navigator.pushNamed(
-                                            context, '/arrival_screen');
+                                            context, '/arrival_screen',arguments: id);
                                       },
                                       child: Text("Continue"))
                                 ],

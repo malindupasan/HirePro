@@ -54,7 +54,7 @@ class ReviewCard extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    StarRating(review.starRate, 20),
+                    StarRating(double.parse(review.starRate), 20),
                     const SizedBox(width: 8),
                   ],
                 ),
