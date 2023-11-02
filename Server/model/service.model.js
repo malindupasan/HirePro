@@ -48,7 +48,8 @@ class Service {
 
     }
     catch (error) {
-      throw error;
+      // throw error;
+      console.log(error)
     }
 
   }
@@ -56,7 +57,7 @@ class Service {
   static async pendingTasks(customerid) {
 
     const query = 'SELECT * FROM "Service" s  where status=$1 AND s.customerid=$2  ';
-    const values = ["pending",customerid];
+    const values = ["Pending",customerid];
 
     try {
       const result = await db.query(query, values);
@@ -64,7 +65,7 @@ class Service {
 
 
 
-      if (!result.rows) {
+      if (!result.rowCount) {
         return "No pending taks";
 
       }
@@ -72,27 +73,12 @@ class Service {
       
       else {
 
-        const adjustedServices = result.rows.map(service => {
-          if (service.date) { // assuming 'date' is the column name in your table
-              service.date = moment.tz(service.date, "Asia/Colombo").tz(moment.tz.guess()).format();
-          }
-          return service;
-      });
-
-
-      const finaldata = adjustedServices.map(service => {
-        if (service.posted_timestamp) { // assuming 'date' is the column name in your table
-            service.posted_timestamp = moment.tz(service.date, "Asia/Colombo").tz(moment.tz.guess()).format();
-        }
-        return service;
-    });
-
-        console.log("hey");
-        return finaldata;
+        return result.rows
       }
 
     }
     catch (error) {
+      console.log(error)
       throw error;
     }
 
@@ -116,6 +102,7 @@ class Service {
 
     }
     catch (error) {
+      console.log(error)
       throw error;
     }
 
@@ -144,7 +131,8 @@ class Service {
 
     }
     catch (error) {
-      throw error;
+      // throw error;
+      console.log(error)
     }
 
   }
@@ -168,6 +156,7 @@ class Service {
 
     }
     catch (error) {
+      console.log(error)
       throw error;
     }
 
@@ -179,7 +168,7 @@ class Service {
 
 static async acceptTask(taskid,bidid,customerid) {
 
-  const query = 'update "Service" set status=\'accepted\' where id=$1';
+  const query = 'update "Service" set status=\'Accepted\' where id=$1';
   const query2='update "Bid" set accept_customerid=s1,accept_timestamp=$2 where id=$3'
   const currentTimestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
   const values2=[customerid,currentTimestamp,bidid];
@@ -254,7 +243,7 @@ static async getOngoingAndAcceptedTasks(customerid){
   FROM "Service"
   LEFT JOIN "Bid" AS bid ON "Service"."id" = bid."serviceId"
   LEFT JOIN "ServiceProvider" AS sp ON bid."serviceProviderId" = sp."id"
-  WHERE ("Service".status='arrived' OR "Service".status='started' OR "Service".status='accepted') AND "Service"."customerid"=$1;
+  WHERE ("Service".status='arrived' OR "Service".status='started' OR "Service".status='Accepted') AND "Service"."customerid"=$1;
 `;
 
 const values=[customerid]

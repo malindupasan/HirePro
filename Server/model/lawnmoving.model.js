@@ -15,7 +15,7 @@ class Lawnmoving extends Service {
     const { area ,description,postedtime,estmin,estmax,location,latitude,longitude,date, customer} = taskData;
 
     // console.log("des"+description);
-    const status="pending";
+    const status="Pending";
     const query0='INSERT INTO "Service" ( description,location,estmin,estmax,date,status,customerid,posted_timestamp,latitude,longitude,category) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *';
     const values0=[description,location,estmin,estmax,date,status,customer,postedtime,latitude,longitude,"Lawn Mowing"]
 
@@ -46,7 +46,7 @@ class Lawnmoving extends Service {
      const { area ,description,postedtime,estmin,estmax,location,latitude,longitude,date, customer} = taskData;
  
      // console.log("des"+description);
-     const status="accepted";
+     const status="Accepted";
      const query0='INSERT INTO "Service" ( description,location,estmin,estmax,date,status,customerid,posted_timestamp,latitude,longitude) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *';
      const values0=[description,location,estmin,estmax,date,status,customer,postedtime,latitude,longitude]
  
